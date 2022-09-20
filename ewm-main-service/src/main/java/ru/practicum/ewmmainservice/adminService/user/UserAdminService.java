@@ -14,4 +14,7 @@ public interface UserAdminService {
     void deleteUser(Long userId) throws UserNotFoundException;
 
     Collection<UserDto> findAll(Pageable pageable);
+
+
+    Collection<UserDto> findByIds(Long[] ids);
 }

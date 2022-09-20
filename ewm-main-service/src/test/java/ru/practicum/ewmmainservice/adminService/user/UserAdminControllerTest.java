@@ -82,7 +82,7 @@ class UserAdminControllerTest {
     }
 
     @Test
-    void test2_1findAll() throws Exception {
+    void test2_1findAll_withOutIds() throws Exception {
         Pageable pageable = PageRequest.of(0, 2);
         mvc.perform(get(API)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,6 +90,19 @@ class UserAdminControllerTest {
                 .param("from", "0")
                 .param("size", "2"));
         Mockito.verify(userAdminService, times(1)).findAll(pageable);
+    }
+    @Test
+    void test2_3findAll_withIds() throws Exception {
+        Pageable pageable = PageRequest.of(0, 2);
+        String[] ids = {"1", "2"};
+        Long[] idsLong = {1L,2L};
+        mvc.perform(get(API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8)
+                .param("from", "0")
+                .param("size", "2")
+                .param("ids", ids));
+        Mockito.verify(userAdminService, times(1)).findByIds(idsLong);
     }
 
 

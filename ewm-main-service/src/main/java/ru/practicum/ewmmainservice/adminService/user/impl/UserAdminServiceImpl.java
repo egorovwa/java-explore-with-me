@@ -1,6 +1,8 @@
 package ru.practicum.ewmmainservice.adminService.user.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewmmainservice.adminService.user.UserAdminService;
@@ -12,6 +14,7 @@ import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -26,7 +29,7 @@ public class UserAdminServiceImpl implements UserAdminService {
         try {
             User user = repository.save(userDtoMaper.fromCreateDto(newUserDto));
             return userDtoMaper.toDto(user);
-        } catch (IllegalArgumentException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyExistsException(e.getMessage(), "email", newUserDto.getEmail());
         }
     }
@@ -35,7 +38,7 @@ public class UserAdminServiceImpl implements UserAdminService {
     public void deleteUser(Long userId) throws UserNotFoundException {
         try {
             repository.deleteById(userId);
-        } catch (IllegalArgumentException e) {
+        } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException(e.getMessage(), "Id", String.valueOf(userId));
         }
     }
@@ -46,4 +49,12 @@ public class UserAdminServiceImpl implements UserAdminService {
                 .map(userDtoMaper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Collection<UserDto> findByIds(Long[] ids) {
+        return repository.findAllById(Arrays.asList(ids)).stream()
+                .map(userDtoMaper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -15,6 +15,7 @@ import ru.practicum.ewmmainservice.models.user.dto.UserDto;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -29,8 +30,13 @@ public class UserAdminController {
     }
     @GetMapping
     public Collection<UserDto> findAll(@PathParam("from") Integer from,
-                                       @PathParam("size") Integer size) throws IncorrectPageValueException {
+                                       @PathParam("size") Integer size,
+                                       @PathParam("ids") Long[] ids) throws IncorrectPageValueException {
+        if (ids == null){
         return userAdminService.findAll(PageParam.createPageable(from, size));
+        }else {
+            return userAdminService.findByIds(ids);
+        }
     }
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable("userId") Long userId) throws UserNotFoundException {
