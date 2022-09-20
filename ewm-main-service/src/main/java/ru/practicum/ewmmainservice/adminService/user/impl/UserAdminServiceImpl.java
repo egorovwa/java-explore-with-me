@@ -23,13 +23,12 @@ public class UserAdminServiceImpl implements UserAdminService {
 
     @Override
     public UserDto addNewUser(NewUserDto newUserDto) throws UserAlreadyExistsException {
-        User user = null;
         try {
-            user = repository.save(userDtoMaper.fromCreateDto(newUserDto));
+            User user = repository.save(userDtoMaper.fromCreateDto(newUserDto));
+            return userDtoMaper.toDto(user);
         } catch (IllegalArgumentException e) {
             throw new UserAlreadyExistsException(e.getMessage(), "email", newUserDto.getEmail());
         }
-        return userDtoMaper.toDto(repository.save(user)); // TODO: 20.09.2022 если email существует
     }
 
     @Override
@@ -39,7 +38,6 @@ public class UserAdminServiceImpl implements UserAdminService {
         } catch (IllegalArgumentException e) {
             throw new UserNotFoundException(e.getMessage(), "Id", String.valueOf(userId));
         }
-
     }
 
     @Override
