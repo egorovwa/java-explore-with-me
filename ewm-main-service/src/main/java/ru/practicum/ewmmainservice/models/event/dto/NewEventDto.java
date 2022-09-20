@@ -2,7 +2,7 @@ package ru.practicum.ewmmainservice.models.event.dto;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.practicum.ewmmainservice.models.event.Location;
+import ru.practicum.ewmmainservice.models.location.Location;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
