@@ -1,6 +1,8 @@
 package ru.practicum.ewmmainservice.models.location;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,6 +10,8 @@ import javax.validation.constraints.NotNull;
 @Data
 @Entity
 @Table(name = "locations")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +24,6 @@ public class Location {
     Float lon;	/*number($float)
     example: 37.62
     Долгота*/
+
+
 }

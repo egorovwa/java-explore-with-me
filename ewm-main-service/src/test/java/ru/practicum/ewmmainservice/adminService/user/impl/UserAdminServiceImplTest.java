@@ -2,17 +2,14 @@ package ru.practicum.ewmmainservice.adminService.user.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.ewmmainservice.adminService.user.UserAdminRepository;
-import ru.practicum.ewmmainservice.exceptions.UserAlreadyExistsException;
+import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
@@ -21,6 +18,7 @@ import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -35,7 +33,7 @@ class UserAdminServiceImplTest {
     UserAdminServiceImpl service = new UserAdminServiceImpl(repository, dtoMaper);
 
     @Test
-    void test1_1addNewUser() throws UserAlreadyExistsException {
+    void test1_1addNewUser() throws ModelAlreadyExistsException {
         NewUserDto newUserDto = new NewUserDto("Email@mail.ru", "name");
         dtoMaper.fromCreateDto(newUserDto);
         when(repository.save(dtoMaper.fromCreateDto(newUserDto)))
@@ -47,12 +45,12 @@ class UserAdminServiceImplTest {
         Mockito.verify(repository, times(1)).save(dtoMaper.fromCreateDto(newUserDto));
     }
     @Test
-    void test1_2addNewUser_userNotFound() throws UserAlreadyExistsException {
+    void test1_2addNewUser_userNotFound() throws ModelAlreadyExistsException {
         NewUserDto newUserDto = new NewUserDto("Email@mail.ru", "name");
         dtoMaper.fromCreateDto(newUserDto);
         when(repository.save(dtoMaper.fromCreateDto(newUserDto)))
-                .thenThrow(IllegalArgumentException.class);
-        assertThrows(UserAlreadyExistsException.class, ()-> service.addNewUser(newUserDto));
+                .thenThrow(DataIntegrityViolationException.class);
+        assertThrows(ModelAlreadyExistsException.class, ()-> service.addNewUser(newUserDto));
     }
 
     @Test
@@ -62,7 +60,7 @@ class UserAdminServiceImplTest {
     }
     @Test
     void test2_2deleteUser_userNotFound() throws UserNotFoundException {
-        Mockito.doThrow(new IllegalArgumentException()).when(repository).deleteById(1L);
+        Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(1L);
         assertThrows(UserNotFoundException.class,()-> service.deleteUser(1L));
     }
 
@@ -78,10 +76,25 @@ class UserAdminServiceImplTest {
     @Test
     void test3_2findbyId() {
         User user =new User(1L,"email@mail.com", "name");
-        PageImpl<User> page = new PageImpl<>(List.of(user));
+        Long[] ids = {1L};
         when(repository.findAllById(List.of(1L)))
                 .thenReturn(List.of(user));
-        Collection<UserDto> result = service.findAll(PageRequest.of(0,2));
+        Collection<UserDto> result = service.findByIds(ids);
         assertThat(result.stream().findFirst().get(), is(dtoMaper.toDto(user)));
+    }
+    @Test
+    void test4_1findById() throws UserNotFoundException {
+        User user = new User(1L, "email", "name");
+        when(repository.findById(1L))
+                .thenReturn(Optional.of(user));
+        assertThat(service.findById(1L), is(user));
+    }
+    @Test
+    void test4_2findById_whenUserNotFound() throws UserNotFoundException {
+        User user = new User(1L, "email", "name");
+        when(repository.findById(1L))
+                .thenReturn(Optional.empty());
+        assertThrows(UserNotFoundException.class,
+                ()->service.findById(1L));
     }
 }

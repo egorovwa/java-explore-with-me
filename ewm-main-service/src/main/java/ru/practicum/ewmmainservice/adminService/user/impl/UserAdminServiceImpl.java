@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewmmainservice.adminService.user.UserAdminService;
 import ru.practicum.ewmmainservice.adminService.user.UserAdminRepository;
-import ru.practicum.ewmmainservice.exceptions.UserAlreadyExistsException;
+import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
@@ -27,14 +27,14 @@ public class UserAdminServiceImpl implements UserAdminService {
     private final UserDtoMaper userDtoMaper;
 
     @Override
-    public UserDto addNewUser(NewUserDto newUserDto) throws UserAlreadyExistsException {
+    public UserDto addNewUser(NewUserDto newUserDto) throws ModelAlreadyExistsException {
         try {
             User user = repository.save(userDtoMaper.fromCreateDto(newUserDto));
             log.info("Create new User {}", user);
             return userDtoMaper.toDto(user);
         } catch (DataIntegrityViolationException e) {
             log.warn("Created user with email = {}, alredy exist.", newUserDto.getEmail());
-            throw new UserAlreadyExistsException(e.getMessage(), "email", newUserDto.getEmail());
+            throw new ModelAlreadyExistsException(e.getMessage(), "email", newUserDto.getEmail());
         }
     }
 
@@ -58,11 +58,18 @@ public class UserAdminServiceImpl implements UserAdminService {
     }
 
     @Override
-    public Collection<UserDto> findByIds(Long[] ids, Pageable pageable) {
+    public Collection<UserDto> findByIds(Long[] ids) {
         log.info("Search users by ids {}", Arrays.asList(ids));
         return repository.findAllById(Arrays.asList(ids)).stream()
                 .map(userDtoMaper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public User findById(Long userId) throws UserNotFoundException {
+        log.debug("Find user id = {}", userId);
+        return repository.findById(userId)
+                .orElseThrow(()->new UserNotFoundException("User not Found", "id", userId.toString()));
     }
 
 }

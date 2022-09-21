@@ -9,7 +9,7 @@ import ru.practicum.ewmmainservice.adminService.category.CategoryRepository;
 import ru.practicum.ewmmainservice.adminService.category.CategoryService;
 import ru.practicum.ewmmainservice.adminService.event.EventService;
 import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
-import ru.practicum.ewmmainservice.exceptions.UserAlreadyExistsException;
+import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
@@ -18,7 +18,6 @@ import ru.practicum.ewmmainservice.models.category.dto.NewCategoryDto;
 import ru.practicum.ewmmainservice.models.event.Event;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,14 +29,14 @@ public class CategoryServiceImpl implements CategoryService {
     private final EventService eventService;
 
     @Override
-    public CategoryDto createCategory(NewCategoryDto newCategoryDto) throws UserAlreadyExistsException {
+    public CategoryDto createCategory(NewCategoryDto newCategoryDto) throws ModelAlreadyExistsException {
 
         try {
             log.info("Create category {}", newCategoryDto);
             return dtoMaper.toDto(repository.save(dtoMaper.fromNewCategoryDto(newCategoryDto)));
         } catch (DataIntegrityViolationException e) {
             log.warn("Category {} alredy exist", newCategoryDto);
-            throw new UserAlreadyExistsException("Category already exist", "name", newCategoryDto.getName());
+            throw new ModelAlreadyExistsException("Category already exist", "name", newCategoryDto.getName());
         }
     }
 
@@ -57,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
                 repository.deleteById(catId);
                 log.info("Delete category id = {}", catId);
             } catch (EmptyResultDataAccessException e) {
-                log.warn("Caregory id = {} not found", catId);
+                log.warn("Caregory with id={} was not found", catId);
                 throw new UserNotFoundException("Category not found", "id", catId.toString());
             }
         } else {
@@ -65,5 +64,12 @@ public class CategoryServiceImpl implements CategoryService {
             throw new RelatedObjectsPresent("There are related events.", "Event",
                     relatedEvents.stream().map(Event::getId).collect(Collectors.toList()));
         }
+    }
+
+    @Override
+    public Category findByid(Long categoryId) throws UserNotFoundException {
+        log.debug("Find category id = {}", categoryId);
+        return repository.findById(categoryId)
+                .orElseThrow(()->new UserNotFoundException("Categori  not found", "id", categoryId.toString()));
     }
 }

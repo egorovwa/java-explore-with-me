@@ -22,4 +22,10 @@ private final UserDtoMaper dtoMaper = new UserDtoMaper();
         UserDto userDto=new UserDto(1L,"email", "name");
         assertThat(dtoMaper.toDto(user), is(userDto));
     }
+    @Test
+    void toShortDto(){
+        User user = new User(1L, "emaik@mail.com", "name");
+        UserShortDto dto = new UserShortDto(1L, "name");
+        assertThat(dtoMaper.toShortDto(user), is(dto));
+    }
 }
