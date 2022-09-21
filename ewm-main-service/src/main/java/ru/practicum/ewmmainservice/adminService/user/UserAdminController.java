@@ -13,12 +13,13 @@ import ru.practicum.ewmmainservice.models.user.dto.UserDto;
 
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import javax.websocket.server.PathParam;
 import java.util.Collection;
 import java.util.List;
 
 @RestController
-@Slf4j
 @Validated
 @RequestMapping("/admin/users")
 @RequiredArgsConstructor
@@ -29,13 +30,13 @@ public class UserAdminController {
         return userAdminService.addNewUser(newUserDto);
     }
     @GetMapping
-    public Collection<UserDto> findAll(@PathParam("from") Integer from,
-                                       @PathParam("size") Integer size,
+    public Collection<UserDto> findAll(@PositiveOrZero @RequestParam(name ="from", defaultValue = "0") Integer from,
+                                       @Positive @RequestParam(name = "size", defaultValue = "10") Integer size,
                                        @PathParam("ids") Long[] ids) throws IncorrectPageValueException {
         if (ids == null){
         return userAdminService.findAll(PageParam.createPageable(from, size));
         }else {
-            return userAdminService.findByIds(ids);
+            return userAdminService.findByIds(ids, PageParam.createPageable(from, size));
         }
     }
     @DeleteMapping("/{userId}")

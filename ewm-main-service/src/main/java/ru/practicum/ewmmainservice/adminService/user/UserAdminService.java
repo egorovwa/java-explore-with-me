@@ -16,5 +16,5 @@ public interface UserAdminService {
     Collection<UserDto> findAll(Pageable pageable);
 
 
-    Collection<UserDto> findByIds(Long[] ids);
+    Collection<UserDto> findByIds(Long[] ids, Pageable pageable);
 }

@@ -14,9 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.practicum.ewmmainservice.exceptions.UserAlreadyExistsException;
-import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
 import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDto;
+import ru.practicum.ewmmainservice.utils.PageParam;
 
 import java.nio.charset.StandardCharsets;
 
@@ -102,7 +102,7 @@ class UserAdminControllerTest {
                 .param("from", "0")
                 .param("size", "2")
                 .param("ids", ids));
-        Mockito.verify(userAdminService, times(1)).findByIds(idsLong);
+        Mockito.verify(userAdminService, times(1)).findByIds(idsLong, PageParam.createPageable(from, size));
     }
 
 

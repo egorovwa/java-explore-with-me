@@ -75,4 +75,13 @@ class UserAdminServiceImplTest {
         Collection<UserDto> result = service.findAll(PageRequest.of(0,2));
         assertThat(result.stream().findFirst().get(), is(dtoMaper.toDto(user)));
     }
+    @Test
+    void test3_2findbyId() {
+        User user =new User(1L,"email@mail.com", "name");
+        PageImpl<User> page = new PageImpl<>(List.of(user));
+        when(repository.findAllById(List.of(1L)))
+                .thenReturn(List.of(user));
+        Collection<UserDto> result = service.findAll(PageRequest.of(0,2));
+        assertThat(result.stream().findFirst().get(), is(dtoMaper.toDto(user)));
+    }
 }
