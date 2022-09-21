@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
+@Slf4j
 @Validated
 @RequestMapping("/admin/users")
 @RequiredArgsConstructor
