@@ -7,10 +7,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewmmainservice.adminService.category.CategoryRepository;
 import ru.practicum.ewmmainservice.adminService.category.CategoryService;
-import ru.practicum.ewmmainservice.adminService.event.EventService;
+import ru.practicum.ewmmainservice.adminService.event.AdminEventService;
+import ru.practicum.ewmmainservice.adminService.event.AdminEwentRepository;
 import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
-import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
+import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
@@ -26,7 +27,8 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
     private final CategoryDtoMaper dtoMaper;
-    private final EventService eventService;
+    private final AdminEwentRepository adminEwentRepository;
+
 
     @Override
     public CategoryDto createCategory(NewCategoryDto newCategoryDto) throws ModelAlreadyExistsException {
@@ -41,23 +43,24 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto patchCategory(CategoryDto categoryDto) throws UserNotFoundException {
+    public CategoryDto patchCategory(CategoryDto categoryDto) throws NotFoundException {
         Category category = repository.findById(categoryDto.getId())
-                .orElseThrow(() -> new UserNotFoundException("Category not found", "id", String.valueOf(categoryDto.getId())));
+                .orElseThrow(() -> new NotFoundException("Category not found", "id",
+                        String.valueOf(categoryDto.getId()),"Category"));
         log.info("update category {}", categoryDto);
         return dtoMaper.toDto(category);
     }
 
     @Override
-    public void deleteCategory(Long catId) throws UserNotFoundException, RelatedObjectsPresent {
-        Collection<Event> relatedEvents = eventService.findByCategoryId(catId);
+    public void deleteCategory(Long catId) throws NotFoundException, RelatedObjectsPresent {
+        Collection<Event> relatedEvents = adminEwentRepository.findAllByCategoryId(catId);
         if (relatedEvents.size() == 0) {
             try {
                 repository.deleteById(catId);
                 log.info("Delete category id = {}", catId);
             } catch (EmptyResultDataAccessException e) {
                 log.warn("Caregory with id={} was not found", catId);
-                throw new UserNotFoundException("Category not found", "id", catId.toString());
+                throw new NotFoundException("Category not found", "id", catId.toString(),"Category");
             }
         } else {
             log.warn("The category id = {} is related to events: {}", catId, relatedEvents);
@@ -67,9 +70,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findByid(Long categoryId) throws UserNotFoundException {
+    public Category findByid(Long categoryId) throws NotFoundException {
         log.debug("Find category id = {}", categoryId);
         return repository.findById(categoryId)
-                .orElseThrow(()->new UserNotFoundException("Categori  not found", "id", categoryId.toString()));
+                .orElseThrow(()->new NotFoundException("Categori  not found", "id", categoryId.toString(),"Category"));
     }
 }

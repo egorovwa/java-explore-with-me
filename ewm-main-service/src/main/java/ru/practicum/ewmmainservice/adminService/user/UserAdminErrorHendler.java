@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
-import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
+import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.apiError.ApiError;
 
 import java.sql.Timestamp;
@@ -24,9 +24,9 @@ public class UserAdminErrorHendler {
                 .reason("User Already Exists")
                 .build();
     }
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError notFoundException(UserNotFoundException e){
+    public ApiError notFoundException(NotFoundException e){
         return ApiError.builder()
                 .description(String.format("The user with id %s  not found.", e.getValue()))
                 .status(HttpStatus.CONFLICT)

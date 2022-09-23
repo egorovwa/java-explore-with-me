@@ -9,6 +9,7 @@ import ru.practicum.ewmmainservice.models.apiError.ApiError;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @RestControllerAdvice("ru.practicum.ewmmainservice")
 public class ForAllControllerErrorHendler {
@@ -32,6 +33,16 @@ public class ForAllControllerErrorHendler {
                 .timestamp(Timestamp.from(Instant.now()))
                 .reason("One or more fields are not valid.")
                 .errors(e.getStackTrace())
+                .build();
+    }
+    @ExceptionHandler(FiledParamNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError filedParamNotFoundException(FiledParamNotFoundException e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .timestamp(Timestamp.valueOf(LocalDateTime.now()))
+                .reason("One or more class fields do not exist.")
+                .status(HttpStatus.BAD_REQUEST)
                 .build();
     }
 }

@@ -13,8 +13,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class LocationServiceImpl implements LocationService {
-    private static LacationRepository lacationRepository;
-    private static LocationDtoMaper locationDtoMaper;
+    private final LacationRepository lacationRepository;
+    private final LocationDtoMaper locationDtoMaper;
 
     @Override
     public Optional<Location> findByLatAndLon(Float lat, Float lon) {

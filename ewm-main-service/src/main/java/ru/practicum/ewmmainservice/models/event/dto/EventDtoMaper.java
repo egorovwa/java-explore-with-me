@@ -9,24 +9,27 @@ import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
+import ru.practicum.ewmmainservice.utils.Utils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 
 @Component
 @RequiredArgsConstructor
 public class EventDtoMaper {
-    UserDtoMaper userDtoMaper;
-    LocationDtoMaper locationDtoMaper;
+    private final UserDtoMaper userDtoMaper;
+    private final LocationDtoMaper locationDtoMaper;
+    private final DateTimeFormatter formatter = Utils.getDateTimeFormater();
 
-    public Event fromNewDto(NewEventDto newEventDto, Category category, User user, Location location){
+    public Event fromNewDto(NewEventDto newEventDto, Category category, User user, Location location) {
 
         return new Event(newEventDto.getAnnotation(),
                 category,
                 LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 newEventDto.getDescription(),
-                newEventDto.getEventDate().toEpochSecond(ZoneOffset.UTC),
+                LocalDateTime.parse(newEventDto.getEventDate(), formatter).toEpochSecond(ZoneOffset.UTC),
                 user,
                 location,
                 newEventDto.getPaid(),
@@ -37,18 +40,23 @@ public class EventDtoMaper {
     }
 
     public EventFullDto toFulDto(Event event) {
+        String publishedOn = null;
+        if (event.getPublishedOn() != null) {
+            publishedOn = formatter.format(LocalDateTime.ofEpochSecond(event.getPublishedOn(),
+                    0, ZoneOffset.UTC));
+        }
         return new EventFullDto(event.getId(),
                 event.getAnnotation(),
                 event.getCategory(),
                 event.getParticipants().size(),
-                LocalDateTime.ofEpochSecond(event.getCreatedOn(),0,ZoneOffset.UTC).toString(),
+                formatter.format(LocalDateTime.ofEpochSecond(event.getCreatedOn(), 0, ZoneOffset.UTC)),
                 event.getDescription(),
-                LocalDateTime.ofEpochSecond(event.getEventDate(),0, ZoneOffset.UTC).toString(),
+                formatter.format(LocalDateTime.ofEpochSecond(event.getEventDate(), 0, ZoneOffset.UTC)),
                 userDtoMaper.toShortDto(event.getInitiator()),
                 locationDtoMaper.toDto(event.getLocation()),
                 event.getPaid(),
                 event.getParticipantLimit(),
-                LocalDateTime.ofEpochSecond(event.getPublishedOn(),0, ZoneOffset.UTC).toString(),
+                publishedOn,
                 event.getRequestModeration(),
                 event.getState(),
                 event.getTitle(),

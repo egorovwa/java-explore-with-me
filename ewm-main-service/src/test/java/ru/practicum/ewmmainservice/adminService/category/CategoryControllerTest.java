@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
-import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
+import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.NewCategoryDto;
 
@@ -108,7 +108,7 @@ class CategoryControllerTest {
     }
     @Test
     void test3_2deleteCategory_notFound() throws Exception {
-        doThrow(UserNotFoundException.class).when(categoryService).deleteCategory(1L);
+        doThrow(NotFoundException.class).when(categoryService).deleteCategory(1L);
         mvc.perform(delete(API+"/{catId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8))

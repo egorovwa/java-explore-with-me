@@ -1,13 +1,15 @@
 package ru.practicum.ewmmainservice.exceptions;
 
-public class UserNotFoundException extends Exception{
+public class NotFoundException extends Exception{
     String param;
     String value;
+    String className;
 
-    public UserNotFoundException(String message, String param, String value) {
+    public NotFoundException(String message, String param, String value, String className) {
         super(message);
         this.param = param;
         this.value = value;
+        this.className = className;
     }
 
     public String getParam() {
@@ -16,5 +18,9 @@ public class UserNotFoundException extends Exception{
 
     public String getValue() {
         return value;
+    }
+
+    public String getClassName() {
+        return className;
     }
 }

@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.privateservise.participationRequest.ParticipationRequest;
+import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Data
@@ -49,15 +49,16 @@ public class Event {
     @NotNull
     private Boolean requestModeration;
     @NotNull
+    @Enumerated(EnumType.STRING)
     private EventState state;
     @NotBlank
     @Size(min = 3, max = 120)
     private String title;
     private int views; // кол-во поросмоьров
     @OneToMany
-    private Collection<User> participants; // подтвержденные участники
+    private Collection<User> participants = new ArrayList<>(); // подтвержденные участники
     @OneToMany
-    private Collection<ParticipationRequest> participationRequests; // TODO: 21.09.2022 здесь requests
+    private Collection<ParticipationRequest> participationRequests = new ArrayList<>(); // TODO: 21.09.2022 здесь requests
 
     public Event(String annotation, Category category, long createdOn, String description,
                  long eventDate, User initiator, Location location, Boolean paid, int participantLimit,

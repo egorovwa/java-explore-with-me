@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.ewmmainservice.adminService.user.UserAdminService;
 import ru.practicum.ewmmainservice.adminService.user.UserAdminRepository;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
-import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
+import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDto;
@@ -39,13 +39,13 @@ public class UserAdminServiceImpl implements UserAdminService {
     }
 
     @Override
-    public void deleteUser(Long userId) throws UserNotFoundException {
+    public void deleteUser(Long userId) throws NotFoundException {
         try {
             log.info("Delete user id {}", userId);
             repository.deleteById(userId);
         } catch (EmptyResultDataAccessException e) {
             log.warn("Deleted user not found id = {}", userId);
-            throw new UserNotFoundException(e.getMessage(), "Id", String.valueOf(userId));
+            throw new NotFoundException(e.getMessage(), "Id", String.valueOf(userId), "User");
         }
     }
 
@@ -66,10 +66,10 @@ public class UserAdminServiceImpl implements UserAdminService {
     }
 
     @Override
-    public User findById(Long userId) throws UserNotFoundException {
+    public User findById(Long userId) throws NotFoundException {
         log.debug("Find user id = {}", userId);
         return repository.findById(userId)
-                .orElseThrow(()->new UserNotFoundException("User not Found", "id", userId.toString()));
+                .orElseThrow(()->new NotFoundException("User not Found", "id", userId.toString(), "User"));
     }
 
 }

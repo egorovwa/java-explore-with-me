@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmainservice.utils.PageParam;
 import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
-import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
+import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDto;
 
@@ -38,7 +38,7 @@ public class UserAdminController {
         }
     }
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable("userId") Long userId) throws UserNotFoundException {
+    public void delete(@PathVariable("userId") Long userId) throws NotFoundException {
         userAdminService.deleteUser(userId);
     }
 }

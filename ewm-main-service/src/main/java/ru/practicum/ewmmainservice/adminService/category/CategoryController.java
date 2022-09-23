@@ -5,7 +5,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
-import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
+import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.NewCategoryDto;
 
@@ -23,11 +23,11 @@ public class CategoryController {
         return categoryService.createCategory(newCategoryDto);
     }
     @PatchMapping
-    public CategoryDto updateCategory(@RequestBody @Valid CategoryDto categoryDto) throws UserNotFoundException {
+    public CategoryDto updateCategory(@RequestBody @Valid CategoryDto categoryDto) throws NotFoundException {
         return categoryService.patchCategory(categoryDto);
     }
     @DeleteMapping("/{catId}")
-    public void deleteCategory(@PathVariable("catId") Long catId) throws UserNotFoundException, RelatedObjectsPresent {
+    public void deleteCategory(@PathVariable("catId") Long catId) throws NotFoundException, RelatedObjectsPresent {
         categoryService.deleteCategory(catId);
     }
 }

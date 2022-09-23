@@ -1,6 +1,8 @@
-package ru.practicum.ewmmainservice.privateservise.participationRequest;
+package ru.practicum.ewmmainservice.models.participationRequest;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.user.User;
 
@@ -9,8 +11,11 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
-@Table(name = "participationrequests")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "participationrequests",uniqueConstraints = {@UniqueConstraint(columnNames = {"event", "requester"})})
 public class ParticipationRequest {
+    @NotNull
     Long created;
     @ManyToOne
     @NotNull
@@ -21,5 +26,7 @@ public class ParticipationRequest {
     @ManyToOne
     @NotNull
     User requester;
+    @NotNull
+    @Enumerated(EnumType.STRING)
     RequestStatus status;
 }

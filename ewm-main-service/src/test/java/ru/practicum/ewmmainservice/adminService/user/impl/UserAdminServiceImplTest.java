@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.ewmmainservice.adminService.user.UserAdminRepository;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
-import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
+import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDto;
@@ -54,14 +54,14 @@ class UserAdminServiceImplTest {
     }
 
     @Test
-    void test2_1deleteUser() throws UserNotFoundException {
+    void test2_1deleteUser() throws NotFoundException {
         service.deleteUser(1L);
         Mockito.verify(repository,times(1)).deleteById(1L);
     }
     @Test
-    void test2_2deleteUser_userNotFound() throws UserNotFoundException {
+    void test2_2deleteUser_userNotFound() throws NotFoundException {
         Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(1L);
-        assertThrows(UserNotFoundException.class,()-> service.deleteUser(1L));
+        assertThrows(NotFoundException.class,()-> service.deleteUser(1L));
     }
 
     @Test
@@ -83,18 +83,18 @@ class UserAdminServiceImplTest {
         assertThat(result.stream().findFirst().get(), is(dtoMaper.toDto(user)));
     }
     @Test
-    void test4_1findById() throws UserNotFoundException {
+    void test4_1findById() throws NotFoundException {
         User user = new User(1L, "email", "name");
         when(repository.findById(1L))
                 .thenReturn(Optional.of(user));
         assertThat(service.findById(1L), is(user));
     }
     @Test
-    void test4_2findById_whenUserNotFound() throws UserNotFoundException {
+    void test4_2findById_whenUserNotFound() throws NotFoundException {
         User user = new User(1L, "email", "name");
         when(repository.findById(1L))
                 .thenReturn(Optional.empty());
-        assertThrows(UserNotFoundException.class,
+        assertThrows(NotFoundException.class,
                 ()->service.findById(1L));
     }
 }

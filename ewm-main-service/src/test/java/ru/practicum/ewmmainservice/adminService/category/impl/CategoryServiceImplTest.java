@@ -7,10 +7,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import ru.practicum.ewmmainservice.adminService.category.CategoryRepository;
-import ru.practicum.ewmmainservice.adminService.event.EventService;
+import ru.practicum.ewmmainservice.adminService.event.AdminEventService;
+import ru.practicum.ewmmainservice.adminService.event.AdminEwentRepository;
 import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
-import ru.practicum.ewmmainservice.exceptions.UserNotFoundException;
+import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
@@ -29,8 +30,8 @@ import static org.mockito.Mockito.*;
 class CategoryServiceImplTest {
     CategoryDtoMaper dtoMaper = new CategoryDtoMaper();
     CategoryRepository repository = Mockito.mock(CategoryRepository.class);
-    EventService eventService = Mockito.mock(EventService.class);
-    CategoryServiceImpl service = new CategoryServiceImpl(repository, dtoMaper, eventService);
+    AdminEwentRepository adminEwentRepository = Mockito.mock(AdminEwentRepository.class);
+    CategoryServiceImpl service = new CategoryServiceImpl(repository, dtoMaper, adminEwentRepository);
 
     @Test
     void test1_1createCategory() throws ModelAlreadyExistsException {
@@ -54,7 +55,7 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void test2_1patchCategory() throws UserNotFoundException {
+    void test2_1patchCategory() throws NotFoundException {
         CategoryDto categoryDto = new CategoryDto(1L, "name");
         Category category = new Category(1L, "name");
         when(repository.findById(1L))
@@ -63,35 +64,35 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void test2_3patchCategory_whenNotFound() throws UserNotFoundException {
+    void test2_3patchCategory_whenNotFound() throws NotFoundException {
         CategoryDto categoryDto = new CategoryDto(1L, "name");
 
         when(repository.findById(1L))
                 .thenReturn(Optional.empty());
-        assertThrows(UserNotFoundException.class, () -> service.patchCategory(categoryDto));
+        assertThrows(NotFoundException.class, () -> service.patchCategory(categoryDto));
     }
 
     @Test
-    void test3_1deleteCategory() throws UserNotFoundException, RelatedObjectsPresent {
-        when(eventService.findByCategoryId(1L))
+    void test3_1deleteCategory() throws NotFoundException, RelatedObjectsPresent {
+        when(adminEwentRepository.findAllByCategoryId(1L))
                 .thenReturn(List.of());
         service.deleteCategory(1L);
         verify(repository, times(1)).deleteById(1L);
     }
 
     @Test
-    void test3_2deleteCategory_whenNotFound() throws UserNotFoundException, RelatedObjectsPresent {
-        when(eventService.findByCategoryId(1L))
+    void test3_2deleteCategory_whenNotFound() throws NotFoundException, RelatedObjectsPresent {
+        when(adminEwentRepository.findAllByCategoryId(1L))
                 .thenReturn(List.of());
         doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(1L);
-        assertThrows(UserNotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             service.deleteCategory(1L);
         });
     }
 
     @Test
-    void test3_4deleteCategory_whenRelatedObjectsPresent() throws UserNotFoundException, RelatedObjectsPresent {
-        when(eventService.findByCategoryId(1L))
+    void test3_4deleteCategory_whenRelatedObjectsPresent() throws NotFoundException, RelatedObjectsPresent {
+        when(adminEwentRepository.findAllByCategoryId(1L))
                 .thenReturn(List.of(new Event()));
         assertThrows(RelatedObjectsPresent.class, () -> {
             service.deleteCategory(1L);
@@ -99,17 +100,17 @@ class CategoryServiceImplTest {
         verify(repository, times(0)).deleteById(1L);
     }
     @Test
-    void test4_findByid() throws UserNotFoundException {
+    void test4_findByid() throws NotFoundException {
         Category category = new Category(1L, "name");
         when(repository.findById(1L))
                 .thenReturn(Optional.of(category));
         assertThat(service.findByid(1L), is(category));
     }
     @Test
-    void test4_1findByid_whenNotFound() throws UserNotFoundException {
+    void test4_1findByid_whenNotFound() throws NotFoundException {
         Category category = new Category(1L, "name");
         when(repository.findById(1L))
                 .thenReturn(Optional.empty());
-        assertThrows(UserNotFoundException.class, ()-> service.findByid(1L));
+        assertThrows(NotFoundException.class, ()-> service.findByid(1L));
     }
 }
