@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "participationrequests",uniqueConstraints = {@UniqueConstraint(columnNames = {"event", "requester"})})
+@Table(name = "participationrequests",uniqueConstraints = {@UniqueConstraint(columnNames = {"event_id", "requester_id"})})
 public class ParticipationRequest {
     @NotNull
     Long created;

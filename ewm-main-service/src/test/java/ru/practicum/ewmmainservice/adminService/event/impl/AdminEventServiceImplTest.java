@@ -57,8 +57,7 @@ class AdminEventServiceImplTest {
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L,"email@mail.ru", "name"), new Location(1L,1.0f, 2.0f),
                 false, 10, null, true, EventState.WAITING, "title", 2,
-                List.of(new User(2L,"email2@mail.ru", "name2")),
-                List.of(new ParticipationRequest()));
+                List.of(new User(2L,"email2@mail.ru", "name2")));
     }
 
     @Test
@@ -82,8 +81,7 @@ class AdminEventServiceImplTest {
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L,"email@mail.ru", "name"), new Location(1L,1.0f, 2.0f),
                 false, 10, null, true, EventState.WAITING, "title", 2,
-                List.of(new User(2L,"email2@mail.ru", "name2")),
-                List.of(new ParticipationRequest()));
+                List.of(new User(2L,"email2@mail.ru", "name2")));
         saved.setPublishedOn(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         saved.setState(EventState.PUBLISHED);
         when(repository.save(saved))
@@ -99,8 +97,7 @@ class AdminEventServiceImplTest {
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
                 false, 10, null, true, EventState.PUBLISHED, "title", 2,
-                List.of(new User(2L, "email2@mail.ru", "name2")),
-                List.of(new ParticipationRequest()));
+                List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(notWaiting));
 assertThrows(EventStatusException.class, ()-> service.publishEvent(1L));
@@ -113,8 +110,7 @@ assertThrows(EventStatusException.class, ()-> service.publishEvent(1L));
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
                 false, 10, null, true, EventState.WAITING, "title", 2,
-                List.of(new User(2L, "email2@mail.ru", "name2")),
-                List.of(new ParticipationRequest()));
+                List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(timeNow));
         assertThrows(IllegalTimeException.class, ()-> service.publishEvent(1L));
@@ -129,8 +125,7 @@ assertThrows(EventStatusException.class, ()-> service.publishEvent(1L));
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L,"email@mail.ru", "name"), new Location(1L,1.0f, 2.0f),
                 false, 10, null, true, EventState.WAITING, "title", 2,
-                List.of(new User(2L,"email2@mail.ru", "name2")),
-                List.of(new ParticipationRequest()));
+                List.of(new User(2L,"email2@mail.ru", "name2")));
         saved.setState(EventState.CANCELLED);
         when(repository.save(saved))
                 .thenReturn(saved);
@@ -145,8 +140,7 @@ assertThrows(EventStatusException.class, ()-> service.publishEvent(1L));
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
                 false, 10, null, true, EventState.CANCELLED, "title", 2,
-                List.of(new User(2L, "email2@mail.ru", "name2")),
-                List.of(new ParticipationRequest()));
+                List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(notWaiting));
         assertThrows(EventStatusException.class, ()-> service.rejectEvent(1L));
@@ -159,8 +153,7 @@ assertThrows(EventStatusException.class, ()-> service.publishEvent(1L));
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
                 false, 10, null, true, EventState.WAITING, "title", 2,
-                List.of(new User(2L, "email2@mail.ru", "name2")),
-                List.of(new ParticipationRequest()));
+                List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(timeNow));
         assertThrows(IllegalTimeException.class, ()-> service.rejectEvent(1L));

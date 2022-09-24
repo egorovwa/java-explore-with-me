@@ -57,8 +57,6 @@ public class Event {
     private int views; // кол-во поросмоьров
     @OneToMany
     private Collection<User> participants = new ArrayList<>(); // подтвержденные участники
-    @OneToMany
-    private Collection<ParticipationRequest> participationRequests = new ArrayList<>(); // TODO: 21.09.2022 здесь requests
 
     public Event(String annotation, Category category, long createdOn, String description,
                  long eventDate, User initiator, Location location, Boolean paid, int participantLimit,

@@ -82,8 +82,7 @@ class EventDtoMaperTest {
                 EventState.PUBLISHED,
                 "title",
                 5,
-                participans,
-                List.of(participationRequest));
+                participans);
         EventFullDto dto = maper.toFulDto(event);
         assertThat(dto.getId(), is(1L));
         assertThat(dto.getAnnotation(), is("anatation"));
