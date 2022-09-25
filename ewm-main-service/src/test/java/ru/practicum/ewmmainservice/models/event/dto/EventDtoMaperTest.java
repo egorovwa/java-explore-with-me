@@ -100,7 +100,44 @@ class EventDtoMaperTest {
         assertThat(dto.getTitle(), is("title"));
         assertThat(dto.getViews(), is(5));
         assertThat(dto.getConfirmedRequests(), is(2));
+    }
+    @Test
+    void toShortDto(){
 
+            Category category = new Category(1l, "category");
+            User user = new User(1L, "email@mail.ru", "name");
+            UserShortDto userShortDto = new UserShortDto(1L, "name");
+            Location location = new Location(1L, 1.0f, 2.0f);
+            LocationDto locationDto = new LocationDto(1.0f, 2.0f);
+            List<User> participans = List.of(new User(2L, "emai@rrr.ru", "name2"),
+                    new User(3L, "sss@sss.fff", "name3"));
+            ParticipationRequest participationRequest = new ParticipationRequest();
+        Event event = new Event(1l,
+                "anatation",
+                category,
+                LocalDateTime.of(2022, 9, 6, 11, 0, 23).toEpochSecond(ZoneOffset.UTC), //2022-09-06 11:00:23
+                "Description",
+                LocalDateTime.of(2022, 9, 7, 11, 0, 23).toEpochSecond(ZoneOffset.UTC),
+                user,
+                location,
+                true,
+                10,
+                LocalDateTime.of(2022, 9, 11, 16, 11, 0).toEpochSecond(ZoneOffset.UTC),
+                true,
+                EventState.PUBLISHED,
+                "title",
+                5,
+                participans);
+        EventShortDto dto = maper.toShortDto(event);
+        assertThat(dto.getId(), is(1L));
+        assertThat(dto.getAnnotation(), is("anatation"));
+        assertThat(dto.getCategory(), is(category));
+        assertThat(dto.getEventDate(), is("2022-09-07 11:00:23"));
+        assertThat(dto.getInitiator(), is(userShortDto));
+        assertThat(dto.getPaid(), is(true));
+        assertThat(dto.getTitle(), is("title"));
+        assertThat(dto.getViews(), is(5));
+        assertThat(dto.getConfirmedRequests(), is(2));
 
     }
 }
