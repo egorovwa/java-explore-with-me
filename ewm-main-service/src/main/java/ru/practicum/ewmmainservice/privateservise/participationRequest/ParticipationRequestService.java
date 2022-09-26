@@ -6,7 +6,7 @@ import ru.practicum.ewmmainservice.models.participationRequest.dto.Participation
 import java.util.Collection;
 
 public interface ParticipationRequestService {
-    ParticipationRequestDto createRequest(Long userId, Long eventId) throws NotFoundException, FiledParamNotFoundException, IlegalUserIdException, EventStatusException, NumberParticipantsExceededException;
+    ParticipationRequestDto createRequest(Long userId, Long eventId) throws NotFoundException, FiledParamNotFoundException, IlegalUserIdException, StatusException, NumberParticipantsExceededException;
 
     ParticipationRequestDto cancelRequest(Long userId, Long requestId) throws NotFoundException, IlegalUserIdException;
 
@@ -14,5 +14,5 @@ public interface ParticipationRequestService {
 
     ParticipationRequestDto confirmRequest(Long userId, Long eventId, Long reqId) throws FiledParamNotFoundException, NotRequiredException, NumberParticipantsExceededException, NotFoundException, IlegalUserIdException;
 
-    ParticipationRequestDto rejectRequest(Long userId, Long eventId, Long reqId) throws NotFoundException, FiledParamNotFoundException, EventStatusException, IlegalUserIdException;
+    ParticipationRequestDto rejectRequest(Long userId, Long eventId, Long reqId) throws NotFoundException, FiledParamNotFoundException, StatusException, IlegalUserIdException;
 }

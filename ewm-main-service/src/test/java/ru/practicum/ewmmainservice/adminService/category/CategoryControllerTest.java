@@ -6,17 +6,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import ru.practicum.ewmmainservice.exceptions.ForAllControllerErrorHendler;
 import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.NewCategoryDto;
+import ru.practicum.ewmmainservice.models.event.Event;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
@@ -25,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CategoryController.class)
+@Import(ForAllControllerErrorHendler.class)
 class CategoryControllerTest {
     @MockBean
     CategoryService categoryService;
@@ -73,7 +78,7 @@ class CategoryControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .content(mapper.writeValueAsString(newCategoryDto)))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.message", is("message"))); // TODO: 21.09.2022 APIerror
+                .andExpect(jsonPath("$.message", is("value message = param already exist.")));
     }
 
 
@@ -100,7 +105,8 @@ class CategoryControllerTest {
 
     @Test
     void test3_1deleteCategory_withRelatedObjectsPresent() throws Exception {
-        doThrow(RelatedObjectsPresent.class).when(categoryService).deleteCategory(1L);
+        doThrow(new RelatedObjectsPresent("message","Event", List.of(1L,2L, 3L)))
+                .when(categoryService).deleteCategory(1L);
         mvc.perform(delete(API+"/{catId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8))

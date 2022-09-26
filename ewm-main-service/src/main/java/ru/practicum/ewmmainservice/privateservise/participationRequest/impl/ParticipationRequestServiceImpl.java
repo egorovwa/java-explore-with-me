@@ -34,7 +34,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     @Override
     @Transactional
     public ParticipationRequestDto createRequest(Long userId, Long eventId) throws NotFoundException,
-            FiledParamNotFoundException, IlegalUserIdException, EventStatusException, NumberParticipantsExceededException {
+            FiledParamNotFoundException, IlegalUserIdException, StatusException, NumberParticipantsExceededException {
         try {
             User user = userService.findById(userId);
             Event event = eventService.findById(eventId);
@@ -59,19 +59,19 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                         }
                     } else {
                         log.warn("The number of participants exceeded max = {}", event.getParticipantLimit());
-                        throw new NumberParticipantsExceededException(String.format("The number of participants exceeded max = %s",
-                                event.getParticipantLimit()), event.getParticipantLimit());
+                        throw new NumberParticipantsExceededException( event.getParticipantLimit());
                     }
 
                 } else {
                     log.warn("Participation Request with unpublished event id= {}", eventId);
-                    throw new EventStatusException("You cannot participate in an unpublished event");
+                    throw new StatusException("You cannot participate in an unpublished event");
                 }
 
             } else {
                 log.warn("Participation Request from initiator requester id = {}, event id={}", userId, eventId);
-                throw new IlegalUserIdException("The initiator of the event cannot request participation",
-                        userId.toString(), "Event");
+                throw new IlegalUserIdException(String
+                        .format("The initiator id = %s of the event id = %s cannot request participation", userId,eventId),
+                        userId,eventId, "Event");
             }
         } catch (NotFoundException e) {
             log.warn("{} {} {} notFoud", e.getClassName(), e.getValue(), e.getParam());
@@ -84,8 +84,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     public ParticipationRequestDto cancelRequest(Long userId, Long requestId) throws NotFoundException, IlegalUserIdException {
         User user = userService.findById(userId);
         ParticipationRequest request = repository.findById(requestId)
-                .orElseThrow(() -> new NotFoundException(String.format("ParticipationRequest id %s not found.", requestId),
-                        "id", requestId.toString(), "ParticipationRequest"));
+                .orElseThrow(() -> new NotFoundException("id", requestId.toString(), "ParticipationRequest"));
         if (user.equals(request.getRequester())) {
             request.setStatus(RequestStatus.REJECTED);// TODO: 24.09.2022 may be delete?
             log.info("Participation Request id {} canceled by requester id {}", requestId, userId);
@@ -93,7 +92,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         } else {
             log.warn("The user id {} is not the owner of the request id {}", userId, requestId);
             throw new IlegalUserIdException(String.format("The user id %s is not the owner of the request id %s", userId,
-                    requestId), userId.toString(), "ParticipationRequest");
+                    requestId), userId, requestId,"ParticipationRequest");
         }
 
     }
@@ -109,8 +108,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     @Transactional
     public ParticipationRequestDto confirmRequest(Long userId, Long eventId, Long reqId) throws FiledParamNotFoundException, NotRequiredException, NumberParticipantsExceededException, NotFoundException, IlegalUserIdException {
         ParticipationRequest request = repository.findById(reqId)
-                .orElseThrow(() -> new NotFoundException(String.format("ParticipationRequest id = %s not foud", reqId),
-                        "id", reqId.toString(), "ParticipationRequest"));
+                .orElseThrow(() -> new NotFoundException("id", reqId.toString(), "ParticipationRequest"));
         try {
             User user = userService.findById(userId);
             Event event = eventService.findById(eventId);
@@ -128,8 +126,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                         request.setStatus(RequestStatus.ACCEPTED);
                         return dtoMaper.toDto(repository.save(request));
                     } else {
-                        throw new NumberParticipantsExceededException(String.format("The number of participants exceeded max = %s",
-                                event.getParticipantLimit()), event.getParticipantLimit());
+                        throw new NumberParticipantsExceededException(event.getParticipantLimit());
                     }
 
                 } else {
@@ -137,7 +134,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                 }
             } else {
                 throw new IlegalUserIdException(String.format("The user id = %s is not the creator of the event id = %s.",
-                        userId, eventId), userId.toString(), "event");
+                        userId, eventId), userId, eventId, "event");
             }
         } catch (NotFoundException e) {
             throw new FiledParamNotFoundException(String.format("%s %s %s  not found", e.getClassName(),
@@ -146,10 +143,9 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
-    public ParticipationRequestDto rejectRequest(Long userId, Long eventId, Long reqId) throws NotFoundException, FiledParamNotFoundException, EventStatusException, IlegalUserIdException {
+    public ParticipationRequestDto rejectRequest(Long userId, Long eventId, Long reqId) throws NotFoundException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
         ParticipationRequest request = repository.findById(reqId)
-                .orElseThrow(() -> new NotFoundException(String.format("ParticipationRequest id = %s not foud", reqId),
-                        "id", reqId.toString(), "ParticipationRequest"));
+                .orElseThrow(() -> new NotFoundException("id", reqId.toString(), "ParticipationRequest"));
         try {
             User user = userService.findById(userId);
             Event event = eventService.findById(eventId);
@@ -158,11 +154,11 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                     request.setStatus(RequestStatus.REJECTED);
                     return dtoMaper.toDto(repository.save(request));
                 } else {
-                    throw new EventStatusException("Status must be PENDING");
+                    throw new StatusException("Status must be PENDING");
                 }
             } else {
                 throw new IlegalUserIdException(String.format("The user id = %s is not the creator of the event id = %s.",
-                        userId, eventId), userId.toString(), "event");
+                        userId, eventId), userId,eventId ,"event");
             }
         } catch (NotFoundException e) {
             throw new FiledParamNotFoundException(String.format("%s %s %s  not found", e.getClassName(),

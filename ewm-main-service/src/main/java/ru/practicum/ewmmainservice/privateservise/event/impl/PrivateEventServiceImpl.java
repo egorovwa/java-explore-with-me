@@ -57,10 +57,9 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     }
 
     @Override
-    public EventFullDto patchEvent(Long userId, UpdateEventRequest requestEvent) throws EventStatusException, IllegalTimeException, NotFoundException, IlegalUserIdException {
+    public EventFullDto patchEvent(Long userId, UpdateEventRequest requestEvent) throws StatusException, IllegalTimeException, NotFoundException, IlegalUserIdException {
         Event event = repository.findById(requestEvent.getEventId())
-                .orElseThrow(() -> new NotFoundException(String.format("Event with id= %d was not found.",
-                        requestEvent.getEventId()), "id", String.valueOf(requestEvent.getEventId()), "Event"));
+                .orElseThrow(() -> new NotFoundException("id", String.valueOf(requestEvent.getEventId()), "Event"));
         if (Objects.equals(event.getInitiator().getId(), userId)) {
             if (event.getState().equals(EventState.WAITING) || event.getState().equals(EventState.CANCELLED)) {
                 if (event.getEventDate() > LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR * 2) {
@@ -106,25 +105,24 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                 }
 
             } else {
-                throw new EventStatusException(String.format("Only pending or canceled events can be changed", event.getId()));
+                throw new StatusException(String.format("Only pending or canceled events can be changed", event.getId()));
             }
 
         } else {
-            throw new IlegalUserIdException(String.format("The user id= %s is not the initiator of the event id = %s",
-                    userId, event.getId()), "id", event.getId().toString());
+            throw new IlegalUserIdException(userId, event.getId(), "Event");
         }
     }
 
     @Override
-    public EventFullDto eventСancellation(Long userId, Long eventId) throws NotFoundException, EventStatusException {
+    public EventFullDto eventСancellation(Long userId, Long eventId) throws NotFoundException, StatusException {
         User user = userAdminService.findById(userId);
         Event event = repository.findById(eventId).orElseThrow(() ->
-                new NotFoundException(String.format("Event with id= %s was not found.", eventId), "id", eventId.toString(), "Event"));
+                new NotFoundException("id", eventId.toString(), "Event"));
         if (event.getState().equals(EventState.WAITING)) {
             event.setState(EventState.CANCELLED);
             return eventDtoMaper.toFulDto(repository.save(event));
         } else {
-            throw new EventStatusException("Only pending  events can be changed");
+            throw new StatusException("Only pending  events can be changed");
         }
     }
 }

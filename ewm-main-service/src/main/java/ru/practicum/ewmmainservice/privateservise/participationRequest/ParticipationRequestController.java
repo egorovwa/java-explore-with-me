@@ -8,7 +8,6 @@ import ru.practicum.ewmmainservice.models.participationRequest.dto.Participation
 
 import javax.validation.constraints.Positive;
 import javax.websocket.server.PathParam;
-import java.nio.file.Path;
 import java.util.Collection;
 
 @RestController
@@ -21,7 +20,7 @@ public class ParticipationRequestController {
     @Validated
     public ParticipationRequestDto createRequest(@Positive @PathVariable("userId") Long userId,
                                                  @Positive @PathParam("eventId") Long eventId)
-            throws NumberParticipantsExceededException, NotFoundException, FiledParamNotFoundException, EventStatusException, IlegalUserIdException {
+            throws NumberParticipantsExceededException, NotFoundException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
         return service.createRequest(userId, eventId);
     }
 
@@ -44,7 +43,7 @@ public class ParticipationRequestController {
     @PatchMapping("{userId}/events/{eventId}/requests/{reqId}/reject")
     public ParticipationRequestDto rejectRequest(@Positive @PathVariable("userId") Long userId,
                                                  @Positive @PathVariable("eventId") Long eventId,
-                                                 @Positive @PathVariable("reqId") Long reqId) throws NotFoundException, FiledParamNotFoundException, EventStatusException, IlegalUserIdException {
+                                                 @Positive @PathVariable("reqId") Long reqId) throws NotFoundException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
     return service.rejectRequest(userId, eventId, reqId);
     }
 }

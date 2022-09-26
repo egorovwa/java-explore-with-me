@@ -6,13 +6,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.ewmmainservice.models.apiError.ApiError;
+import ru.practicum.ewmmainservice.utils.Utils;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestControllerAdvice("ru.practicum.ewmmainservice")
 public class ForAllControllerErrorHendler {
+    DateTimeFormatter formatter = Utils.getDateTimeFormater();
     @ExceptionHandler(IncorrectPageValueException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError incorrectPageValueException(IncorrectPageValueException e){
@@ -21,7 +24,7 @@ public class ForAllControllerErrorHendler {
                 .message(e.getMessage())
                 .status(HttpStatus.BAD_REQUEST)
                 .description("The from parameter cannot be negative, the size parameter must be greater than 0.")
-                .timestamp(Timestamp.from(Instant.now()))
+                .timestamp(formatter.format(LocalDateTime.now()))
                 .build();
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -30,7 +33,7 @@ public class ForAllControllerErrorHendler {
         return ApiError.builder()
                 .message(e.getMessage())
                 .status(HttpStatus.BAD_REQUEST)
-                .timestamp(Timestamp.from(Instant.now()))
+                .timestamp(formatter.format(LocalDateTime.now()))
                 .reason("One or more fields are not valid.")
                 .errors(e.getStackTrace())
                 .build();
@@ -40,9 +43,80 @@ public class ForAllControllerErrorHendler {
     public ApiError filedParamNotFoundException(FiledParamNotFoundException e){
         return ApiError.builder()
                 .message(e.getMessage())
-                .timestamp(Timestamp.valueOf(LocalDateTime.now()))
+                .timestamp(formatter.format(LocalDateTime.now()))
                 .reason("One or more class fields do not exist.")
                 .status(HttpStatus.BAD_REQUEST)
+                .build();
+    }
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError notFound(NotFoundException e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(e.getReason())
+                .status(HttpStatus.NOT_FOUND)
+                .timestamp(formatter.format(LocalDateTime.now()))
+                .build();
+    }
+    @ExceptionHandler(IlegalUserIdException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiError ilegalUserIdException(IlegalUserIdException e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(e.reason)
+                .status(HttpStatus.FORBIDDEN)
+                .timestamp(formatter.format(LocalDateTime.now()))
+                .build();
+    }
+    @ExceptionHandler(IllegalTimeException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiError illegalTimeException(IllegalTimeException e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(e.getReason())
+                .timestamp(formatter.format(LocalDateTime.now()))
+                .status(HttpStatus.FORBIDDEN)
+                .build();
+    }
+    @ExceptionHandler(ModelAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError modelAlreadyExistsException(ModelAlreadyExistsException e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(e.reason)
+                .status(HttpStatus.CONFLICT)
+                .timestamp(formatter.format(LocalDateTime.now()))
+                .build();
+    }
+    @ExceptionHandler(NotRequiredException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiError notRequiredException(NotRequiredException e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(e.getReason())
+                .status(HttpStatus.FORBIDDEN)
+                .timestamp(formatter.format(LocalDateTime.now()))
+                .build();
+    }
+    @ExceptionHandler(RelatedObjectsPresent.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError relatedObjectsPresent(RelatedObjectsPresent e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(e.getReason())
+                .status(HttpStatus.CONFLICT)
+                .errors(e.getRelatedObjects().toArray())
+                .timestamp(formatter.format(LocalDateTime.now()))
+                .build();
+    }
+    @ExceptionHandler(StatusException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiError statusException(StatusException e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(e.reason)
+                .timestamp(formatter.format(LocalDateTime.now()))
+                .status(HttpStatus.FORBIDDEN)
                 .build();
     }
 }

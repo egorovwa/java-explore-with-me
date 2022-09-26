@@ -4,12 +4,18 @@ import java.util.Collection;
 
 public class RelatedObjectsPresent extends Exception{
     String type;
+    String reason;
     Collection<Long> relatedObjects;
 
     public RelatedObjectsPresent(String message, String type, Collection<Long> relatedObjects) {
         super(message);
         this.type = type;
         this.relatedObjects = relatedObjects;
+        reason = "The object has dependencies.";
+    }
+
+    public String getReason() {
+        return reason;
     }
 
     public String getType() {

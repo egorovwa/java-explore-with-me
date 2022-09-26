@@ -7,11 +7,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewmmainservice.adminService.category.CategoryRepository;
 import ru.practicum.ewmmainservice.adminService.category.CategoryService;
-import ru.practicum.ewmmainservice.adminService.event.AdminEventService;
 import ru.practicum.ewmmainservice.adminService.event.AdminEwentRepository;
-import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
+import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
@@ -38,15 +37,14 @@ public class CategoryServiceImpl implements CategoryService {
             return dtoMaper.toDto(repository.save(dtoMaper.fromNewCategoryDto(newCategoryDto)));
         } catch (DataIntegrityViolationException e) {
             log.warn("Category {} alredy exist", newCategoryDto);
-            throw new ModelAlreadyExistsException("Category already exist", "name", newCategoryDto.getName());
+            throw new ModelAlreadyExistsException("name", newCategoryDto.getName(), "Category");
         }
     }
 
     @Override
     public CategoryDto patchCategory(CategoryDto categoryDto) throws NotFoundException {
         Category category = repository.findById(categoryDto.getId())
-                .orElseThrow(() -> new NotFoundException("Category not found", "id",
-                        String.valueOf(categoryDto.getId()),"Category"));
+                .orElseThrow(() -> new NotFoundException("id", String.valueOf(categoryDto.getId()), "Category"));
         log.info("update category {}", categoryDto);
         return dtoMaper.toDto(category);
     }
@@ -60,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
                 log.info("Delete category id = {}", catId);
             } catch (EmptyResultDataAccessException e) {
                 log.warn("Caregory with id={} was not found", catId);
-                throw new NotFoundException("Category not found", "id", catId.toString(),"Category");
+                throw new NotFoundException("id", catId.toString(), "Category");
             }
         } else {
             log.warn("The category id = {} is related to events: {}", catId, relatedEvents);
@@ -73,6 +71,6 @@ public class CategoryServiceImpl implements CategoryService {
     public Category findByid(Long categoryId) throws NotFoundException {
         log.debug("Find category id = {}", categoryId);
         return repository.findById(categoryId)
-                .orElseThrow(()->new NotFoundException("Categori  not found", "id", categoryId.toString(),"Category"));
+                .orElseThrow(() -> new NotFoundException("id", categoryId.toString(), "Category"));
     }
 }

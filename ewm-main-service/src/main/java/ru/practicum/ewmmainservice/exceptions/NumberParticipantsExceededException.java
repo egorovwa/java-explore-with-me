@@ -7,8 +7,8 @@ public class NumberParticipantsExceededException extends Exception{
         return maxCount;
     }
 
-    public NumberParticipantsExceededException(String message, Integer maxCount) {
-        super(message);
+    public NumberParticipantsExceededException(Integer maxCount) {
+        super(String.format("The limit of participants has been exceeded. Max = %s", maxCount));
         this.maxCount = maxCount;
     }
 }

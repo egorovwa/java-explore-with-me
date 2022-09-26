@@ -8,7 +8,7 @@ import ru.practicum.ewmmainservice.models.event.dto.UpdateEventRequest;
 public interface PrivateEventService {
     EventFullDto createEvent(Long userId, NewEventDto newEventDto) throws FiledParamNotFoundException;
 
-    EventFullDto patchEvent(Long userId, UpdateEventRequest requestEvent) throws EventStatusException, IllegalTimeException, NotFoundException, IlegalUserIdException;
+    EventFullDto patchEvent(Long userId, UpdateEventRequest requestEvent) throws StatusException, IllegalTimeException, NotFoundException, IlegalUserIdException;
 
-    EventFullDto eventСancellation(Long userId, Long eventId) throws NotFoundException, EventStatusException;
+    EventFullDto eventСancellation(Long userId, Long eventId) throws NotFoundException, StatusException;
 }

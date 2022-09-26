@@ -9,6 +9,7 @@ import ru.practicum.ewmmainservice.adminService.event.AdminEventService;
 import ru.practicum.ewmmainservice.exceptions.FiledParamNotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotRequiredException;
+import ru.practicum.ewmmainservice.exceptions.RuntimeNotFoundException;
 import ru.practicum.ewmmainservice.models.compilation.Compilation;
 import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
 import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDtoMaper;
@@ -39,12 +40,13 @@ public class CompilationServiceImpl implements CompilationService {
                             return eventService.findById(r);
                         } catch (NotFoundException e) {
                             log.warn("Compilation id = {} not found", r);
-                            throw new RuntimeException(e); // TODO: 25.09.2022 кода apiError
+                            throw new RuntimeNotFoundException("id", r.toString(), "Event");
                         }
                     })
                     .collect(Collectors.toList());
-        } catch (RuntimeException e) {
-            throw new FiledParamNotFoundException("One or more event not found");
+        } catch (RuntimeNotFoundException e) {
+            throw new FiledParamNotFoundException(String.format("Parameter %s %s = %s not found",e.getClassName(),
+                    e.getParam(), e.getValue()));
         }
         Compilation compilation = new Compilation(events, null, newCompilationDto.getPinned(),
                 newCompilationDto.getTitle());
@@ -63,8 +65,7 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public Compilation findById(Long compId) throws NotFoundException { // TODO: 25.09.2022 если не пригодиться private
-        return repository.findById(compId).orElseThrow(() -> new NotFoundException(String.
-                format("Compilation id = %s not found", compId), "id", compId.toString(), "Compilation")
+        return repository.findById(compId).orElseThrow(() -> new NotFoundException("id", compId.toString(), "Compilation")
         );
     }
 

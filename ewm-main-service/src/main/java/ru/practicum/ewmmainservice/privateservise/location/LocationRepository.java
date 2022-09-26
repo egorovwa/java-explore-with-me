@@ -6,6 +6,6 @@ import ru.practicum.ewmmainservice.models.location.Location;
 
 import java.util.Optional;
 @Repository
-public interface LacationRepository extends JpaRepository<Location, Long> {
+public interface LocationRepository extends JpaRepository<Location, Long> {
     Optional<Location> findByLatAndLon(Float lat, Float lon);
 }

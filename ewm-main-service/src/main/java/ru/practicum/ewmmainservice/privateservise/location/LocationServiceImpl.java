@@ -13,18 +13,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class LocationServiceImpl implements LocationService {
-    private final LacationRepository lacationRepository;
+    private final LocationRepository locationRepository;
     private final LocationDtoMaper locationDtoMaper;
 
     @Override
     public Optional<Location> findByLatAndLon(Float lat, Float lon) {
         log.debug("Find lacation with lat = {} lon = {}", lat, lon);
-        return lacationRepository.findByLatAndLon(lat, lon);
+        return locationRepository.findByLatAndLon(lat, lon);
     }
 
     @Override
     public Location save(LocationDto locationDto) {
         log.info("Create locationwith lat = {} lon = {}", locationDto.getLat(), locationDto.getLon());
-        return lacationRepository.save(locationDtoMaper.fromDto(locationDto));
+        return locationRepository.save(locationDtoMaper.fromDto(locationDto));
     }
 }

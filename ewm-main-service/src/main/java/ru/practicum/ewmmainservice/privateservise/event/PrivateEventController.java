@@ -24,12 +24,12 @@ public class PrivateEventController {
     }
     @PatchMapping("/{userId}/events")
     public EventFullDto patchEvent(@Positive @PathVariable("userId") Long userId,
-                                   @Valid @RequestBody UpdateEventRequest requestEvent) throws NotFoundException, EventStatusException, IllegalTimeException, IlegalUserIdException {
+                                   @Valid @RequestBody UpdateEventRequest requestEvent) throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException {
         return eventService.patchEvent(userId, requestEvent);
     }
     @PatchMapping("/{userId}/events/{eventId}")
     public EventFullDto eventСancellation(@Positive @PathVariable("userId") Long userId,
-                                          @Positive @PathVariable("eventId") Long eventId) throws NotFoundException, EventStatusException {
+                                          @Positive @PathVariable("eventId") Long eventId) throws NotFoundException, StatusException {
         return eventService.eventСancellation(userId, eventId);
     }
 }

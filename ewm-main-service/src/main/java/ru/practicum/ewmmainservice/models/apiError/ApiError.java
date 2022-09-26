@@ -13,7 +13,7 @@ public class ApiError {
     /*:
     Сведения об ошибке
 */
-    StackTraceElement[] errors; // TODO: 20.09.2022 разобраться
+    Object[] errors; // TODO: 20.09.2022 разобраться
     String message;
 /*    example: Only pending or canceled events can be changed
     Сообщение об ошибке*/
@@ -26,7 +26,7 @@ public class ApiError {
    /* example: FORBIDDEN
     Код статуса HTTP-ответа*/
 
-    Timestamp timestamp;
+    String timestamp;
     /*example: 2022-06-09 06:27:23
     Дата и время когда произошла ошибка (в формате "yyyy-MM-dd HH:mm:ss")*/
 }

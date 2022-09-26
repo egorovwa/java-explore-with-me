@@ -23,7 +23,6 @@ import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;
 import ru.practicum.ewmmainservice.privateservise.location.LocationService;
-import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.utils.Utils;
 
 import java.time.Duration;
@@ -105,7 +104,7 @@ class PrivateAdminEventServiceImplTest {
     }
 
     @Test
-    void test2_1patchEvent() throws NotFoundException, EventStatusException, IllegalTimeException, IlegalUserIdException {
+    void test2_1patchEvent() throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
@@ -138,7 +137,7 @@ class PrivateAdminEventServiceImplTest {
     }
 
     @Test
-    void test2_2patchEvent_whenUserNotInitials() throws NotFoundException, EventStatusException, IllegalTimeException, IlegalUserIdException {
+    void test2_2patchEvent_whenUserNotInitials() throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
@@ -170,7 +169,7 @@ class PrivateAdminEventServiceImplTest {
     }
 
     @Test
-    void test2_3patchEvent_whenStaeIsPublished() throws NotFoundException, EventStatusException, IllegalTimeException, IlegalUserIdException {
+    void test2_3patchEvent_whenStaeIsPublished() throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
@@ -197,13 +196,13 @@ class PrivateAdminEventServiceImplTest {
 
         when(repository.findById(1L))
                 .thenReturn(Optional.of(event));
-        assertThrows(EventStatusException.class, () -> {
+        assertThrows(StatusException.class, () -> {
             EventFullDto res = service.patchEvent(1L, request);
         });
     }
 
     @Test
-    void test2_4patchEvent_incorrectrDate() throws NotFoundException, EventStatusException, IllegalTimeException, IlegalUserIdException {
+    void test2_4patchEvent_incorrectrDate() throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -229,7 +228,7 @@ class PrivateAdminEventServiceImplTest {
     }
 
     @Test
-    void test3_1eventСancellation() throws NotFoundException, EventStatusException {
+    void test3_1eventСancellation() throws NotFoundException, StatusException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -252,7 +251,7 @@ class PrivateAdminEventServiceImplTest {
     }
 
     @Test
-    void test3_2eventСancellation_whenEwentStateNotWaiting() throws NotFoundException, EventStatusException {
+    void test3_2eventСancellation_whenEwentStateNotWaiting() throws NotFoundException, StatusException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -265,7 +264,7 @@ class PrivateAdminEventServiceImplTest {
                 .thenReturn(Optional.of(event));
         when(userAdminService.findById(1L))
                 .thenReturn(user);
-        assertThrows(EventStatusException.class, () -> {
+        assertThrows(StatusException.class, () -> {
             service.eventСancellation(1L, 1L);
         });
     }

@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.ewmmainservice.adminService.category.CategoryService;
 import ru.practicum.ewmmainservice.adminService.event.AdminEwentRepository;
-import ru.practicum.ewmmainservice.exceptions.EventStatusException;
+import ru.practicum.ewmmainservice.exceptions.StatusException;
 import ru.practicum.ewmmainservice.exceptions.IllegalTimeException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.Category;
@@ -18,7 +18,6 @@ import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.utils.Utils;
 
 import java.time.Duration;
@@ -73,7 +72,7 @@ class AdminEventServiceImplTest {
     }
 
     @Test
-    void test3_1publishEvent() throws NotFoundException, EventStatusException, IllegalTimeException {
+    void test3_1publishEvent() throws NotFoundException, StatusException, IllegalTimeException {
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
         Event saved = new Event(1L,"anatation", new Category(1L,"category"),
@@ -91,7 +90,7 @@ class AdminEventServiceImplTest {
 
     }
     @Test
-    void test3_2publishEvent_whenStatusNotWaiting() throws NotFoundException, EventStatusException, IllegalTimeException {
+    void test3_2publishEvent_whenStatusNotWaiting() throws NotFoundException, StatusException, IllegalTimeException {
         Event notWaiting = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
@@ -100,11 +99,11 @@ class AdminEventServiceImplTest {
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(notWaiting));
-assertThrows(EventStatusException.class, ()-> service.publishEvent(1L));
+assertThrows(StatusException.class, ()-> service.publishEvent(1L));
 
     }
     @Test
-    void test3_3publishEvent_whenTimeNow() throws NotFoundException, EventStatusException, IllegalTimeException {
+    void test3_3publishEvent_whenTimeNow() throws NotFoundException, StatusException, IllegalTimeException {
         Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -117,7 +116,7 @@ assertThrows(EventStatusException.class, ()-> service.publishEvent(1L));
 
     }
     @Test
-    void test4_1rejectEvent() throws NotFoundException, EventStatusException, IllegalTimeException {
+    void test4_1rejectEvent() throws NotFoundException, StatusException, IllegalTimeException {
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
         Event saved = new Event(1L,"anatation", new Category(1L,"category"),
@@ -134,7 +133,7 @@ assertThrows(EventStatusException.class, ()-> service.publishEvent(1L));
 
     }
     @Test
-    void test4_2rejectEvent_whenStatusNotWaiting() throws NotFoundException, EventStatusException, IllegalTimeException {
+    void test4_2rejectEvent_whenStatusNotWaiting() throws NotFoundException, StatusException, IllegalTimeException {
         Event notWaiting = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
@@ -143,11 +142,11 @@ assertThrows(EventStatusException.class, ()-> service.publishEvent(1L));
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(notWaiting));
-        assertThrows(EventStatusException.class, ()-> service.rejectEvent(1L));
+        assertThrows(StatusException.class, ()-> service.rejectEvent(1L));
 
     }
     @Test
-    void test4_3rejectEvent_whenTimeNow() throws NotFoundException, EventStatusException, IllegalTimeException {
+    void test4_3rejectEvent_whenTimeNow() throws NotFoundException, StatusException, IllegalTimeException {
         Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),

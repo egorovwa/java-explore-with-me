@@ -2,30 +2,51 @@ package ru.practicum.ewmmainservice.adminService.event;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewmmainservice.exceptions.EventStatusException;
-import ru.practicum.ewmmainservice.exceptions.IllegalTimeException;
-import ru.practicum.ewmmainservice.exceptions.NotFoundException;
+import ru.practicum.ewmmainservice.exceptions.*;
+import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
 import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
+import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/events/")
 @RequiredArgsConstructor
 public class AdminEventControlller {
     private final AdminEventService service;
+
     @PutMapping("/{eventId}")
     public EventFullDto updateEvent(@Positive @PathVariable("eventId") Long eventId,
                                     @RequestBody AdminUpdateEventRequest adminUpdateEventRequest) throws NotFoundException {
         return service.updateEventRequest(eventId, adminUpdateEventRequest);
     }
+
     @PatchMapping("{eventId}/publish")
-    public EventFullDto publishEvent(@Positive @PathVariable Long eventId) throws NotFoundException, EventStatusException, IllegalTimeException {
+    public EventFullDto publishEvent(@Positive @PathVariable Long eventId) throws NotFoundException, StatusException, IllegalTimeException {
         return service.publishEvent(eventId);
     }
+
     @PatchMapping("{eventId}/reject")
-    public EventFullDto rejectEvent(@Positive @PathVariable Long eventId) throws NotFoundException, EventStatusException, IllegalTimeException {
+    public EventFullDto rejectEvent(@Positive @PathVariable Long eventId) throws NotFoundException, StatusException, IllegalTimeException {
         return service.rejectEvent(eventId);
     }
+
+    @GetMapping
+    public List<EventFullDto> findAllEvents(@RequestParam("users") Long[] users,
+                                            @RequestParam("states") EventState[] states,
+                                            @RequestParam("categories") Long[] categories,
+                                            @RequestParam("rangeStart") String rangeStart,
+                                            @RequestParam("rangeEnd") String rangeEnd,
+                                            @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
+                                            @Positive @RequestParam(value = "size", defaultValue = "10") int size)
+            throws IncorrectPageValueException, NotValidParameterException {
+        ParametersAdminFindEvent parameters = new ParametersAdminFindEvent(users, states, categories,
+                rangeStart, rangeEnd, from, size);
+        return service.findAllEvents(parameters);
+    }
+
+
 }

@@ -70,13 +70,13 @@ class UserAdminControllerTest {
     void test1_3addNewUser_UserAlredyExist() throws Exception {
         NewUserDto newUserDto = new NewUserDto("email@mail.com", "name");
         when(userAdminService.addNewUser(newUserDto))
-                .thenThrow(new ModelAlreadyExistsException("message", "param", "value"));
+                .thenThrow(new ModelAlreadyExistsException( "param", "value", "className"));
         mvc.perform(post("/admin/users")
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(newUserDto)))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.description", is("The user with email value already exists.")));
+                .andExpect(jsonPath("$.message", is("className param = value already exist.")));
 
     }
 

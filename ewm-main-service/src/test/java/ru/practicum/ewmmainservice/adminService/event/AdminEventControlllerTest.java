@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ru.practicum.ewmmainservice.exceptions.EventStatusException;
+import ru.practicum.ewmmainservice.exceptions.StatusException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
 
@@ -51,16 +51,16 @@ class AdminEventControlllerTest {
     }
 
     @Test
-    void test2_2updateEvent_wheEventNotFouns() throws Exception {
+    void test2_2updateEvent_wheEventNotFound() throws Exception {
         AdminUpdateEventRequest request = new AdminUpdateEventRequest();
         when(service.updateEventRequest(1L, request))
-                .thenThrow(new NotFoundException("message", "param", "value", "class"));
+                .thenThrow(new NotFoundException("param", "value", "class"));
         mvc.perform(put(API + "/{eventId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("message")));
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", is("class param value not found.")));
 
     }
 
@@ -74,7 +74,7 @@ class AdminEventControlllerTest {
     @Test
     void test2_2_publishEvent_whenStateNotWating() throws Exception {
         when(service.publishEvent(1L))
-                .thenThrow(new EventStatusException("message"));
+                .thenThrow(new StatusException("message"));
         mvc.perform(patch(API + "/{eventId}/publish", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8))
@@ -91,7 +91,7 @@ class AdminEventControlllerTest {
     @Test
     void test3_2_rejectEvent_whenStateNotWating() throws Exception {
         when(service.rejectEvent(1L))
-                .thenThrow(new EventStatusException("message"));
+                .thenThrow(new StatusException("message"));
         mvc.perform(patch(API + "/{eventId}/reject", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8))

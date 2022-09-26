@@ -34,7 +34,7 @@ public class UserAdminServiceImpl implements UserAdminService {
             return userDtoMaper.toDto(user);
         } catch (DataIntegrityViolationException e) {
             log.warn("Created user with email = {}, alredy exist.", newUserDto.getEmail());
-            throw new ModelAlreadyExistsException(e.getMessage(), "email", newUserDto.getEmail());
+            throw new ModelAlreadyExistsException( "email", newUserDto.getEmail(), "User");
         }
     }
 
@@ -45,7 +45,7 @@ public class UserAdminServiceImpl implements UserAdminService {
             repository.deleteById(userId);
         } catch (EmptyResultDataAccessException e) {
             log.warn("Deleted user not found id = {}", userId);
-            throw new NotFoundException(e.getMessage(), "Id", String.valueOf(userId), "User");
+            throw new NotFoundException("Id", String.valueOf(userId), "User");
         }
     }
 
@@ -69,7 +69,7 @@ public class UserAdminServiceImpl implements UserAdminService {
     public User findById(Long userId) throws NotFoundException {
         log.debug("Find user id = {}", userId);
         return repository.findById(userId)
-                .orElseThrow(()->new NotFoundException("User not Found", "id", userId.toString(), "User"));
+                .orElseThrow(()->new NotFoundException("id", userId.toString(), "User"));
     }
 
 }

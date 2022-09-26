@@ -1,20 +1,25 @@
 package ru.practicum.ewmmainservice.exceptions;
 
 public class IlegalUserIdException extends Exception{
-    String userId;
-    String modelId;
+    Long userId;
+    Long modelId;
+    String className;
+    String reason;
 
-    public String getUserId() {
-        return userId;
+    public IlegalUserIdException(Long userId, Long modelId, String className) {
+        super(String.format("The user id = %s does not have access to the %s id = %s.",
+                userId, className, modelId));
+        this.userId = userId;
+        this.modelId = modelId;
+        this.className = className;
+        reason = "The User does not have access to the requested Object.";
     }
 
-    public String getModelId() {
-        return modelId;
-    }
-
-    public IlegalUserIdException(String message, String userId, String modelId) {
+    public IlegalUserIdException(String message, Long userId, Long modelId, String className) {
         super(message);
         this.userId = userId;
         this.modelId = modelId;
+        this.className = className;
+        reason ="This user cannot perform the requested actions.";
     }
 }

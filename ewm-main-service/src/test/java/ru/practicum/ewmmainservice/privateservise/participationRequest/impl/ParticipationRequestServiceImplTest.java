@@ -43,7 +43,7 @@ class ParticipationRequestServiceImplTest {
     private ParticipationRequestServiceImpl service;
 
     @Test
-    void test1_1createRequest() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, EventStatusException, IlegalUserIdException {
+    void test1_1createRequest() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
         User user = new User(1L, "enail@mail.ru", "name");
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
@@ -62,7 +62,7 @@ class ParticipationRequestServiceImplTest {
     }
 
     @Test
-    void test1_2createRequest_whenStateNotPublished() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, EventStatusException, IlegalUserIdException {
+    void test1_2createRequest_whenStateNotPublished() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
         User user = new User(1L, "enail@mail.ru", "name");
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
@@ -76,13 +76,13 @@ class ParticipationRequestServiceImplTest {
                 .thenReturn(user);
         when(eventService.findById(1L))
                 .thenReturn(event);
-        assertThrows(EventStatusException.class, () -> {
+        assertThrows(StatusException.class, () -> {
             ParticipationRequestDto requestDto = service.createRequest(1L, 1L);
         });
     }
 
     @Test
-    void test1_3createRequest_whenUserInitiator() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, EventStatusException, IlegalUserIdException {
+    void test1_3createRequest_whenUserInitiator() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
         User user = new User(1L, "enail@mail.ru", "name");
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
@@ -102,7 +102,7 @@ class ParticipationRequestServiceImplTest {
     }
 
     @Test
-    void test1_4createRequest_wheParticipantLimit() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, EventStatusException, IlegalUserIdException {
+    void test1_4createRequest_wheParticipantLimit() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
         User user = new User(1L, "enail@mail.ru", "name");
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
@@ -353,7 +353,7 @@ class ParticipationRequestServiceImplTest {
     }
 
     @Test
-    void test4_1rejectRequest() throws NotFoundException, FiledParamNotFoundException, EventStatusException, IlegalUserIdException {
+    void test4_1rejectRequest() throws NotFoundException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
         User user = new User(1L, "enail@mail.ru", "name");
         User requestor = new User(2L, "enail2@mail.ru", "name2");
         List<User> participants = new ArrayList<>();
@@ -379,7 +379,7 @@ class ParticipationRequestServiceImplTest {
     }
 
     @Test
-    void test4_2rejectRequest_whenRequestNotFound() throws NotFoundException, FiledParamNotFoundException, EventStatusException {
+    void test4_2rejectRequest_whenRequestNotFound() throws NotFoundException, FiledParamNotFoundException, StatusException {
         User user = new User(1L, "enail@mail.ru", "name");
         User requestor = new User(2L, "enail2@mail.ru", "name2");
         List<User> participants = new ArrayList<>();
@@ -402,7 +402,7 @@ class ParticipationRequestServiceImplTest {
     }
 
     @Test
-    void test4_3rejectRequest_wheUserNotInitiator() throws NotFoundException, FiledParamNotFoundException, EventStatusException {
+    void test4_3rejectRequest_wheUserNotInitiator() throws NotFoundException, FiledParamNotFoundException, StatusException {
         User user = new User(1L, "enail@mail.ru", "name");
         User requestor = new User(2L, "enail2@mail.ru", "name2");
         List<User> participants = new ArrayList<>();
@@ -427,7 +427,7 @@ class ParticipationRequestServiceImplTest {
         });
     }
     @Test
-    void test4_4rejectRequest_whenStatusNotPending() throws NotFoundException, FiledParamNotFoundException, EventStatusException {
+    void test4_4rejectRequest_whenStatusNotPending() throws NotFoundException, FiledParamNotFoundException, StatusException {
         User user = new User(1L, "enail@mail.ru", "name");
         User requestor = new User(2L, "enail2@mail.ru", "name2");
         List<User> participants = new ArrayList<>();
@@ -447,7 +447,7 @@ class ParticipationRequestServiceImplTest {
                 .thenReturn(event);
         when(repository.findById(1L))
                 .thenReturn(Optional.of(request));
-        assertThrows(EventStatusException.class, () -> {
+        assertThrows(StatusException.class, () -> {
             ParticipationRequestDto result = service.rejectRequest(1L, 1L, 1L);
         });
     }
