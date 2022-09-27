@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Import;
 import ru.practicum.ewmmainservice.adminService.category.CategoryService;
 import ru.practicum.ewmmainservice.adminService.user.UserAdminService;
 import ru.practicum.ewmmainservice.exceptions.*;
@@ -23,7 +22,7 @@ import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;
 import ru.practicum.ewmmainservice.privateservise.location.LocationService;
-import ru.practicum.ewmmainservice.utils.Utils;
+import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -38,7 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@Import(EventDtoMaper.class)
 class PrivateAdminEventServiceImplTest {
     @Mock
     private CategoryService categoryService;
@@ -239,7 +237,7 @@ class PrivateAdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.CANCELLED, "title", 2,
+                false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         User user = new User(1L, "email@mail.ru", "name");
         when(repository.findById(1L))

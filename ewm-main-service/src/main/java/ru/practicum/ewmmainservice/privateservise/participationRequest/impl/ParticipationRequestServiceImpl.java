@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -164,5 +165,12 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
             throw new FiledParamNotFoundException(String.format("%s %s %s  not found", e.getClassName(),
                     e.getValue(), e.getParam()));
         }
+    }
+
+    @Override
+    public List<ParticipationRequestDto> finndRequestEventByUser(Long userId, Long eventId) throws NotFoundException {
+        userService.findById(userId);
+        eventService.findById(eventId);
+        return repository.findAllByRequesterIdAndEventId(userId, eventId);
     }
 }

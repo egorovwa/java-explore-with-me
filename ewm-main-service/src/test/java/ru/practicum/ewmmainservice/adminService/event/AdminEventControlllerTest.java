@@ -10,16 +10,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ru.practicum.ewmmainservice.exceptions.StatusException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
+import ru.practicum.ewmmainservice.exceptions.StatusException;
 import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
+import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 
 import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -98,5 +98,42 @@ class AdminEventControlllerTest {
                 .andExpect(jsonPath("$.message", is("message")));
 
     }
+    @Test
+    void test4_1findAllEvents() throws Exception { // TODO: 27.09.2022 ????
+        Long[] users ={1L, 2L};
+        Long[] catid = {1L, 2L};
+        String[] states = {"WAITING", "PUBLISHED", "CANCELED"};
+        String rangeStart ="2022-01-01 10:10:10";
+        String rangeEnd ="2022-01-01 20:10:10";
+        Integer from = 0;
+        Integer size = 10;
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(users,states, catid, rangeStart, rangeEnd, from, size);
+        mvc.perform(get(API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8)
+                .param("users", "1")
+                .param("users", "2")
+                .param("states", "WAITING")
+                .param("states", "PUBLISHED")
+                .param("states", "CANCELED")
+                .param("categories", "1")
+                .param("categories", "2")
+                .param("rangeStart", "2022-01-01 10:10:10")
+                .param("rangeEnd","2022-01-01 20:10:10")
+                .param("from", "0")
+                .param("size", "10"))
+                .andExpect(status().isOk());
+
+
+    }
+/*    @RequestParam(value = "users",required = false) Long[] users,
+    @RequestParam(value = "states",required = false) String[] states,
+    @RequestParam(value = "categories", required = false) Long[] categories,
+    @RequestParam(value = "rangeStart", required = false) String rangeStart,
+    @RequestParam(value = "rangeEnd", required = false) String rangeEnd,
+    @PositiveOrZero
+    @RequestParam(value = "from", defaultValue = "0") int from,
+    @Positive
+    @RequestParam(value = "size", defaultValue = "10") int size)*/
 
 }

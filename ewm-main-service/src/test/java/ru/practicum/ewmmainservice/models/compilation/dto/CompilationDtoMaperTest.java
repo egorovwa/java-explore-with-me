@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CompilationDtoMaperTest {
 private final CompilationDtoMaper dtoMaper = new CompilationDtoMaper(new EventDtoMaper(new UserDtoMaper()
@@ -35,7 +35,7 @@ private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper()
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.CANCELLED, "title", 2,
+                false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event, event2), 1L,
                 true, "titleCompilation");

@@ -1,21 +1,22 @@
 package ru.practicum.ewmmainservice.models.event;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "events")
 @NoArgsConstructor
@@ -55,12 +56,12 @@ public class Event {
     @Size(min = 3, max = 120)
     private String title;
     private int views; // кол-во поросмоьров
-    @OneToMany
-    private Collection<User> participants = new ArrayList<>(); // подтвержденные участники
+    @OneToMany(fetch = FetchType.EAGER)
+    private Collection<User> participants; // подтвержденные участники
 
     public Event(String annotation, Category category, long createdOn, String description,
                  long eventDate, User initiator, Location location, Boolean paid, int participantLimit,
-                 Long publishedOn, Boolean requestModeration, EventState state, String title) {
+                 Long publishedOn, Boolean requestModeration, EventState state, String title, Collection<User> participants) {
         this.annotation = annotation;
         this.category = category;
         this.createdOn = createdOn;
@@ -74,6 +75,35 @@ public class Event {
         this.requestModeration = requestModeration;
         this.state = state;
         this.title = title;
+        this.participants = participants;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        Boolean isParticipantsEquals = participants.containsAll(event.participants);
+        return participantLimit == event.participantLimit
+                && views == event.views
+                && Objects.equals(id, event.id)
+                && Objects.equals(annotation, event.annotation)
+                && Objects.equals(category, event.category)
+                && Objects.equals(createdOn, event.createdOn)
+                && Objects.equals(description, event.description)
+                && Objects.equals(eventDate, event.eventDate)
+                && Objects.equals(initiator, event.initiator)
+                && Objects.equals(location, event.location)
+                && Objects.equals(paid, event.paid)
+                && Objects.equals(publishedOn, event.publishedOn)
+                && Objects.equals(requestModeration, event.requestModeration)
+                && state == event.state && Objects.equals(title, event.title)
+                && isParticipantsEquals;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, annotation, category, createdOn, description, eventDate, initiator, location, paid, participantLimit, publishedOn, requestModeration, state, title, views, participants);
     }
 }

@@ -1,12 +1,10 @@
 package ru.practicum.ewmmainservice.adminService.event;
 
-import org.springframework.data.domain.Pageable;
-import ru.practicum.ewmmainservice.exceptions.NotValidParameterException;
-import ru.practicum.ewmmainservice.exceptions.StatusException;
 import ru.practicum.ewmmainservice.exceptions.IllegalTimeException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
+import ru.practicum.ewmmainservice.exceptions.NotValidParameterException;
+import ru.practicum.ewmmainservice.exceptions.StatusException;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
 import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
@@ -26,5 +24,5 @@ public interface AdminEventService {
 
     void save(Event event);
 
-    List<EventFullDto> findAllEvents(ParametersAdminFindEvent parameters) throws NotValidParameterException;
+    List<EventFullDto> findAllEvents(ParametersAdminFindEvent parameters) throws NotValidParameterException, IllegalTimeException;
 }

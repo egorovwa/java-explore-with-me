@@ -3,8 +3,8 @@ package ru.practicum.ewmmainservice.models.user.dto;
 import org.junit.jupiter.api.Test;
 import ru.practicum.ewmmainservice.models.user.User;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 class UserDtoMaperTest {
 private final UserDtoMaper dtoMaper = new UserDtoMaper();

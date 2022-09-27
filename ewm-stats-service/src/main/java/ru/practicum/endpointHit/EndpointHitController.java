@@ -1,0 +1,19 @@
+package ru.practicum.endpointHit;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.ewmstatscontract.dto.EndpointHitDto;
+
+@RestController
+@Slf4j
+public class EndpointHitController {
+
+    @PostMapping("/hit")
+    public EndpointHitDto createHit(@RequestBody EndpointHitDto endpointHitDto){
+        log.warn("Пришло : {}", endpointHitDto);
+        return endpointHitDto;
+    }
+}

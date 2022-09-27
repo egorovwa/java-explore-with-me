@@ -7,11 +7,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import ru.practicum.ewmmainservice.adminService.category.CategoryRepository;
-import ru.practicum.ewmmainservice.adminService.event.AdminEventService;
 import ru.practicum.ewmmainservice.adminService.event.AdminEwentRepository;
-import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
+import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
@@ -23,15 +22,16 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceImplTest {
-    CategoryDtoMaper dtoMaper = new CategoryDtoMaper();
+
     CategoryRepository repository = Mockito.mock(CategoryRepository.class);
+    CategoryDtoMaper categoryDtoMaper = new CategoryDtoMaper();
     AdminEwentRepository adminEwentRepository = Mockito.mock(AdminEwentRepository.class);
-    CategoryServiceImpl service = new CategoryServiceImpl(repository, dtoMaper, adminEwentRepository);
+    CategoryServiceImpl service = new CategoryServiceImpl(repository, categoryDtoMaper, adminEwentRepository);
 
     @Test
     void test1_1createCategory() throws ModelAlreadyExistsException {
@@ -57,10 +57,14 @@ class CategoryServiceImplTest {
     @Test
     void test2_1patchCategory() throws NotFoundException {
         CategoryDto categoryDto = new CategoryDto(1L, "name");
-        Category category = new Category(1L, "name");
+        Category category = new Category(1L, "aaaa");
+        CategoryDtoMaper categoryDtoMaper = new CategoryDtoMaper();
         when(repository.findById(1L))
                 .thenReturn(Optional.of(category));
+        when(repository.save(category))
+                .thenReturn(category);
         assertThat(service.patchCategory(categoryDto), is(categoryDto));
+        verify(repository, times(1)).save(category);
     }
 
     @Test
@@ -99,6 +103,7 @@ class CategoryServiceImplTest {
         });
         verify(repository, times(0)).deleteById(1L);
     }
+
     @Test
     void test4_findByid() throws NotFoundException {
         Category category = new Category(1L, "name");
@@ -106,11 +111,12 @@ class CategoryServiceImplTest {
                 .thenReturn(Optional.of(category));
         assertThat(service.findByid(1L), is(category));
     }
+
     @Test
     void test4_1findByid_whenNotFound() throws NotFoundException {
         Category category = new Category(1L, "name");
         when(repository.findById(1L))
                 .thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, ()-> service.findByid(1L));
+        assertThrows(NotFoundException.class, () -> service.findByid(1L));
     }
 }

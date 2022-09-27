@@ -2,7 +2,6 @@ package ru.practicum.ewmmainservice.exceptions;
 
 import ru.practicum.ewmmainservice.models.parameters.ErrorParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NotValidParameterException extends Exception {

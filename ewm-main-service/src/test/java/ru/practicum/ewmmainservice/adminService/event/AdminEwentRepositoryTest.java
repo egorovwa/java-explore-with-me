@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.ewmmainservice.adminService.category.CategoryRepository;
 import ru.practicum.ewmmainservice.adminService.user.UserAdminRepository;
 import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
@@ -16,16 +17,16 @@ import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;
 import ru.practicum.ewmmainservice.privateservise.location.LocationRepository;
 import ru.practicum.ewmmainservice.utils.PageParam;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
-import static ru.practicum.ewmmainservice.models.event.EventState.WAITING;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static ru.practicum.ewmmainservice.models.event.EventState.*;
 
 @DataJpaTest
 class AdminEwentRepositoryTest {
@@ -45,6 +46,7 @@ class AdminEwentRepositoryTest {
 
 
     @Test
+    @DirtiesContext
     void test1_1findForAdmin() throws IncorrectPageValueException {
         List<Long> userIds = List.of(1L, 2L);
         List<Long> catIds = List.of(1L, 2L);
@@ -56,12 +58,45 @@ class AdminEwentRepositoryTest {
         List<Event> expected = new ArrayList<>();
         expected.add(event1);
         expected.add(event2);
-        List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end);
+        List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end,pageable).toList();
         Event rea = expected.get(0);
         Event res = result.get(0);
         Boolean a = res.equals(rea);
-        assertEquals(res, rea);
-
+        assertThat(res, is(rea));
+    }
+    @Test
+    @DirtiesContext
+    void test1_1findForAdmin_withStateCANCELLED() throws IncorrectPageValueException {
+        List<Long> userIds = List.of(1L, 2L);
+        List<Long> catIds = List.of(1L, 2L);
+        List<EventState> states = List.of(CANCELED);
+        Long start = LocalDateTime.of(2022, 9, 5, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
+        Long end = LocalDateTime.of(2022, 9, 11, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
+        Pageable pageable = PageParam.createPageable(0, 10);
+        data();
+       List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end, pageable).toList();
+        assertThat(result.size(), is(0));
+    }
+    @Test
+    @DirtiesContext
+    void test1_3findForAdmin_withSize1() throws IncorrectPageValueException {
+        List<Long> userIds = List.of(1L, 2L);
+        List<Long> catIds = List.of(1L, 2L);
+        List<EventState> states = List.of(PUBLISHED, WAITING);
+        Long start = LocalDateTime.of(2022, 9, 5, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
+        Long end = LocalDateTime.of(2022, 9, 11, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
+        Pageable pageable = PageParam.createPageable(0, 1);
+        data();
+        List<Event> expected = new ArrayList<>();
+        expected.add(event1);
+        expected.add(event2);
+        List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end,pageable).toList();
+        assertThat(result.get(0), is(expected.get(0)));
+        assertThat(result.size(), is(1));
+        Pageable pageable1 = PageParam.createPageable(1,1);
+        List<Event> result2 = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end,pageable1).toList();
+        assertThat(result2.size(), is(1));
+        assertThat(result2.get(0), is(expected.get(1)));
 
     }
 
@@ -73,7 +108,10 @@ class AdminEwentRepositoryTest {
         Location location = new Location(1L, 1.0f, 2.0f);
         User user2 = new User(2L, "emai@rrr.ru", "name2");
         User user3 = new User(3L, "sss@sss.fff", "name3");
-        List<User> participans = List.of(user2, user3);
+        User user4 = new User(4L, "sss@sssl4.fff", "name4");
+        Collection<User> participans =  new ArrayList<>();
+        participans.add(user4);
+
         ParticipationRequest participationRequest = new ParticipationRequest();
         event1 = new Event(1L,
                 "anatationanatationanatationanatationanatation",
@@ -90,7 +128,7 @@ class AdminEwentRepositoryTest {
                 PUBLISHED,
                 "title",
                 5,
-                participans);
+                new ArrayList<>());
         event2 = new Event(2L,
                 "anatationanatationanatationanatationanatationanatationanatation",
                 category2,
@@ -119,13 +157,14 @@ class AdminEwentRepositoryTest {
                 10,
                 LocalDateTime.of(2022, 9, 11, 16, 11, 0).toEpochSecond(ZoneOffset.UTC),
                 true,
-                EventState.CANCELLED,
+                CANCELED,
                 "title",
                 5,
-                participans);
+                new ArrayList<>());
         userAdminRepository.save(user1);
         userAdminRepository.save(user2);
         userAdminRepository.save(user3);
+        userAdminRepository.save(user4);
         categoryRepository.save(category1);
         categoryRepository.save(category2);
         categoryRepository.save(category3);

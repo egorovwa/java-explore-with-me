@@ -6,19 +6,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import ru.practicum.ewmmainservice.adminService.category.CategoryService;
 import ru.practicum.ewmmainservice.adminService.event.AdminEwentRepository;
-import ru.practicum.ewmmainservice.exceptions.StatusException;
-import ru.practicum.ewmmainservice.exceptions.IllegalTimeException;
-import ru.practicum.ewmmainservice.exceptions.NotFoundException;
+import ru.practicum.ewmmainservice.exceptions.*;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
+import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
+import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
+import ru.practicum.ewmmainservice.models.parameters.ParametersValidator;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.utils.Utils;
+import ru.practicum.ewmmainservice.utils.PageParam;
+import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -28,8 +32,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -45,18 +47,21 @@ class AdminEventServiceImplTest {
     private LocationDtoMaper locationDtoMaper;
     @Mock
     private EventDtoMaper eventDtoMaper;
+    @Mock
+    ParametersValidator validator;
     @InjectMocks
     AdminEventServiceImpl service;
     DateTimeFormatter formatter = Utils.getDateTimeFormater();
     Event event;
+
     @BeforeEach
-    void setup(){
-        event = new Event(1L,"anatation", new Category(1L,"category"),
+    void setup() {
+        event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L,"email@mail.ru", "name"), new Location(1L,1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
                 false, 10, null, true, EventState.WAITING, "title", 2,
-                List.of(new User(2L,"email2@mail.ru", "name2")));
+                List.of(new User(2L, "email2@mail.ru", "name2")));
     }
 
     @Test
@@ -75,12 +80,12 @@ class AdminEventServiceImplTest {
     void test3_1publishEvent() throws NotFoundException, StatusException, IllegalTimeException {
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
-        Event saved = new Event(1L,"anatation", new Category(1L,"category"),
+        Event saved = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L,"email@mail.ru", "name"), new Location(1L,1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
                 false, 10, null, true, EventState.WAITING, "title", 2,
-                List.of(new User(2L,"email2@mail.ru", "name2")));
+                List.of(new User(2L, "email2@mail.ru", "name2")));
         saved.setPublishedOn(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         saved.setState(EventState.PUBLISHED);
         when(repository.save(saved))
@@ -89,6 +94,7 @@ class AdminEventServiceImplTest {
         verify(repository, times(1)).save(saved);
 
     }
+
     @Test
     void test3_2publishEvent_whenStatusNotWaiting() throws NotFoundException, StatusException, IllegalTimeException {
         Event notWaiting = new Event(1L, "anatation", new Category(1L, "category"),
@@ -99,9 +105,10 @@ class AdminEventServiceImplTest {
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(notWaiting));
-assertThrows(StatusException.class, ()-> service.publishEvent(1L));
+        assertThrows(StatusException.class, () -> service.publishEvent(1L));
 
     }
+
     @Test
     void test3_3publishEvent_whenTimeNow() throws NotFoundException, StatusException, IllegalTimeException {
         Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
@@ -112,39 +119,42 @@ assertThrows(StatusException.class, ()-> service.publishEvent(1L));
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(timeNow));
-        assertThrows(IllegalTimeException.class, ()-> service.publishEvent(1L));
+        assertThrows(IllegalTimeException.class, () -> service.publishEvent(1L));
 
     }
+
     @Test
     void test4_1rejectEvent() throws NotFoundException, StatusException, IllegalTimeException {
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
-        Event saved = new Event(1L,"anatation", new Category(1L,"category"),
+        Event saved = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L,"email@mail.ru", "name"), new Location(1L,1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
                 false, 10, null, true, EventState.WAITING, "title", 2,
-                List.of(new User(2L,"email2@mail.ru", "name2")));
-        saved.setState(EventState.CANCELLED);
+                List.of(new User(2L, "email2@mail.ru", "name2")));
+        saved.setState(EventState.CANCELED);
         when(repository.save(saved))
                 .thenReturn(saved);
         service.rejectEvent(1L);
         verify(repository, times(1)).save(saved);
 
     }
+
     @Test
     void test4_2rejectEvent_whenStatusNotWaiting() throws NotFoundException, StatusException, IllegalTimeException {
         Event notWaiting = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.CANCELLED, "title", 2,
+                false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(notWaiting));
-        assertThrows(StatusException.class, ()-> service.rejectEvent(1L));
+        assertThrows(StatusException.class, () -> service.rejectEvent(1L));
 
     }
+
     @Test
     void test4_3rejectEvent_whenTimeNow() throws NotFoundException, StatusException, IllegalTimeException {
         Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
@@ -155,7 +165,56 @@ assertThrows(StatusException.class, ()-> service.publishEvent(1L));
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(timeNow));
-        assertThrows(IllegalTimeException.class, ()-> service.rejectEvent(1L));
+        assertThrows(IllegalTimeException.class, () -> service.rejectEvent(1L));
+    }
+
+    @Test
+    void test5_1findAllEvents() throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
+        Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
+                LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
+                "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                false, 10, null, true, EventState.WAITING, "title", 2,
+                List.of(new User(2L, "email2@mail.ru", "name2")));
+        Long[] usersId = {1L, 2L, 3L};
+        Long[] catId = {1L};
+        String start = formatter.format(LocalDateTime.now());
+        String end = formatter.format(LocalDateTime.now().plusHours(1));
+        String[] states = {"WAITING"};
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        Page<Event> eventPage = new PageImpl<>(List.of(event));
+        when(repository.findForAdmin(List.of(1L, 2L, 3L),
+                List.of(1L), List.of(EventState.WAITING),
+                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC), PageParam.createPageable(0, 10)))
+                .thenReturn(eventPage);
+        List<EventFullDto> result = service.findAllEvents(param);
+        verify(repository, times(1)).findForAdmin(List.of(1L, 2L, 3L),
+                List.of(1L), List.of(EventState.WAITING),
+                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC), PageParam.createPageable(0, 10));
+
+    }
+    @Test
+    void test5_2findAllEvents_whenParameterIncorrect() throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
+        Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
+                LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
+                "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
+                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                false, 10, null, true, EventState.WAITING, "title", 2,
+                List.of(new User(2L, "email2@mail.ru", "name2")));
+        Long[] usersId = {1L, 2L, 3L};
+        Long[] catId = {1L};
+        String start = formatter.format(LocalDateTime.now());
+        String end = formatter.format(LocalDateTime.now().plusHours(1));
+        String[] states = {"WAITING"};
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        Page<Event> eventPage = new PageImpl<>(List.of(event));
+        doThrow(NotValidParameterException.class).when(validator).adminFindEvents(param);
+        assertThrows(NotValidParameterException.class, ()->{
+        List<EventFullDto> result = service.findAllEvents(param);
+        });
+        verify(repository, times(0)).findForAdmin(anyList(),anyList(),anyList(),anyLong(),anyLong(),any());
 
     }
 

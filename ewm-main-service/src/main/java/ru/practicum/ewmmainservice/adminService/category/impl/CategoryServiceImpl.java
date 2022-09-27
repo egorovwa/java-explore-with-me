@@ -34,6 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         try {
             log.info("Create category {}", newCategoryDto);
+
             return dtoMaper.toDto(repository.save(dtoMaper.fromNewCategoryDto(newCategoryDto)));
         } catch (DataIntegrityViolationException e) {
             log.warn("Category {} alredy exist", newCategoryDto);
@@ -45,8 +46,9 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto patchCategory(CategoryDto categoryDto) throws NotFoundException {
         Category category = repository.findById(categoryDto.getId())
                 .orElseThrow(() -> new NotFoundException("id", String.valueOf(categoryDto.getId()), "Category"));
+        category.setName(categoryDto.getName());
         log.info("update category {}", categoryDto);
-        return dtoMaper.toDto(category);
+        return dtoMaper.toDto(repository.save(category));
     }
 
     @Override

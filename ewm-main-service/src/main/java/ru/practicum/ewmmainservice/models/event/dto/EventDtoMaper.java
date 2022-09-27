@@ -9,11 +9,12 @@ import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
-import ru.practicum.ewmmainservice.utils.Utils;
+import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 
 @Component
@@ -36,7 +37,8 @@ public class EventDtoMaper {
                 newEventDto.getParticipantLimit(), null,
                 newEventDto.getRequestModeration(),
                 EventState.WAITING,
-                newEventDto.getTitle());
+                newEventDto.getTitle(),
+                new ArrayList<User>());
     }
 
     public EventFullDto toFulDto(Event event) {

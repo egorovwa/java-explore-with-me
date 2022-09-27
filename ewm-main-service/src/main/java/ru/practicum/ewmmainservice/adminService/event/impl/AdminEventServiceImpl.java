@@ -10,6 +10,8 @@ import ru.practicum.ewmmainservice.exceptions.IllegalTimeException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotValidParameterException;
 import ru.practicum.ewmmainservice.exceptions.StatusException;
+import ru.practicum.ewmmainservice.models.category.Category;
+import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
 import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
@@ -19,17 +21,18 @@ import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 import ru.practicum.ewmmainservice.models.parameters.ParametersValidator;
-import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
 import ru.practicum.ewmmainservice.privateservise.location.LocationService;
-import ru.practicum.ewmmainservice.utils.Utils;
+import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static ru.practicum.ewmmainservice.utils.Utils.HOUR;
+import static ru.practicum.ewmstatscontract.utils.Utils.HOUR;
+
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +45,7 @@ public class AdminEventServiceImpl implements AdminEventService {
     private final LocationService locationService;
     private final EventDtoMaper eventDtoMaper;
     private final ParametersValidator validator;
+    private final CategoryDtoMaper categoryDtoMaper;
 
     @Override
     public Collection<Event> findByCategoryId(Long catId) {
@@ -58,12 +62,12 @@ public class AdminEventServiceImpl implements AdminEventService {
             log.info("Updated the annotation of the event id = {}", eventId);
         }
         if (request.getCategory() != null && request.getCategory() != 0) {
-            categoryService.findByid(request.getCategory());
-            event.setAnnotation(request.getAnnotation());
+            Category category = categoryService.findByid(request.getCategory());
+            event.setCategory(category);
             log.info("Updated the category of the event id = {}", eventId);
         }
         if (request.getDescription() != null) {
-            event.setAnnotation(request.getDescription());
+            event.setDescription(request.getDescription());
             log.info("Updated the description of the event id = {}", eventId);
         }
         if (request.getEventDate() != null) {
@@ -122,7 +126,7 @@ public class AdminEventServiceImpl implements AdminEventService {
                 .orElseThrow(() -> new NotFoundException("id", eventId.toString(), "Event"));
         if (event.getEventDate() > LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR) {
             if (event.getState().equals(EventState.WAITING)) {
-                event.setState(EventState.CANCELLED);
+                event.setState(EventState.CANCELED);
                 log.info("Event reject  {}", formatter.format(LocalDateTime.now()));
                 return eventDtoMaper.toFulDto(repository.save(event));
             } else {
@@ -148,9 +152,12 @@ public class AdminEventServiceImpl implements AdminEventService {
     }
 
     @Override
-    public List<EventFullDto> findAllEvents(ParametersAdminFindEvent parameters) throws NotValidParameterException {
+    public List<EventFullDto> findAllEvents(ParametersAdminFindEvent parameters) throws NotValidParameterException, IllegalTimeException {
         validator.adminFindEvents(parameters);
-        return null;
+        List<Event> events = repository.findForAdmin(parameters.getUsers(), parameters.getCategories(),
+                parameters.getStates(), parameters.getRangeStart(), parameters.getRangeEnd(), parameters.getPageable())
+                .toList();
+        return events.stream().map(eventDtoMaper::toFulDto).collect(Collectors.toList());
     }
 
 }

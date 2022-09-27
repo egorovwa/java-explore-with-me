@@ -7,10 +7,10 @@ import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
+import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
 import ru.practicum.ewmmainservice.models.user.dto.UserShortDto;
-import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

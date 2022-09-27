@@ -3,9 +3,6 @@ package ru.practicum.ewmmainservice.models.apiError;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
-
-import java.sql.Timestamp;
-import java.util.List;
 @Value
 @Builder
 public class ApiError {

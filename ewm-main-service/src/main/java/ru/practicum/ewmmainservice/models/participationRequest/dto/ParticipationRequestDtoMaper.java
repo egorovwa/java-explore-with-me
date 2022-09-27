@@ -2,7 +2,7 @@ package ru.practicum.ewmmainservice.models.participationRequest.dto;
 
 import org.springframework.stereotype.Component;
 import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
-import ru.practicum.ewmmainservice.utils.Utils;
+import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

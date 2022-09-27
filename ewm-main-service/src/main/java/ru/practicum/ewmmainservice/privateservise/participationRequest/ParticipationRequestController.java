@@ -9,6 +9,7 @@ import ru.practicum.ewmmainservice.models.participationRequest.dto.Participation
 import javax.validation.constraints.Positive;
 import javax.websocket.server.PathParam;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -45,5 +46,10 @@ public class ParticipationRequestController {
                                                  @Positive @PathVariable("eventId") Long eventId,
                                                  @Positive @PathVariable("reqId") Long reqId) throws NotFoundException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
     return service.rejectRequest(userId, eventId, reqId);
+    }
+    @GetMapping("{userId}/events/{eventId}/requests")
+    public List<ParticipationRequestDto> finndRequestEventByUser(@Positive @PathVariable("userId") Long userId,
+                                                                 @Positive @PathVariable("eventId") Long eventId) throws NotFoundException {
+        return service.finndRequestEventByUser(userId, eventId);
     }
 }

@@ -16,9 +16,6 @@ import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDtoMaper;
 import ru.practicum.ewmmainservice.models.compilation.dto.NewCompilationDto;
 import ru.practicum.ewmmainservice.models.event.Event;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +40,7 @@ public class CompilationServiceImpl implements CompilationService {
                             throw new RuntimeNotFoundException("id", r.toString(), "Event");
                         }
                     })
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
         } catch (RuntimeNotFoundException e) {
             throw new FiledParamNotFoundException(String.format("Parameter %s %s = %s not found",e.getClassName(),
                     e.getParam(), e.getValue()));
@@ -76,9 +73,10 @@ public class CompilationServiceImpl implements CompilationService {
                 filter(r -> r.getId().equals(eventId)).findFirst()
                 .orElseThrow(() -> new FiledParamNotFoundException(String.format("Event id = %s not found in compilation id = %s", eventId,
                         compId)));
-        Collection<Event> events = compilation.getEvents().stream()
-                .filter(r -> r.getId() != eventId).collect(Collectors.toUnmodifiableList());
-        compilation.setEvents(events);
+        compilation.getEvents().removeIf(r->r.getId()==eventId);
+/*        Collection<Event> events = compilation.getEvents().stream()
+                .filter(r -> r.getId() != eventId).collect(Collectors.toUnmodifiableList());*/
+
         repository.save(compilation);
     }
 
@@ -87,9 +85,8 @@ public class CompilationServiceImpl implements CompilationService {
         Compilation compilation = findById(compId);
         Event event = eventService.findById(eventId);
         if (!compilation.getEvents().contains(event)){
-            List<Event> events = new ArrayList<>(compilation.getEvents());
-            events.add(event);
-            compilation.setEvents(Collections.unmodifiableList(events));
+
+            compilation.getEvents().add(event);
             repository.save(compilation);
         }else {
            throw new NotRequiredException(String.format("Even id = %s aredy exist in Compilation id = %s",

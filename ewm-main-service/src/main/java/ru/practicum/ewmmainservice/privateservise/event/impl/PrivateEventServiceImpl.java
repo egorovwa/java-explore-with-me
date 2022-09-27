@@ -9,10 +9,7 @@ import ru.practicum.ewmmainservice.exceptions.*;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.event.EventState;
-import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
-import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
-import ru.practicum.ewmmainservice.models.event.dto.NewEventDto;
-import ru.practicum.ewmmainservice.models.event.dto.UpdateEventRequest;
+import ru.practicum.ewmmainservice.models.event.dto.*;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;
@@ -22,10 +19,13 @@ import ru.practicum.ewmmainservice.privateservise.location.LocationService;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import static ru.practicum.ewmmainservice.utils.Utils.HOUR;
-import static ru.practicum.ewmmainservice.utils.Utils.getDateTimeFormater;
+import static ru.practicum.ewmstatscontract.utils.Utils.HOUR;
+import static ru.practicum.ewmstatscontract.utils.Utils.getDateTimeFormater;
+
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +61,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         Event event = repository.findById(requestEvent.getEventId())
                 .orElseThrow(() -> new NotFoundException("id", String.valueOf(requestEvent.getEventId()), "Event"));
         if (Objects.equals(event.getInitiator().getId(), userId)) {
-            if (event.getState().equals(EventState.WAITING) || event.getState().equals(EventState.CANCELLED)) {
+            if (event.getState().equals(EventState.WAITING) || event.getState().equals(EventState.CANCELED)) {
                 if (event.getEventDate() > LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR * 2) {
                     if (requestEvent.getAnnotation() != null) {
                         event.setAnnotation(requestEvent.getAnnotation());
@@ -119,10 +119,29 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         Event event = repository.findById(eventId).orElseThrow(() ->
                 new NotFoundException("id", eventId.toString(), "Event"));
         if (event.getState().equals(EventState.WAITING)) {
-            event.setState(EventState.CANCELLED);
+            event.setState(EventState.CANCELED);
             return eventDtoMaper.toFulDto(repository.save(event));
         } else {
             throw new StatusException("Only pending  events can be changed");
         }
+    }
+
+    @Override
+    public EventFullDto findEventForInitiator(Long userId, Long eventId) throws NotFoundException, IlegalUserIdException {
+        User user = userAdminService.findById(userId);
+        Event event = repository.findById(eventId)
+                .orElseThrow(()-> new NotFoundException("id", eventId.toString(), "Event"));
+        if (user.equals(event.getInitiator())){
+            return eventDtoMaper.toFulDto(event);
+        }else {
+            throw new IlegalUserIdException(userId, eventId, "Event");
+        }
+
+    }
+
+    @Override
+    public List<EventShortDto> findAllEventByInitiatur(Long userId) throws NotFoundException {
+        userAdminService.findById(userId);
+        return repository.findByInitiatorId(userId).stream().map(eventDtoMaper::toShortDto).collect(Collectors.toList());
     }
 }

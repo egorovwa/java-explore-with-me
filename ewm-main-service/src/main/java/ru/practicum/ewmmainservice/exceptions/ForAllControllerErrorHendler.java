@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.ewmmainservice.models.apiError.ApiError;
-import ru.practicum.ewmmainservice.utils.Utils;
+import ru.practicum.ewmstatscontract.utils.Utils;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

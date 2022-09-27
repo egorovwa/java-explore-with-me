@@ -3,7 +3,7 @@ package ru.practicum.ewmmainservice.models.location.dto;
 import org.junit.jupiter.api.Test;
 import ru.practicum.ewmmainservice.models.location.Location;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LocationDtoMaperTest {
 LocationDtoMaper maper = new LocationDtoMaper();

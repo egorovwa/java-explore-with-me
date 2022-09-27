@@ -24,6 +24,7 @@
 <modules>
 	<module>ewm-main-service</module>
 	<module>ewm-stats-service</module>
+	<module>ewm-stats-contract</module>
 </modules>
 	<build>
 		<pluginManagement>
