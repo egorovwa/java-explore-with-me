@@ -36,7 +36,7 @@ public class EventDtoMaper {
                 newEventDto.getPaid(),
                 newEventDto.getParticipantLimit(), null,
                 newEventDto.getRequestModeration(),
-                EventState.WAITING,
+                EventState.PENDING,
                 newEventDto.getTitle(),
                 new ArrayList<User>());
     }

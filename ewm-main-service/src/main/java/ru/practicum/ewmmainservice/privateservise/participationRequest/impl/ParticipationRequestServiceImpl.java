@@ -41,27 +41,29 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
             Event event = eventService.findById(eventId);
             if (!user.equals(event.getInitiator())) {
                 if (event.getState().equals(EventState.PUBLISHED)) {
-                    if (event.getParticipantLimit() > event.getParticipants().size()) {
-                        if (!event.getRequestModeration()) {
+
+                    if (!event.getRequestModeration()) {
+                        if (event.getParticipantLimit() > event.getParticipants().size()) {
                             event.getParticipants().add(user);
                             eventService.save(event);
                             ParticipationRequest request = new ParticipationRequest();
                             request.setRequester(user);
                             request.setEvent(event);
                             request.setCreated(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
-                            request.setStatus(RequestStatus.ACCEPTED);
+                            request.setStatus(RequestStatus.CONFIRMED);
                             log.info("Created Participation Request {}", request);
                             return dtoMaper.toDto(repository.save(request));
                         } else {
-                            ParticipationRequest request = new ParticipationRequest(LocalDateTime.now()
-                                    .toEpochSecond(ZoneOffset.UTC), event, null, user, RequestStatus.PENDING);
-                            log.info("Created Participation Request {}", request);
-                            return dtoMaper.toDto(repository.save(request));
+                            log.warn("The number of participants exceeded max = {}", event.getParticipantLimit());
+                            throw new NumberParticipantsExceededException(event.getParticipantLimit());
                         }
                     } else {
-                        log.warn("The number of participants exceeded max = {}", event.getParticipantLimit());
-                        throw new NumberParticipantsExceededException( event.getParticipantLimit());
+                        ParticipationRequest request = new ParticipationRequest(LocalDateTime.now()
+                                .toEpochSecond(ZoneOffset.UTC), event, null, user, RequestStatus.PENDING);
+                        log.info("Created Participation Request {}", request);
+                        return dtoMaper.toDto(repository.save(request));
                     }
+
 
                 } else {
                     log.warn("Participation Request with unpublished event id= {}", eventId);
@@ -71,8 +73,8 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
             } else {
                 log.warn("Participation Request from initiator requester id = {}, event id={}", userId, eventId);
                 throw new IlegalUserIdException(String
-                        .format("The initiator id = %s of the event id = %s cannot request participation", userId,eventId),
-                        userId,eventId, "Event");
+                        .format("The initiator id = %s of the event id = %s cannot request participation", userId, eventId),
+                        userId, eventId, "Event");
             }
         } catch (NotFoundException e) {
             log.warn("{} {} {} notFoud", e.getClassName(), e.getValue(), e.getParam());
@@ -87,13 +89,13 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         ParticipationRequest request = repository.findById(requestId)
                 .orElseThrow(() -> new NotFoundException("id", requestId.toString(), "ParticipationRequest"));
         if (user.equals(request.getRequester())) {
-            request.setStatus(RequestStatus.REJECTED);// TODO: 24.09.2022 may be delete?
+            request.setStatus(RequestStatus.CANCELED);// TODO: 24.09.2022 may be delete?
             log.info("Participation Request id {} canceled by requester id {}", requestId, userId);
             return dtoMaper.toDto(repository.save(request));
         } else {
             log.warn("The user id {} is not the owner of the request id {}", userId, requestId);
             throw new IlegalUserIdException(String.format("The user id %s is not the owner of the request id %s", userId,
-                    requestId), userId, requestId,"ParticipationRequest");
+                    requestId), userId, requestId, "ParticipationRequest");
         }
 
     }
@@ -124,7 +126,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                             requests.stream().peek(r -> r.setStatus(RequestStatus.REJECTED))
                                     .forEach(repository::save);
                         }
-                        request.setStatus(RequestStatus.ACCEPTED);
+                        request.setStatus(RequestStatus.CONFIRMED);
                         return dtoMaper.toDto(repository.save(request));
                     } else {
                         throw new NumberParticipantsExceededException(event.getParticipantLimit());
@@ -159,7 +161,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                 }
             } else {
                 throw new IlegalUserIdException(String.format("The user id = %s is not the creator of the event id = %s.",
-                        userId, eventId), userId,eventId ,"event");
+                        userId, eventId), userId, eventId, "event");
             }
         } catch (NotFoundException e) {
             throw new FiledParamNotFoundException(String.format("%s %s %s  not found", e.getClassName(),

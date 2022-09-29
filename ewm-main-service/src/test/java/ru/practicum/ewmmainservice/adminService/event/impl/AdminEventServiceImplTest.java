@@ -60,7 +60,7 @@ class AdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
     }
 
@@ -84,7 +84,7 @@ class AdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         saved.setPublishedOn(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         saved.setState(EventState.PUBLISHED);
@@ -115,7 +115,7 @@ class AdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(timeNow));
@@ -131,7 +131,7 @@ class AdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         saved.setState(EventState.CANCELED);
         when(repository.save(saved))
@@ -161,7 +161,7 @@ class AdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(timeNow));
@@ -174,7 +174,7 @@ class AdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Long[] usersId = {1L, 2L, 3L};
         Long[] catId = {1L};
@@ -184,13 +184,13 @@ class AdminEventServiceImplTest {
         ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
         Page<Event> eventPage = new PageImpl<>(List.of(event));
         when(repository.findForAdmin(List.of(1L, 2L, 3L),
-                List.of(1L), List.of(EventState.WAITING),
+                List.of(1L), List.of(EventState.PENDING),
                 LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC), PageParam.createPageable(0, 10)))
                 .thenReturn(eventPage);
         List<EventFullDto> result = service.findAllEvents(param);
         verify(repository, times(1)).findForAdmin(List.of(1L, 2L, 3L),
-                List.of(1L), List.of(EventState.WAITING),
+                List.of(1L), List.of(EventState.PENDING),
                 LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC), PageParam.createPageable(0, 10));
 
@@ -201,7 +201,7 @@ class AdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Long[] usersId = {1L, 2L, 3L};
         Long[] catId = {1L};

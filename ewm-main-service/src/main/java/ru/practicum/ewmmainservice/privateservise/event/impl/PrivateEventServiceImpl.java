@@ -61,7 +61,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         Event event = repository.findById(requestEvent.getEventId())
                 .orElseThrow(() -> new NotFoundException("id", String.valueOf(requestEvent.getEventId()), "Event"));
         if (Objects.equals(event.getInitiator().getId(), userId)) {
-            if (event.getState().equals(EventState.WAITING) || event.getState().equals(EventState.CANCELED)) {
+            if (event.getState().equals(EventState.PENDING) || event.getState().equals(EventState.CANCELED)) {
                 if (event.getEventDate() > LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR * 2) {
                     if (requestEvent.getAnnotation() != null) {
                         event.setAnnotation(requestEvent.getAnnotation());
@@ -118,7 +118,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         User user = userAdminService.findById(userId);
         Event event = repository.findById(eventId).orElseThrow(() ->
                 new NotFoundException("id", eventId.toString(), "Event"));
-        if (event.getState().equals(EventState.WAITING)) {
+        if (event.getState().equals(EventState.PENDING)) {
             event.setState(EventState.CANCELED);
             return eventDtoMaper.toFulDto(repository.save(event));
         } else {

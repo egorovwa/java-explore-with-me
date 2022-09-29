@@ -211,7 +211,7 @@ class ParticipationRequestServiceImplTest {
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
                 event, 1L, user, RequestStatus.PENDING);
         ParticipationRequest requestSave = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
-                event, 1L, user, RequestStatus.ACCEPTED);
+                event, 1L, user, RequestStatus.CONFIRMED);
         when(userService.findById(1L))
                 .thenReturn(user);
         when(eventService.findById(1L))
@@ -252,7 +252,7 @@ class ParticipationRequestServiceImplTest {
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
                 event, 1L, user, RequestStatus.PENDING);
         ParticipationRequest requestSave = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
-                event, 1L, user, RequestStatus.ACCEPTED);
+                event, 1L, user, RequestStatus.CONFIRMED);
         when(userService.findById(1L))
                 .thenReturn(user);
         when(eventService.findById(1L))
@@ -291,7 +291,7 @@ class ParticipationRequestServiceImplTest {
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
                 event, 1L, user, RequestStatus.PENDING);
         ParticipationRequest requestSave = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
-                event, 1L, user, RequestStatus.ACCEPTED);
+                event, 1L, user, RequestStatus.CONFIRMED);
         when(userService.findById(1L))
                 .thenReturn(user);
         when(eventService.findById(1L))
@@ -330,7 +330,7 @@ class ParticipationRequestServiceImplTest {
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
                 event, 1L, user, RequestStatus.PENDING);
         ParticipationRequest requestSave = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
-                event, 1L, user, RequestStatus.ACCEPTED);
+                event, 1L, user, RequestStatus.CONFIRMED);
         when(userService.findById(1L))
                 .thenReturn(user);
         when(eventService.findById(1L))

@@ -29,7 +29,7 @@ private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper()
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),

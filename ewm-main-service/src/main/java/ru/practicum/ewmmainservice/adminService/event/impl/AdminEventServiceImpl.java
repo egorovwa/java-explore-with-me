@@ -104,7 +104,7 @@ public class AdminEventServiceImpl implements AdminEventService {
         Event event = repository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("id", eventId.toString(), "Event"));
         if (event.getEventDate() > LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR) {
-            if (event.getState().equals(EventState.WAITING)) {
+            if (event.getState().equals(EventState.PENDING)) {
                 log.info("Event published  {}", formatter.format(LocalDateTime.now()));
                 event.setState(EventState.PUBLISHED);
                 event.setPublishedOn(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
@@ -125,7 +125,7 @@ public class AdminEventServiceImpl implements AdminEventService {
         Event event = repository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("id", eventId.toString(), "Event"));
         if (event.getEventDate() > LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR) {
-            if (event.getState().equals(EventState.WAITING)) {
+            if (event.getState().equals(EventState.PENDING)) {
                 event.setState(EventState.CANCELED);
                 log.info("Event reject  {}", formatter.format(LocalDateTime.now()));
                 return eventDtoMaper.toFulDto(repository.save(event));

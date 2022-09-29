@@ -10,5 +10,5 @@ import java.util.Collection;
 public interface PublicEventService {
     Collection<EventShortDto> findEvents(ParametersPublicEventFind param);
 
-    EventFullDto findById(Long id) throws NotFoundException;
+    EventFullDto findById(Long id, String requestURI, String remoteAddr) throws NotFoundException;
 }

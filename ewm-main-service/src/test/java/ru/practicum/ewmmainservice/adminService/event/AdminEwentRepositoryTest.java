@@ -50,7 +50,7 @@ class AdminEwentRepositoryTest {
     void test1_1findForAdmin() throws IncorrectPageValueException {
         List<Long> userIds = List.of(1L, 2L);
         List<Long> catIds = List.of(1L, 2L);
-        List<EventState> states = List.of(PUBLISHED, WAITING);
+        List<EventState> states = List.of(PUBLISHED, PENDING);
         Long start = LocalDateTime.of(2022, 9, 5, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
         Long end = LocalDateTime.of(2022, 9, 11, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
         Pageable pageable = PageParam.createPageable(0, 10);
@@ -82,7 +82,7 @@ class AdminEwentRepositoryTest {
     void test1_3findForAdmin_withSize1() throws IncorrectPageValueException {
         List<Long> userIds = List.of(1L, 2L);
         List<Long> catIds = List.of(1L, 2L);
-        List<EventState> states = List.of(PUBLISHED, WAITING);
+        List<EventState> states = List.of(PUBLISHED, PENDING);
         Long start = LocalDateTime.of(2022, 9, 5, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
         Long end = LocalDateTime.of(2022, 9, 11, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
         Pageable pageable = PageParam.createPageable(0, 1);
@@ -141,7 +141,7 @@ class AdminEwentRepositoryTest {
                 10,
                 LocalDateTime.of(2022, 9, 11, 16, 11, 0).toEpochSecond(ZoneOffset.UTC),
                 true,
-                WAITING,
+                PENDING,
                 "title",
                 5,
                 participans);

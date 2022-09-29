@@ -36,7 +36,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
-import static ru.practicum.ewmmainservice.models.event.EventState.WAITING;
+import static ru.practicum.ewmmainservice.models.event.EventState.PENDING;
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -146,7 +146,7 @@ class AdminEventServiceImplTestItegration {
                 10,
                 LocalDateTime.of(2022, 9, 11, 16, 11, 0).toEpochSecond(ZoneOffset.UTC),
                 true,
-                WAITING,
+                PENDING,
                 "title",
                 5,
                 participans);

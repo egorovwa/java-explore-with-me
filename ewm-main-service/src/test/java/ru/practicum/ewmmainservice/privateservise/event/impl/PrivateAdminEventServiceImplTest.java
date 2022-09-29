@@ -107,7 +107,7 @@ class PrivateAdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
         UpdateEventRequest request = new UpdateEventRequest();
@@ -123,7 +123,7 @@ class PrivateAdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                true, 50, null, true, EventState.WAITING, "updated Title", 2,
+                true, 50, null, true, EventState.PENDING, "updated Title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
         when(categoryService.findByid(2L))
@@ -140,7 +140,7 @@ class PrivateAdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(2L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
         UpdateEventRequest request = new UpdateEventRequest();
@@ -156,7 +156,7 @@ class PrivateAdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                true, 50, null, true, EventState.WAITING, "updated Title", 2,
+                true, 50, null, true, EventState.PENDING, "updated Title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
         when(repository.findById(1L))
@@ -188,7 +188,7 @@ class PrivateAdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                true, 50, null, true, EventState.WAITING, "updated Title", 2,
+                true, 50, null, true, EventState.PENDING, "updated Title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
 
@@ -205,7 +205,7 @@ class PrivateAdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
         UpdateEventRequest request = new UpdateEventRequest();
@@ -231,7 +231,7 @@ class PrivateAdminEventServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event cancelled = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
