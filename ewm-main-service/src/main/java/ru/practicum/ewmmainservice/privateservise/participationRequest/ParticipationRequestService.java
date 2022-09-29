@@ -17,5 +17,5 @@ public interface ParticipationRequestService {
 
     ParticipationRequestDto rejectRequest(Long userId, Long eventId, Long reqId) throws NotFoundException, FiledParamNotFoundException, StatusException, IlegalUserIdException;
 
-    List<ParticipationRequestDto> finndRequestEventByUser(Long userId, Long eventId) throws NotFoundException;
+    List<ParticipationRequestDto> finndRequestEventByUser(Long userId, Long eventId) throws NotFoundException, IlegalUserIdException;
 }

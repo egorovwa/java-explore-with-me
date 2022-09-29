@@ -49,7 +49,7 @@ public class ParticipationRequestController {
     }
     @GetMapping("{userId}/events/{eventId}/requests")
     public List<ParticipationRequestDto> finndRequestEventByUser(@Positive @PathVariable("userId") Long userId,
-                                                                 @Positive @PathVariable("eventId") Long eventId) throws NotFoundException {
+                                                                 @Positive @PathVariable("eventId") Long eventId) throws NotFoundException, IlegalUserIdException {
         return service.finndRequestEventByUser(userId, eventId);
     }
 }

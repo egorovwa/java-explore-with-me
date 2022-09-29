@@ -170,9 +170,13 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
-    public List<ParticipationRequestDto> finndRequestEventByUser(Long userId, Long eventId) throws NotFoundException {
-        userService.findById(userId);
-        eventService.findById(eventId);
-        return repository.findAllByRequesterIdAndEventId(userId, eventId);
+    public List<ParticipationRequestDto> finndRequestEventByUser(Long userId, Long eventId) throws NotFoundException, IlegalUserIdException {
+        User user = userService.findById(userId);
+        Event event = eventService.findById(eventId);
+        if (user.equals(event.getInitiator())) {
+            return repository.findAllByEventId(eventId).stream().map(dtoMaper::toDto).collect(Collectors.toList());
+        }else {
+           throw new  IlegalUserIdException(userId, eventId, "Event");
+        }
     }
 }
