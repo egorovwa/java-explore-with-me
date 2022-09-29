@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ViewStats {
+public class ViewStatsDto {
     String app;    //Название сервиса
 
     String uri;    //URI сервиса

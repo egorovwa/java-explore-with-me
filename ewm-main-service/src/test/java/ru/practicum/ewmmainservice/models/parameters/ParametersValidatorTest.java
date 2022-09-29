@@ -46,7 +46,7 @@ class ParametersValidatorTest {
         User user4 = new User(4L, "sss@sssl4.fff", "name4");
         Long[] usersId = {1L, 2L};
         Long[] catId = {1L, 2L};
-        String[] states = {"WAITING", "CANCELED"};
+        String[] states = {"PENDING", "CANCELED"};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().plusHours(1));
         ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
@@ -69,7 +69,7 @@ class ParametersValidatorTest {
         User user4 = new User(4L, "sss@sssl4.fff", "name4");
         Long[] usersId = {1L, 2L};
         Long[] catId = {1L, 2L};
-        String[] states = {"WAITING", "CANCELED"};
+        String[] states = {"PENDING", "CANCELED"};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().plusHours(1));
         ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
@@ -87,7 +87,7 @@ class ParametersValidatorTest {
     void adminFindEvents_illegalTime() throws IncorrectPageValueException, NotFoundException, NotValidParameterException, IllegalTimeException {
         Long[] usersId = {1L, 2L};
         Long[] catId = {1L, 2L};
-        String[] states = {"WAITING", "CANCELED"};
+        String[] states = {"PENDING", "CANCELED"};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().minusSeconds(1));
         ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);

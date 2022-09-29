@@ -102,7 +102,7 @@ class AdminEventControlllerTest {
     void test4_1findAllEvents() throws Exception { // TODO: 27.09.2022 ????
         Long[] users ={1L, 2L};
         Long[] catid = {1L, 2L};
-        String[] states = {"WAITING", "PUBLISHED", "CANCELED"};
+        String[] states = {"PENDING", "PUBLISHED", "CANCELED"};
         String rangeStart ="2022-01-01 10:10:10";
         String rangeEnd ="2022-01-01 20:10:10";
         Integer from = 0;
@@ -113,7 +113,7 @@ class AdminEventControlllerTest {
                 .characterEncoding(StandardCharsets.UTF_8)
                 .param("users", "1")
                 .param("users", "2")
-                .param("states", "WAITING")
+                .param("states", "PENDING")
                 .param("states", "PUBLISHED")
                 .param("states", "CANCELED")
                 .param("categories", "1")

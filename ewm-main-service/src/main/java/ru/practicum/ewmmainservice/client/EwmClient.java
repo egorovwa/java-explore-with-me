@@ -1,4 +1,4 @@
-package ru.practicum.ewmmainservice.publicService.client;
+package ru.practicum.ewmmainservice.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ public class EwmClient extends Client {
 
 
     public void post(EndpointHitDto endpointHitDto) {
-        ResponseEntity<Object> response = post(saveHitEndpoint, endpointHitDto);
+        ResponseEntity<Object> response = super.post(saveHitEndpoint, endpointHitDto);
         if (response.getStatusCode().is2xxSuccessful()) {
             log.info("Statistic saved: {}", response);
         } else {

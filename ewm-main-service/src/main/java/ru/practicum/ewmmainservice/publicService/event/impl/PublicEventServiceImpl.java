@@ -10,7 +10,7 @@ import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.event.dto.EventShortDto;
 import ru.practicum.ewmmainservice.models.parameters.ParametersPublicEventFind;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;
-import ru.practicum.ewmmainservice.publicService.client.EwmClient;
+import ru.practicum.ewmmainservice.client.EwmClient;
 import ru.practicum.ewmmainservice.publicService.event.PublicEventService;
 import ru.practicum.ewmstatscontract.dto.EndpointHitDto;
 import ru.practicum.ewmstatscontract.utils.Utils;
@@ -28,32 +28,34 @@ public class PublicEventServiceImpl implements PublicEventService {
     private final EventDtoMaper dtoMaper;
     private final DateTimeFormatter formatter = Utils.getDateTimeFormater();
 
-    @Value("${ewm-main-service.url}")
-    private  String url;
+    @Value("${app.name}")
+    private String appName;
 
     @Override
     public Collection<EventShortDto> findEvents(ParametersPublicEventFind param) {
         if (param.getOnlyAvailable()) {
-            EndpointHitDto endpointHitDto = new EndpointHitDto(null,url, param.getEndpointPath(), param.getClientIp(),
+            EndpointHitDto endpointHitDto = new EndpointHitDto(null, appName, param.getEndpointPath(), param.getClientIp(),
                     formatter.format(LocalDateTime.now()));
             client.post(endpointHitDto);
             return repository.findAllForPublicAvailable(param.getText(), param.getCatIds(), param.getPaid(),
-                    param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
+                            param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
                     .toList();
-        }else {
-            EndpointHitDto endpointHitDto = new EndpointHitDto(null,url, param.getEndpointPath(), param.getClientIp(),
+        } else {
+            EndpointHitDto endpointHitDto = new EndpointHitDto(null, appName, param.getEndpointPath(), param.getClientIp(),
                     formatter.format(LocalDateTime.now()));
             client.post(endpointHitDto);
             return repository.findAllForPublic(param.getText(), param.getCatIds(), param.getPaid(),
-                    param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
+                            param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
                     .toList();
         }
     }
 
     @Override
     public EventFullDto findById(Long id, String requestURI, String remoteAddr) throws NotFoundException {
-        client.post(new EndpointHitDto(null,url, requestURI, remoteAddr, formatter.format(LocalDateTime.now())));
+        EndpointHitDto endpointHitDto = new EndpointHitDto(null, appName, requestURI, remoteAddr,
+                formatter.format(LocalDateTime.now()));
+        client.post(endpointHitDto);
         return dtoMaper.toFulDto(repository.findById(id)
-                .orElseThrow(()-> new NotFoundException("id", id.toString(),"Event")));
+                .orElseThrow(() -> new NotFoundException("id", id.toString(), "Event")));
     }
 }

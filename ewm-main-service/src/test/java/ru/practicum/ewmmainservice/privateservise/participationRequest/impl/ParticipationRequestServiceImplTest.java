@@ -68,7 +68,7 @@ class ParticipationRequestServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 event, null, user, RequestStatus.PENDING);
@@ -88,7 +88,7 @@ class ParticipationRequestServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 user, new Location(1L, 1.0f, 2.0f),
-                false, 10, null, true, EventState.WAITING, "title", 2,
+                false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 event, null, user, RequestStatus.PENDING);
@@ -108,7 +108,7 @@ class ParticipationRequestServiceImplTest {
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(5L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
-                false, 1, null, true, EventState.PUBLISHED, "title", 2,
+                false, 1, null, false, EventState.PUBLISHED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 event, null, user, RequestStatus.PENDING);
@@ -133,7 +133,7 @@ class ParticipationRequestServiceImplTest {
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 event, 1L, user, RequestStatus.PENDING);
         ParticipationRequest requestSaved = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                event, 1L, user, RequestStatus.REJECTED);
+                event, 1L, user, RequestStatus.CANCELED);
         when(userService.findById(1L))
                 .thenReturn(user);
         when(repository.findById(1L))

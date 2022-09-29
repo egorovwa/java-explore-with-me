@@ -66,7 +66,7 @@ class AdminEventServiceImplTestItegration {
         data();
         Long[] usersId = {1L,2L};
         Long[] catId = {1L,2L};
-        String[] states ={"WAITING", "PUBLISHED"};
+        String[] states ={"PENDING", "PUBLISHED"};
         String start = formatter.format(LocalDateTime.of(2022,9,5,0,0,0));
         String end = formatter.format(LocalDateTime.of(2022,9,12,0,0,0));
         Pageable pageable = PageParam.createPageable(0,10);
@@ -81,7 +81,7 @@ class AdminEventServiceImplTestItegration {
         data();
         Long[] usersId = {1L,2L};
         Long[] catId = {};
-        String[] states ={"WAITING"};
+        String[] states ={"PENDING"};
         String start = formatter.format(LocalDateTime.of(2022,9,5,0,0,0));
         String end = formatter.format(LocalDateTime.of(2022,9,12,0,0,0));
         Pageable pageable = PageParam.createPageable(0,10);
@@ -96,7 +96,7 @@ class AdminEventServiceImplTestItegration {
         data();
         Long[] usersId = {1L,2L,3L};
         Long[] catId = {1L};
-        String[] states ={"WAITING"};
+        String[] states ={"PENDING"};
         String start = formatter.format(LocalDateTime.of(2022,9,5,0,0,0));
         String end = formatter.format(LocalDateTime.of(2022,9,12,0,0,0));
         Pageable pageable = PageParam.createPageable(0,10);

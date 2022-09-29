@@ -14,7 +14,7 @@ public class Client {
         this.webClient = WebClient.create(baseUrl);
     }
 
-    public ResponseEntity<Object> post(String path, Object object) {
+     protected ResponseEntity<Object> post(String path, Object object) {
         return webClient
                 .post()
                 .uri(path)

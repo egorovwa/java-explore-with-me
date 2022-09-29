@@ -180,7 +180,7 @@ class AdminEventServiceImplTest {
         Long[] catId = {1L};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().plusHours(1));
-        String[] states = {"WAITING"};
+        String[] states = {"PENDING"};
         ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
         Page<Event> eventPage = new PageImpl<>(List.of(event));
         when(repository.findForAdmin(List.of(1L, 2L, 3L),
@@ -207,7 +207,7 @@ class AdminEventServiceImplTest {
         Long[] catId = {1L};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().plusHours(1));
-        String[] states = {"WAITING"};
+        String[] states = {"PENDING"};
         ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
         Page<Event> eventPage = new PageImpl<>(List.of(event));
         doThrow(NotValidParameterException.class).when(validator).adminFindEvents(param);

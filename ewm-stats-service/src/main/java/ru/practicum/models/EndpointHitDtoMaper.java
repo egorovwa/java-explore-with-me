@@ -2,7 +2,6 @@ package ru.practicum.models;
 
 import org.springframework.stereotype.Component;
 import ru.practicum.ewmstatscontract.dto.EndpointHitDto;
-import ru.practicum.ewmstatscontract.dto.ViewStats;
 import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.time.LocalDateTime;
