@@ -19,7 +19,7 @@ public class EndpointHitDtoMaper {
                 formatter.format(LocalDateTime.ofEpochSecond(endpointHit.getTimestamp(), 0, ZoneOffset.UTC)));
     }
 
-    public EndpointHit toDto(EndpointHitDto dto) {
+    public EndpointHit fromDto(EndpointHitDto dto) {
         return new EndpointHit(dto.getId(), dto.getApp(), dto.getUri(), dto.getIp(),
                 LocalDateTime.parse(dto.getTimestamp(), formatter).toEpochSecond(ZoneOffset.UTC));
     }

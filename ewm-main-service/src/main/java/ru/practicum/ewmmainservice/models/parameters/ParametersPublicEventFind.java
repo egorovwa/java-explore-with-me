@@ -3,7 +3,6 @@ package ru.practicum.ewmmainservice.models.parameters;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
 import ru.practicum.ewmmainservice.utils.PageParam;
 import ru.practicum.ewmstatscontract.utils.Utils;
@@ -40,7 +39,7 @@ public class ParametersPublicEventFind {
         this.clientIp = clientIp;
         this.endpointPath = endpointPath;
         if (sort.equals("EVENT_DATE")){
-            this.pageable = PageParam.createPageable(from, size,"event_date");
+            this.pageable = PageParam.createPageable(from, size,"eventDate");
         }else if (sort.equals("VIEWS")){
             this.pageable = PageParam.createPageable(from, size, "views");
         }else {
