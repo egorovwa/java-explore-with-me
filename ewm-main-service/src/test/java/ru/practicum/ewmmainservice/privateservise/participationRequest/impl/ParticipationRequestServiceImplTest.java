@@ -32,13 +32,16 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ParticipationRequestServiceImplTest {
-    private ParticipationRequestRepository repository = Mockito.mock(ParticipationRequestRepository.class);
-    private UserAdminService userService = Mockito.mock(UserAdminService.class) ;
-    private AdminEventService eventService = Mockito.mock(AdminEventService.class);
+    @Mock
+    private ParticipationRequestRepository repository;
+    @Mock
+    private UserAdminService userService;
+    @Mock
+    private AdminEventService eventService;
+    @Mock
     private ParticipationRequestDtoMaper dtoMaper = new ParticipationRequestDtoMaper();
-
-    private ParticipationRequestServiceImpl service = new ParticipationRequestServiceImpl(repository, userService,
-            eventService, dtoMaper);
+    @InjectMocks
+    private ParticipationRequestServiceImpl service;
 
     @Test
     void test1_1createRequest() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
@@ -55,8 +58,6 @@ class ParticipationRequestServiceImplTest {
                 .thenReturn(user);
         when(eventService.findById(1L))
                 .thenReturn(event);
-        when(repository.save(request))
-                .thenReturn(request);
         ParticipationRequestDto requestDto = service.createRequest(1L, 1L);
         verify(repository, times(1)).save(request);
     }
@@ -138,8 +139,6 @@ class ParticipationRequestServiceImplTest {
                 .thenReturn(user);
         when(repository.findById(1L))
                 .thenReturn(Optional.of(request));
-        when(repository.save(requestSaved))
-                .thenReturn(requestSaved);
         ParticipationRequestDto requestDto = service.cancelRequest(1L, 1L);
         verify(repository, times(1)).save(requestSaved);
 
@@ -220,8 +219,8 @@ class ParticipationRequestServiceImplTest {
                 .thenReturn(event);
         when(repository.findById(1L))
                 .thenReturn(Optional.of(request));
-        when(repository.save(requestSave))
-                .thenReturn(requestSave);
+/*        when(repository.findAllByEventIdAndStatus(1l, RequestStatus.PENDING))
+                .thenReturn(participationRequests);*/
         ParticipationRequestDto result = service.confirmRequest(1L, 1L, 1L);
         verify(repository, times(1)).save(requestSave);
         verify(eventService, times(1)).save(eventSaved);
@@ -263,8 +262,6 @@ class ParticipationRequestServiceImplTest {
                 .thenReturn(Optional.of(request));
         when(repository.findAllByEventIdAndStatus(1l, RequestStatus.PENDING))
                 .thenReturn(participationRequests);
-        when(repository.save(requestSave))
-                .thenReturn(requestSave);
         ParticipationRequestDto result = service.confirmRequest(1L, 1L, 1L);
         verify(repository, times(1)).save(requestSave);
         verify(repository, times(1)).save(new ParticipationRequest(LocalDateTime.now().
@@ -377,8 +374,6 @@ class ParticipationRequestServiceImplTest {
                 .thenReturn(event);
         when(repository.findById(1L))
                 .thenReturn(Optional.of(request));
-        when(repository.save(requestSaved))
-                .thenReturn(requestSaved);
         ParticipationRequestDto result = service.rejectRequest(1L, 1L, 1L);
         verify(repository, times(1)).save(requestSaved);
 
