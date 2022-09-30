@@ -38,7 +38,7 @@ class ParticipationRequestServiceImplTest {
     @Mock
     private AdminEventService eventService;
     @Mock
-    private ParticipationRequestDtoMaper dtoMaper = new ParticipationRequestDtoMaper();
+    private ParticipationRequestDtoMaper dtoMaper;
     @InjectMocks
     private ParticipationRequestServiceImpl service;
 
