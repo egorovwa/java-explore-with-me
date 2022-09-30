@@ -1,7 +1,6 @@
 package ru.practicum.models;
 
 import lombok.Data;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.net.URLDecoder;
@@ -11,7 +10,6 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 public class ParamViewStats {

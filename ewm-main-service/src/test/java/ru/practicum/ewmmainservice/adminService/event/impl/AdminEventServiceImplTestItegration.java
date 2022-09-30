@@ -35,8 +35,8 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
 import static ru.practicum.ewmmainservice.models.event.EventState.PENDING;
+import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
