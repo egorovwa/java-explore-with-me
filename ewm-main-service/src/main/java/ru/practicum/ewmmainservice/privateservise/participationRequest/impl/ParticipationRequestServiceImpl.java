@@ -127,6 +127,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                                     .forEach(repository::save);
                         }
                         request.setStatus(RequestStatus.CONFIRMED);
+                        log.info("Confirmed Request {}",request);
                         return dtoMaper.toDto(repository.save(request));
                     } else {
                         throw new NumberParticipantsExceededException(event.getParticipantLimit());
@@ -155,6 +156,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
             if (user.equals(event.getInitiator())) {
                 if (request.getStatus().equals(RequestStatus.PENDING)) {
                     request.setStatus(RequestStatus.REJECTED);
+                    log.info("Rejected Request {}", request);
                     return dtoMaper.toDto(repository.save(request));
                 } else {
                     throw new StatusException("Status must be PENDING");
@@ -174,6 +176,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         User user = userService.findById(userId);
         Event event = eventService.findById(eventId);
         if (user.equals(event.getInitiator())) {
+            log.info("Find request for user id = {}", userId);
             return repository.findAllByEventId(eventId).stream().map(dtoMaper::toDto).collect(Collectors.toList());
         } else {
             throw new IlegalUserIdException(userId, eventId, "Event");

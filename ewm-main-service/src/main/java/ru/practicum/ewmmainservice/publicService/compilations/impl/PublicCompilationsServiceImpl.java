@@ -23,12 +23,13 @@ public class PublicCompilationsServiceImpl implements PublicCompilationsService 
 
     @Override
     public List<CompilationDto> findCompilations(Boolean pinned, Pageable pageable) {
-
+log.info("Find compilations with pinned = {}", pinned);
         return repository.findAllByPinned(pinned, pageable).map(dtoMaper::toDto).toList();
     }
 
     @Override
     public CompilationDto findCompilation(Long compId) throws NotFoundException {
+        log.info("Find compilation id ={}", compId);
         return dtoMaper.toDto(adminService.findById(compId));
     }
 }

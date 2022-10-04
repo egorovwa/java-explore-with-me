@@ -151,6 +151,7 @@ public class AdminEventServiceImpl implements AdminEventService {
 
     @Override
     public void save(Event event) {
+        log.info("Event {} saved.", event);
         repository.save(event);
     }
 
@@ -160,6 +161,7 @@ public class AdminEventServiceImpl implements AdminEventService {
         List<Event> events = repository.findForAdmin(parameters.getUsers(), parameters.getCategories(),
                         parameters.getStates(), parameters.getRangeStart(), parameters.getRangeEnd(), parameters.getPageable())
                 .toList();
+        log.info("Find events with parameters {}", parameters);
         return events.stream().map(eventDtoMaper::toFulDto).collect(Collectors.toList());
     }
 

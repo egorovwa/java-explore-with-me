@@ -24,11 +24,13 @@ public class PrivateCategoryServiceImpl implements PrivateCategoryService {
 
     @Override
     public Collection<CategoryDto> findAllCategory() {
+        log.info("Public Find all category");
         return repository.findAll().stream().map(dtoMaper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public Category findCategoryById(Long catId) throws NotFoundException {
+        log.info("Find category id = {}", catId);
         return adminServicr.findByid(catId);
     }
 }

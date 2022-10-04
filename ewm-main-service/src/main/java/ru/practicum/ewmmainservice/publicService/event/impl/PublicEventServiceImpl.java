@@ -41,7 +41,7 @@ public class PublicEventServiceImpl implements PublicEventService {
             } catch (RuntimeException e) {
                 log.error(e.getMessage());
             }
-
+log.info("Find events with parameters {}", param);
             return repository.findAllForPublicAvailable(param.getText(), param.getCatIds(), param.getPaid(),
                             param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
                     .toList();
@@ -68,6 +68,7 @@ public class PublicEventServiceImpl implements PublicEventService {
         } catch (RuntimeException e) {
             log.error(e.getMessage());
         }
+        log.info("Find event id ={}", id);
         return dtoMaper.toFulDto(repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("id", id.toString(), "Event")));
     }

@@ -119,6 +119,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         Event event = repository.findById(eventId).orElseThrow(() ->
                 new NotFoundException("id", eventId.toString(), "Event"));
         if (event.getState().equals(EventState.PENDING)) {
+            log.info("Event id = {} CANCELED", eventId);
             event.setState(EventState.CANCELED);
             return eventDtoMaper.toFulDto(repository.save(event));
         } else {
@@ -132,6 +133,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         Event event = repository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("id", eventId.toString(), "Event"));
         if (user.equals(event.getInitiator())) {
+            log.info("Find Event id = {} for initiator id = {}", eventId, userId);
             return eventDtoMaper.toFulDto(event);
         } else {
             throw new IlegalUserIdException(userId, eventId, "Event");
@@ -142,6 +144,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     @Override
     public List<EventShortDto> findAllEventByInitiator(Long userId) throws NotFoundException {
         userAdminService.findById(userId);
+        log.info("Find all event for user id = {}", userId);
         return repository.findByInitiatorId(userId).stream().map(eventDtoMaper::toShortDto).collect(Collectors.toList());
     }
 }

@@ -62,6 +62,7 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public Compilation findById(Long compId) throws NotFoundException {
+        log.info("Find Compilation id = {}", compId);
         return repository.findById(compId).orElseThrow(() -> new NotFoundException("id", compId.toString(), "Compilation")
         );
     }
@@ -74,6 +75,7 @@ public class CompilationServiceImpl implements CompilationService {
                 .orElseThrow(() -> new FiledParamNotFoundException(String.format("Event id = %s not found in compilation id = %s", eventId,
                         compId)));
         compilation.getEvents().removeIf(r -> r.getId() == eventId);
+        log.info("Event id = {} deleted from compilation id ={}", eventId, compId);
         repository.save(compilation);
     }
 
@@ -82,7 +84,7 @@ public class CompilationServiceImpl implements CompilationService {
         Compilation compilation = findById(compId);
         Event event = eventService.findById(eventId);
         if (!compilation.getEvents().contains(event)) {
-
+            log.info("Event id = {} add from compilation id ={}", eventId, compId);
             compilation.getEvents().add(event);
             repository.save(compilation);
         } else {
@@ -97,6 +99,7 @@ public class CompilationServiceImpl implements CompilationService {
         if (compilation.getPinned()) {
             compilation.setPinned(false);
             repository.save(compilation);
+            log.info("Compilation deleted pinned");
         } else {
             throw new NotRequiredException("Compilation not pinned");
         }
@@ -107,6 +110,7 @@ public class CompilationServiceImpl implements CompilationService {
         Compilation compilation = findById(compId);
         if (!compilation.getPinned()) {
             compilation.setPinned(true);
+            log.info("Compilation add pinned");
             repository.save(compilation);
         } else {
             throw new NotRequiredException("Compilation already pinned");
