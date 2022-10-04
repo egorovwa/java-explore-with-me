@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.practicum.ewmmainservice.models.user.User;
 
 @Component
-public class UserDtoMaper {
+public class UserDtoMapper {
     public User fromCreateDto(NewUserDto dto) {
         return new User(dto.getEmail(), dto.getName());
     }

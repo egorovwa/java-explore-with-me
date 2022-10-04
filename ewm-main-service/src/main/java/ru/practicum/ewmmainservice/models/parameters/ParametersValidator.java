@@ -23,7 +23,7 @@ import java.util.List;
 public class ParametersValidator {
     private final UserAdminService userAdminService;
     private final CategoryService categoryService;
-    private final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    private final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
     public boolean adminFindEvents(ParametersAdminFindEvent parameters) throws NotValidParameterException, IllegalTimeException {
         if (parameters.getRangeStart() >= parameters.getRangeEnd()) {

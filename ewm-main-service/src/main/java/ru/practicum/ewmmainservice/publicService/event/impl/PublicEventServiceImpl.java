@@ -26,7 +26,7 @@ public class PublicEventServiceImpl implements PublicEventService {
     private final EwmClient client;
     private final PrivateEventRepository repository;
     private final EventDtoMaper dtoMaper;
-    private final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    private final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
     @Value("${app.name}")
     private String appName;

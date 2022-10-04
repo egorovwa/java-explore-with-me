@@ -59,7 +59,7 @@ class PublicEventControllerTest {
     AdminEventServiceImpl adminEventService;
     @Autowired
     EventDtoMaper eventDtoMaper;
-    DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    DateTimeFormatter formatter = Utils.getDateTimeFormatter();
     Event event1;
     Event event2;
     Event event3;

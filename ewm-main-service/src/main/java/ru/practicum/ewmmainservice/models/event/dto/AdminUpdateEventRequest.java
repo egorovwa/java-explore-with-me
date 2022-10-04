@@ -5,13 +5,13 @@ import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 
 @Data
 public class AdminUpdateEventRequest {
-    String annotation;
-    Long category;
-    String description;
-    String eventDate;
-    LocationDto location;
-    Boolean paid;
-    Integer participantLimit;
-    Boolean requestModeration;
-    String title;
+    private String annotation;
+    private Long category;
+    private String description;
+    private String eventDate;
+    private LocationDto location;
+    private Boolean paid;
+    private Integer participantLimit;
+    private Boolean requestModeration;
+    private String title;
 }

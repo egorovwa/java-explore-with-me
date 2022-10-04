@@ -89,7 +89,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         ParticipationRequest request = repository.findById(requestId)
                 .orElseThrow(() -> new NotFoundException("id", requestId.toString(), "ParticipationRequest"));
         if (user.equals(request.getRequester())) {
-            request.setStatus(RequestStatus.CANCELED);// TODO: 24.09.2022 may be delete?
+            request.setStatus(RequestStatus.CANCELED);
             log.info("Participation Request id {} canceled by requester id {}", requestId, userId);
             return dtoMaper.toDto(repository.save(request));
         } else {
@@ -117,7 +117,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
             Event event = eventService.findById(eventId);
             if (user.equals(event.getInitiator())) {
                 if (event.getRequestModeration()) {
-                    if (event.getParticipantLimit() > event.getParticipants().size()) { // TODO: 24.09.2022 User is initiator?
+                    if (event.getParticipantLimit() > event.getParticipants().size()) {
                         event.getParticipants().add(user);
                         eventService.save(event);
                         if (event.getParticipants().size() == event.getParticipantLimit()) {

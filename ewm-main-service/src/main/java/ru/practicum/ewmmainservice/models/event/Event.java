@@ -30,13 +30,13 @@ public class Event {
     private String annotation;
     @NotNull
     @ManyToOne
-    private Category category; // TODO: 20.09.2022 или объект
+    private Category category;
     @NotNull
     private Long createdOn;
     @Size(min = 20, max = 7000)
     private String description;
     @NotNull
-    private Long eventDate; // TODO: 19.09.2022 maper
+    private Long eventDate;
     @ManyToOne
     @NotNull
     private User initiator;

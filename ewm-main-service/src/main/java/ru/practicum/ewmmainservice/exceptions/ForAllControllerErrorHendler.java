@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 @RestControllerAdvice("ru.practicum.ewmmainservice")
 public class ForAllControllerErrorHendler {
-    final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
     @ExceptionHandler(IncorrectPageValueException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

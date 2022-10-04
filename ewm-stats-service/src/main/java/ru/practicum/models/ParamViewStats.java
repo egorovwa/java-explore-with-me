@@ -17,7 +17,7 @@ public class ParamViewStats {
     Long end;
     List<String> uris;
     Boolean unique;
-    DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
     public ParamViewStats(String start, String end, String[] uris, Boolean unique) {
         this.start = LocalDateTime.parse(URLDecoder.decode(start, StandardCharsets.UTF_8), formatter)

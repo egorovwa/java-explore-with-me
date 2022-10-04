@@ -15,13 +15,13 @@ import javax.validation.constraints.NotNull;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @NotNull
-    Float lat;	/*number($float)
+    private Float lat;	/*number($float)
     example: 55.754167
     Широта*/
     @NotNull
-    Float lon;	/*number($float)
+    private Float lon;	/*number($float)
     example: 37.62
     Долгота*/
 

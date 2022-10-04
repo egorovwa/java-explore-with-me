@@ -13,7 +13,7 @@ import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDto;
-import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
+import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,14 +24,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserAdminServiceImpl implements UserAdminService {
     private final UserAdminRepository repository;
-    private final UserDtoMaper userDtoMaper;
+    private final UserDtoMapper userDtoMapper;
 
     @Override
     public UserDto addNewUser(NewUserDto newUserDto) throws ModelAlreadyExistsException {
         try {
-            User user = repository.save(userDtoMaper.fromCreateDto(newUserDto));
+            User user = repository.save(userDtoMapper.fromCreateDto(newUserDto));
             log.info("Create new User {}", user);
-            return userDtoMaper.toDto(user);
+            return userDtoMapper.toDto(user);
         } catch (DataIntegrityViolationException e) {
             log.warn("Created user with email = {}, alredy exist.", newUserDto.getEmail());
             throw new ModelAlreadyExistsException("email", newUserDto.getEmail(), "User");
@@ -53,7 +53,7 @@ public class UserAdminServiceImpl implements UserAdminService {
     public Collection<UserDto> findAll(Pageable pageable) {
         log.info("Search for all users. With pageble: {}", pageable);
         return repository.findAll(pageable).stream()
-                .map(userDtoMaper::toDto)
+                .map(userDtoMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -61,7 +61,7 @@ public class UserAdminServiceImpl implements UserAdminService {
     public Collection<UserDto> findByIds(Long[] ids, Pageable pageable) {
         log.info("Search users by ids {}", Arrays.asList(ids));
         return repository.findAllById(Arrays.asList(ids), pageable).stream()
-                .map(userDtoMaper::toDto)
+                .map(userDtoMapper::toDto)
                 .collect(Collectors.toList());
     }
 

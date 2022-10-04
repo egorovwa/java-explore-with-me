@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static ru.practicum.ewmstatscontract.utils.Utils.HOUR;
-import static ru.practicum.ewmstatscontract.utils.Utils.getDateTimeFormater;
+import static ru.practicum.ewmstatscontract.utils.Utils.getDateTimeFormatter;
 
 
 @Service
@@ -36,12 +36,12 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     private final PrivateEventRepository repository;
     private final EventDtoMaper eventDtoMaper;
     private final LocationService locationService;
-    private final DateTimeFormatter formatter = getDateTimeFormater();
+    private final DateTimeFormatter formatter = getDateTimeFormatter();
 
     @Override
     public EventFullDto createEvent(Long userId, NewEventDto newEventDto) throws FiledParamNotFoundException {
 
-        try { // TODO: 21.09.2022 duplicate?
+        try {
             Category category = categoryService.findByid(newEventDto.getCategory());
             User user = userAdminService.findById(userId);
             Location location = locationService

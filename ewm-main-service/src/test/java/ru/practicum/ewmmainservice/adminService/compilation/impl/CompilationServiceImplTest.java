@@ -21,7 +21,7 @@ import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
+import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CompilationServiceImplTest {
-    final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), new LocationDtoMaper());
+    final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), new LocationDtoMaper());
     @InjectMocks
     CompilationServiceImpl service;
     @Mock

@@ -22,7 +22,7 @@ import ru.practicum.ewmmainservice.models.event.dto.UpdateEventRequest;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
+import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 
 import java.nio.charset.StandardCharsets;
 
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PrivateEventControllerTest {
     private static final String API = "/users";
     private final LocationDtoMaper locationDtoMaper = new LocationDtoMaper();
-    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), locationDtoMaper);
+    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), locationDtoMaper);
     @MockBean
     PrivateEventService service;
     @Autowired

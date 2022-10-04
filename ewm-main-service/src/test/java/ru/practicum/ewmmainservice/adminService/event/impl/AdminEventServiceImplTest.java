@@ -46,7 +46,7 @@ class AdminEventServiceImplTest {
     ParametersValidator validator;
     @InjectMocks
     AdminEventServiceImpl service;
-    final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
     Event event;
     @Mock
     private AdminEwentRepository repository;
@@ -59,7 +59,7 @@ class AdminEventServiceImplTest {
 
     @BeforeEach
     void setup() {
-        event = new Event(1L, "anatation", new Category(1L, "category"),
+        event = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -87,7 +87,7 @@ class AdminEventServiceImplTest {
         request.setParticipantLimit(100);
         request.setRequestModeration(false);
         request.setTitle("updated");
-        Event saved = new Event(1L, "anatation", new Category(1L, "category"),
+        Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -125,7 +125,7 @@ class AdminEventServiceImplTest {
         request.setParticipantLimit(100);
         request.setRequestModeration(false);
         request.setTitle("updated");
-        Event saved = new Event(1L, "anatation", new Category(1L, "category"),
+        Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -160,7 +160,7 @@ class AdminEventServiceImplTest {
         request.setParticipantLimit(100);
         request.setRequestModeration(false);
         request.setTitle("updated");
-        Event saved = new Event(1L, "anatation", new Category(1L, "category"),
+        Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -191,7 +191,7 @@ class AdminEventServiceImplTest {
     void test3_1publishEvent() throws NotFoundException, StatusException, IllegalTimeException {
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
-        Event saved = new Event(1L, "anatation", new Category(1L, "category"),
+        Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -208,7 +208,7 @@ class AdminEventServiceImplTest {
 
     @Test
     void test3_2publishEvent_whenStatusNotWaiting() {
-        Event notWaiting = new Event(1L, "anatation", new Category(1L, "category"),
+        Event notWaiting = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -224,7 +224,7 @@ class AdminEventServiceImplTest {
     void test3_3publishEvent_whenNotFound() throws NotFoundException, StatusException, IllegalTimeException {
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
-        Event saved = new Event(1L, "anatation", new Category(1L, "category"),
+        Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -241,7 +241,7 @@ class AdminEventServiceImplTest {
 
     @Test
     void test3_3publishEvent_whenTimeNow() {
-        Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
+        Event timeNow = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -257,7 +257,7 @@ class AdminEventServiceImplTest {
     void test4_1rejectEvent() throws NotFoundException, StatusException, IllegalTimeException {
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
-        Event saved = new Event(1L, "anatation", new Category(1L, "category"),
+        Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -273,7 +273,7 @@ class AdminEventServiceImplTest {
 
     @Test
     void test4_2rejectEvent_whenStatusNotWaiting() {
-        Event notWaiting = new Event(1L, "anatation", new Category(1L, "category"),
+        Event notWaiting = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -287,7 +287,7 @@ class AdminEventServiceImplTest {
 
     @Test
     void test4_3rejectEvent_whenTimeNow() {
-        Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
+        Event timeNow = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -300,7 +300,7 @@ class AdminEventServiceImplTest {
 
     @Test
     void test5_1findAllEvents() throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
-        Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
+        Event timeNow = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
@@ -328,7 +328,7 @@ class AdminEventServiceImplTest {
 
     @Test
     void test5_2findAllEvents_whenParameterIncorrect() throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
-        Event timeNow = new Event(1L, "anatation", new Category(1L, "category"),
+        Event timeNow = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
                 new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),

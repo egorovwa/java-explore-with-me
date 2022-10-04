@@ -11,7 +11,7 @@ public class ApiError {
     /*:
     Сведения об ошибке
 */
-    Object[] errors; // TODO: 20.09.2022 разобраться
+    Object[] errors;
     String message;
 /*    example: Only pending or canceled events can be changed
     Сообщение об ошибке*/

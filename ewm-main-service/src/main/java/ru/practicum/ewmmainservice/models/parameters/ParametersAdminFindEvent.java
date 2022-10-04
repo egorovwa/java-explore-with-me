@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 
 @Data
 public class ParametersAdminFindEvent {
-    List<Long> users;
-    List<EventState> states;
-    List<Long> categories;
-    Long rangeStart;
-    Long rangeEnd;
-    Pageable pageable;
-    DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    private List<Long> users;
+    private List<EventState> states;
+    private List<Long> categories;
+    private Long rangeStart;
+    private Long rangeEnd;
+    private Pageable pageable;
+    private DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
     public ParametersAdminFindEvent(Long[] users, String[] states, Long[] categories, String rangeStart,
                                     String rangeEnd, Integer from, Integer size) throws IncorrectPageValueException {

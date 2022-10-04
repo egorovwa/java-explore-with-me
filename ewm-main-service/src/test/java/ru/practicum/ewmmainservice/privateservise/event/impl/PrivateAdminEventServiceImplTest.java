@@ -19,7 +19,7 @@ import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
+import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;
 import ru.practicum.ewmmainservice.privateservise.location.LocationService;
 import ru.practicum.ewmstatscontract.utils.Utils;
@@ -39,10 +39,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class PrivateAdminEventServiceImplTest {
     @Mock
-    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), new LocationDtoMaper());
+    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), new LocationDtoMaper());
     @InjectMocks
     PrivateEventServiceImpl service;
-    final DateTimeFormatter formater = Utils.getDateTimeFormater();
+    final DateTimeFormatter formater = Utils.getDateTimeFormatter();
     @Mock
     private CategoryService categoryService;
     @Mock

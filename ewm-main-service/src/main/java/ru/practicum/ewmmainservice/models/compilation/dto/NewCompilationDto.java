@@ -12,9 +12,9 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewCompilationDto {
-    Collection<Long> events;
+   private Collection<Long> events;
     @NonNull
-    Boolean pinned;
+    private Boolean pinned;
     @NotBlank
-    String title;
+    private String title;
 }

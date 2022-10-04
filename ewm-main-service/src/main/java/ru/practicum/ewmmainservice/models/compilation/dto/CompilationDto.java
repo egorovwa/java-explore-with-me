@@ -13,11 +13,11 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompilationDto {
-    Collection<EventShortDto> events;
-    Long id;
+    private Collection<EventShortDto> events;
+    private Long id;
     @NonNull
-    Boolean pinned;
+    private Boolean pinned;
     @NonNull
     @NotBlank
-    String title;
+    private String title;
 }

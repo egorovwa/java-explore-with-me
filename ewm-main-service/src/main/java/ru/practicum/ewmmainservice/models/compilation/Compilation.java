@@ -15,12 +15,12 @@ import java.util.Collection;
 @AllArgsConstructor
 public class Compilation {
     @OneToMany
-    Collection<Event> events;
+    private Collection<Event> events;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @NonNull
-    Boolean pinned;
+    private Boolean pinned;
     @NonNull
-    String title;
+    private String title;
 }

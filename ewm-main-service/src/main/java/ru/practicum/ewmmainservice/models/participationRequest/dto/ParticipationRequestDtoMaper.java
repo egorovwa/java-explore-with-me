@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class ParticipationRequestDtoMaper {
-    private final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    private final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
     public ParticipationRequestDto toDto(ParticipationRequest request) {
         return new ParticipationRequestDto(formatter.format(LocalDateTime.ofEpochSecond(request.getCreated(), 0,

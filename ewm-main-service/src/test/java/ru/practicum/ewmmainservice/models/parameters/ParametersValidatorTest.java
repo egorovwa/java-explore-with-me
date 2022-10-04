@@ -31,7 +31,7 @@ class ParametersValidatorTest {
     private UserAdminService userAdminService;
     @Mock
     private CategoryService categoryService;
-    DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    DateTimeFormatter formatter = Utils.getDateTimeFormatter();
     @InjectMocks
     private ParametersValidator validator;
 

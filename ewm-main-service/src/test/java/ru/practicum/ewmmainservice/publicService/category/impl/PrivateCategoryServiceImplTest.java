@@ -16,9 +16,9 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class PrivatCategoryServiceImplTest {
+class PrivateCategoryServiceImplTest {
     @InjectMocks
-    PrivatCategoryServiceImpl service;
+    PrivateCategoryServiceImpl service;
     @Mock
     private CategoryService adminServicr;
     @Mock

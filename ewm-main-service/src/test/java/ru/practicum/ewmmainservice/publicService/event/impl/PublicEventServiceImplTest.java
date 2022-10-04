@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PublicEventServiceImplTest {
-    final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
     @InjectMocks
     PublicEventServiceImpl service;
     @Mock

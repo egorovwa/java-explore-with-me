@@ -16,7 +16,7 @@ import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDto;
-import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
+import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 import ru.practicum.ewmmainservice.utils.PageParam;
 
 import java.util.Arrays;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserAdminServiceImplTest {
-    final UserDtoMaper dtoMaper = new UserDtoMaper();
+    final UserDtoMapper dtoMaper = new UserDtoMapper();
     final UserAdminRepository repository = Mockito.mock(UserAdminRepository.class);
     final UserAdminServiceImpl service = new UserAdminServiceImpl(repository, dtoMaper);
 

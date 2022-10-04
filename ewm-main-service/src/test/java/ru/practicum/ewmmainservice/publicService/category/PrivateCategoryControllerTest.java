@@ -18,11 +18,11 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PrivatCategoryController.class)
-class PrivatCategoryControllerTest {
+@WebMvcTest(PrivateCategoryController.class)
+class PrivateCategoryControllerTest {
     private static final String API = "/categories";
     @MockBean
-    PrivatCategoryService privatCategoryService;
+    PrivateCategoryService privateCategoryService;
     @Autowired
     ObjectMapper mapper;
     MockMvc mvc;
@@ -38,7 +38,7 @@ class PrivatCategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8))
                 .andExpect(status().isOk());
-        verify(privatCategoryService, times(1)).findAllCategory();
+        verify(privateCategoryService, times(1)).findAllCategory();
     }
 
     @Test
@@ -47,6 +47,6 @@ class PrivatCategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8))
                 .andExpect(status().isOk());
-        verify(privatCategoryService, times(1)).findCategoryById(1L);
+        verify(privateCategoryService, times(1)).findCategoryById(1L);
     }
 }

@@ -40,7 +40,7 @@ class UserAdminControllerTest {
     void setup(WebApplicationContext web) {
         mvc = MockMvcBuilders.webAppContextSetup(web).build();
     }
-// TODO: 20.09.2022 протестировать лучше ApiError
+
 
     @Test
     void test1_1addNewUser() throws Exception {

@@ -61,7 +61,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public Compilation findById(Long compId) throws NotFoundException { // TODO: 25.09.2022 если не пригодиться private
+    public Compilation findById(Long compId) throws NotFoundException {
         return repository.findById(compId).orElseThrow(() -> new NotFoundException("id", compId.toString(), "Compilation")
         );
     }

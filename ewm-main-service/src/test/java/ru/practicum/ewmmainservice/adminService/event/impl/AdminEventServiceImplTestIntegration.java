@@ -41,7 +41,7 @@ import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @AutoConfigureTestDatabase
-class AdminEventServiceImplTestItegration {
+class AdminEventServiceImplTestIntegration {
     @Autowired
     UserAdminRepository userAdminRepository;
     @Autowired
@@ -54,7 +54,7 @@ class AdminEventServiceImplTestItegration {
     AdminEventServiceImpl service;
     @Autowired
     EventDtoMaper eventDtoMaper;
-    final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
     Event event1;
     Event event2;
     Event event3;
@@ -94,7 +94,7 @@ class AdminEventServiceImplTestItegration {
 
     @Test
     @DirtiesContext
-    void test1_3findAllEvents_whenCategoryEmpty_user123_category1_satateWaiting() throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
+    void test1_3findAllEvents_whenCategoryEmpty_user123_category1_stateWaiting() throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
         data();
         Long[] usersId = {1L, 2L, 3L};
         Long[] catId = {1L};
@@ -117,8 +117,8 @@ class AdminEventServiceImplTestItegration {
         User user2 = new User(2L, "emai@rrr.ru", "name2");
         User user3 = new User(3L, "sss@sss.fff", "name3");
         User user4 = new User(4L, "sss@sssl4.fff", "name4");
-        Collection<User> participans = new ArrayList<>();
-        participans.add(user4);
+        Collection<User> participants = new ArrayList<>();
+        participants.add(user4);
 
         ParticipationRequest participationRequest = new ParticipationRequest();
         event1 = new Event(1L,
@@ -152,7 +152,7 @@ class AdminEventServiceImplTestItegration {
                 PENDING,
                 "title",
                 5,
-                participans);
+                participants);
         event3 = new Event(3L,
                 "anatation anatation anatation anatation",
                 category3,

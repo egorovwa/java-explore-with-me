@@ -10,7 +10,7 @@ import ru.practicum.ewmmainservice.models.event.dto.EventShortDto;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
+import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -20,9 +20,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CompilationDtoMaperTest {
-    private final CompilationDtoMaper dtoMaper = new CompilationDtoMaper(new EventDtoMaper(new UserDtoMaper()
+    private final CompilationDtoMaper dtoMaper = new CompilationDtoMaper(new EventDtoMaper(new UserDtoMapper()
             , new LocationDtoMaper()));
-    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), new LocationDtoMaper());
+    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), new LocationDtoMaper());
 
     @Test
     void toDto() {

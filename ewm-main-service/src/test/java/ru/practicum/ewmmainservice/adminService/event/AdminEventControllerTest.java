@@ -23,8 +23,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AdminEventControlller.class)
-class AdminEventControlllerTest {
+@WebMvcTest(AdminEventController.class)
+    class AdminEventControllerTest {
     private static final String API = "/admin/events/";
     @MockBean
     AdminEventService service;
@@ -73,7 +73,7 @@ class AdminEventControlllerTest {
     }
 
     @Test
-    void test2_2_publishEvent_whenStateNotWating() throws Exception {
+    void test2_2_publishEvent_whenStateNotWaiting() throws Exception {
         when(service.publishEvent(1L))
                 .thenThrow(new StatusException("message"));
         mvc.perform(patch(API + "/{eventId}/publish", 1)
@@ -92,7 +92,7 @@ class AdminEventControlllerTest {
     }
 
     @Test
-    void test3_2_rejectEvent_whenStateNotWating() throws Exception {
+    void test3_2_rejectEvent_whenStateNotWaiting() throws Exception {
         when(service.rejectEvent(1L))
                 .thenThrow(new StatusException("message"));
         mvc.perform(patch(API + "/{eventId}/reject", 1)
@@ -103,15 +103,15 @@ class AdminEventControlllerTest {
     }
 
     @Test
-    void test4_1findAllEvents() throws Exception { // TODO: 27.09.2022 ????
+    void test4_1findAllEvents() throws Exception {
         Long[] users = {1L, 2L};
-        Long[] catid = {1L, 2L};
+        Long[] catId = {1L, 2L};
         String[] states = {"PENDING", "PUBLISHED", "CANCELED"};
         String rangeStart = "2022-01-01 10:10:10";
         String rangeEnd = "2022-01-01 20:10:10";
         Integer from = 0;
         Integer size = 10;
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(users, states, catid, rangeStart, rangeEnd, from, size);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(users, states, catId, rangeStart, rangeEnd, from, size);
         mvc.perform(get(API)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)

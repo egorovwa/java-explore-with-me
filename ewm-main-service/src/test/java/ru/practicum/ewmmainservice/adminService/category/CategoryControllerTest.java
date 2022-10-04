@@ -62,7 +62,7 @@ class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .content(mapper.writeValueAsString(newCategoryDto)))
-                .andExpect(status().isBadRequest()); // TODO: 21.09.2022 APIerror
+                .andExpect(status().isBadRequest());
         verify(categoryService, times(0)).createCategory(newCategoryDto);
     }
 

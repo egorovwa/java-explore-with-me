@@ -37,7 +37,7 @@ import static ru.practicum.ewmstatscontract.utils.Utils.HOUR;
 public class AdminEventServiceImpl implements AdminEventService {
     private final AdminEwentRepository repository;
     private final CategoryService categoryService;
-    private final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    private final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
     private final LocationDtoMaper locationDtoMaper;
     private final LocationService locationService;
     private final EventDtoMaper eventDtoMaper;
@@ -46,7 +46,7 @@ public class AdminEventServiceImpl implements AdminEventService {
 
     @Override
     public Collection<Event> findByCategoryId(Long catId) {
-        log.info("Find event by categoty id id {}", catId);
+        log.info("Find event by category id id {}", catId);
         return repository.findAllByCategoryId(catId);
     }
 

@@ -9,7 +9,7 @@ import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.models.user.dto.UserDtoMaper;
+import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 import ru.practicum.ewmmainservice.models.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 class EventDtoMaperTest {
     private final LocationDtoMaper locationDtoMaper = new LocationDtoMaper();
-    private final EventDtoMaper maper = new EventDtoMaper(new UserDtoMaper(), locationDtoMaper);
+    private final EventDtoMaper maper = new EventDtoMaper(new UserDtoMapper(), locationDtoMaper);
 
     @Test
     void fromNewDto() {
@@ -50,7 +50,7 @@ class EventDtoMaperTest {
         assertThat(event.getCategory(), is(category));
         assertThat(event.getDescription(), is("Description"));
         assertThat(event.getEventDate(), is(eventDate.toEpochSecond(ZoneOffset.UTC)));
-        assertThat(event.getLocation(), is(locationDtoMaper.fromDto(locationDto))); // TODO: 21.09.2022  location dto maper
+        assertThat(event.getLocation(), is(locationDtoMaper.fromDto(locationDto)));
         assertThat(event.getPaid(), is(true));
         assertThat(event.getParticipantLimit(), is(10));
         assertThat(event.getRequestModeration(), is(false));

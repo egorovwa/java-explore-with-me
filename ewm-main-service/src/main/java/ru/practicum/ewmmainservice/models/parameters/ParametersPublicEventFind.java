@@ -15,16 +15,16 @@ import java.util.List;
 
 @Data
 public class ParametersPublicEventFind {
-    String text;
-    List<Long> catIds;
-    Boolean paid;
-    Long rangeStart;
-    Long rangeEnd;
-    Boolean onlyAvailable;
-    Pageable pageable;
-    String clientIp;
-    String endpointPath;
-    DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    private String text;
+    private List<Long> catIds;
+    private Boolean paid;
+    private Long rangeStart;
+    private Long rangeEnd;
+    private Boolean onlyAvailable;
+    private Pageable pageable;
+    private String clientIp;
+    private String endpointPath;
+    private DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
     public ParametersPublicEventFind(String text, Long[] catIds, Boolean paid, String rangeStart,
                                      String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size,

@@ -10,9 +10,9 @@ import java.util.List;
 
 @Repository
 public interface ParticipationRequestRepository extends JpaRepository<ParticipationRequest, Long> {
-    Collection<ParticipationRequest> findAllByRequesterId(Long requesterId); // TODO: 24.09.2022 тест обязательно
+    Collection<ParticipationRequest> findAllByRequesterId(Long requesterId);
 
-    Collection<ParticipationRequest> findAllByEventIdAndStatus(Long rventId, RequestStatus status); // TODO: 24.09.2022 test
+    Collection<ParticipationRequest> findAllByEventIdAndStatus(Long rventId, RequestStatus status);
 
     List<ParticipationRequest> findAllByEventId(Long eventId);
 }

@@ -10,6 +10,6 @@ public class LocationDtoMaper {
     }
 
     public Location fromDto(LocationDto locationDto) {
-        return new Location(null, locationDto.lat, locationDto.lon);
+        return new Location(null, locationDto.getLat(), locationDto.getLon());
     }
 }

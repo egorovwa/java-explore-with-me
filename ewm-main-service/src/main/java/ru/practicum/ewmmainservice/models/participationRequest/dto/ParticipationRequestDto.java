@@ -9,9 +9,9 @@ import ru.practicum.ewmmainservice.models.participationRequest.RequestStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ParticipationRequestDto {
-    String created;
-    Long event;
-    Long id;
-    Long requester;
-    RequestStatus status;
+    private String created;
+    private Long event;
+    private Long id;
+    private Long requester;
+    private RequestStatus status;
 }

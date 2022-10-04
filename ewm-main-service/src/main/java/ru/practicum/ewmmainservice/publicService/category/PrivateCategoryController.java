@@ -17,8 +17,8 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RequestMapping("/categories")
 @Validated
-public class PrivatCategoryController {
-    private final PrivatCategoryService service;
+public class PrivateCategoryController {
+    private final PrivateCategoryService service;
 
     @GetMapping
     public Collection<CategoryDto> findAllCategory() {

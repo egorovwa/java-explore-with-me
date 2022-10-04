@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 
 public class EndpointHitDtoMaper {
-    private final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    private final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
     public EndpointHitDto toDto(EndpointHit endpointHit) {
         return new EndpointHitDto(endpointHit.getId(), endpointHit.getApp(), endpointHit.getUri(), endpointHit.getIp(),

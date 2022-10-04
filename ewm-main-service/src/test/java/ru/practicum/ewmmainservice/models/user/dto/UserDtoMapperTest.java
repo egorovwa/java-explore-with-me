@@ -6,8 +6,8 @@ import ru.practicum.ewmmainservice.models.user.User;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-class UserDtoMaperTest {
-    private final UserDtoMaper dtoMaper = new UserDtoMaper();
+class UserDtoMapperTest {
+    private final UserDtoMapper dtoMaper = new UserDtoMapper();
 
     @Test
     void fromCreateDto() {

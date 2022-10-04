@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Table(name = "categorys")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category { // TODO: 20.09.2022 dto может и не надо
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

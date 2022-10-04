@@ -23,11 +23,11 @@ public class EventFullDto {
     private Category category;
     private Integer confirmedRequests; // одобренные участники кол-во
     @NotNull
-    private String createdOn; // TODO: 21.09.2022 formater in maper "yyyy-MM-dd HH:mm:ss"
+    private String createdOn;
     @Size(max = 7000, min = 20)
     private String description;
     @NotNull
-    private String eventDate; // TODO: 21.09.2022 formater in maper "yyyy-MM-dd HH:mm:ss"
+    private String eventDate;
     @NotNull
     private UserShortDto initiator;
     @NotNull
@@ -36,7 +36,7 @@ public class EventFullDto {
     private Boolean paid;
     private int participantLimit;
 
-    private String publishedOn; // TODO: 21.09.2022 formater in maper "yyyy-MM-dd HH:mm:ss"
+    private String publishedOn;
     private Boolean requestModeration;
     @NotNull
     private EventState state;

@@ -16,17 +16,17 @@ import javax.validation.constraints.NotNull;
 @Table(name = "participationrequests", uniqueConstraints = {@UniqueConstraint(columnNames = {"event_id", "requester_id"})})
 public class ParticipationRequest {
     @NotNull
-    Long created;
+    private Long created;
     @ManyToOne
     @NotNull
-    Event event;
+    private Event event;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @ManyToOne
     @NotNull
-    User requester;
+    private User requester;
     @NotNull
     @Enumerated(EnumType.STRING)
-    RequestStatus status;
+    private RequestStatus status;
 }

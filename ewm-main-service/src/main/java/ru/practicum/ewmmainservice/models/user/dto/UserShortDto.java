@@ -10,7 +10,7 @@ import javax.validation.constraints.Email;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserShortDto {
-    Long id;
+   private Long id;
     @Email
     private String name;
 }

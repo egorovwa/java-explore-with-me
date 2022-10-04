@@ -7,7 +7,7 @@ import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import java.util.Collection;
 
 
-public interface PrivatCategoryService {
+public interface PrivateCategoryService {
     Collection<CategoryDto> findAllCategory();
 
     Category findCategoryById(Long catId) throws NotFoundException;

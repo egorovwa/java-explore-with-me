@@ -9,7 +9,7 @@ import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
-import ru.practicum.ewmmainservice.publicService.category.PrivatCategoryService;
+import ru.practicum.ewmmainservice.publicService.category.PrivateCategoryService;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PrivatCategoryServiceImpl implements PrivatCategoryService {
+public class PrivateCategoryServiceImpl implements PrivateCategoryService {
     private final CategoryService adminServicr;
     private final CategoryRepository repository;
     private final CategoryDtoMaper dtoMaper;

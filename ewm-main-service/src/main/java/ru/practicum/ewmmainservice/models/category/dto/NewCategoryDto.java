@@ -9,5 +9,5 @@ import javax.validation.constraints.Size;
 public class NewCategoryDto {
     @NotBlank
     @Size(min = 3, max = 50)
-    String name;
+    private String name;
 }

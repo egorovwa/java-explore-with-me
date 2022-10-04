@@ -16,13 +16,13 @@ public class NewEventDto {
     @Size(min = 20, max = 7000)
     private String description;
     @DateTimeFormat
-    private String eventDate; // TODO: 19.09.2022 maper
+    private String eventDate;
     @NotNull
     private LocationDto location;
     @NotNull
     private Boolean paid;
-    private int participantLimit = 0; // TODO: 19.09.2022 Ограничение на количество участников. Значение 0 - означает отсутствие ограничения
-    private Boolean requestModeration; // TODO: 19.09.2022 Нужна ли пре-модерация заявок на участие. Если true, то все заявки будут ожидать подтверждения инициатором события. Если false - то будут подтверждаться автоматически.
+    private int participantLimit = 0;
+    private Boolean requestModeration;
     @Size(min = 3, max = 120)
     private String title;
 }

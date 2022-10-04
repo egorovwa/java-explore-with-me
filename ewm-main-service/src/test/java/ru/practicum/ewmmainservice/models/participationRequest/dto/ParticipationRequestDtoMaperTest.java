@@ -19,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ParticipationRequestDtoMaperTest {
-    final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
     final ParticipationRequestDtoMaper dtoMaper = new ParticipationRequestDtoMaper();
 
     @Test
