@@ -3,8 +3,9 @@ package ru.practicum.ewmmainservice.privateservise.event.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.ewmmainservice.adminService.category.CategoryService;
-import ru.practicum.ewmmainservice.adminService.user.UserAdminService;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.ewmmainservice.adminservice.category.CategoryService;
+import ru.practicum.ewmmainservice.adminservice.user.UserAdminService;
 import ru.practicum.ewmmainservice.exceptions.*;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
@@ -39,6 +40,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     private final DateTimeFormatter formatter = getDateTimeFormatter();
 
     @Override
+    @Transactional
     public EventFullDto createEvent(Long userId, NewEventDto newEventDto) throws FiledParamNotFoundException {
 
         try {
@@ -57,63 +59,63 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto patchEvent(Long userId, UpdateEventRequest requestEvent) throws StatusException, IllegalTimeException, NotFoundException, IlegalUserIdException {
         Event event = repository.findById(requestEvent.getEventId())
                 .orElseThrow(() -> new NotFoundException("id", String.valueOf(requestEvent.getEventId()), "Event"));
-        if (Objects.equals(event.getInitiator().getId(), userId)) {
-            if (event.getState().equals(EventState.PENDING) || event.getState().equals(EventState.CANCELED)) {
-                if (event.getEventDate() > LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR * 2) {
-                    if (requestEvent.getAnnotation() != null) {
-                        event.setAnnotation(requestEvent.getAnnotation());
-                        log.info("The user id = {} updated the event id = {} Annotation", userId, event.getId());
-                    }
-                    if (requestEvent.getCategory() != null) {
-                        event.setCategory(categoryService.findByid(requestEvent.getCategory()));
-                        log.info("The user id = {} updated the event id = {} category", userId, event.getId());
-                    }
-                    if (requestEvent.getDescription() != null) {
-                        event.setDescription(requestEvent.getDescription());
-                        log.info("The user id = {} updated the event id = {} Description", userId, event.getId());
-                    }
-                    if (requestEvent.getEventDate() != null) {
-                        Long reuestDate = LocalDateTime.parse(requestEvent.getEventDate(), formatter)
-                                .toEpochSecond(ZoneOffset.UTC);
-                        if (reuestDate > LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR * 2) {
-                            event.setEventDate(reuestDate);
-                            log.info("The user id = {} updated the event id = {} EventDate", userId, event.getId());
-                        } else {
-                            throw new IllegalTimeException("The event should start no earlier than 2 hours later",
-                                    formatter.format(LocalDateTime.ofEpochSecond(event.getEventDate(), 0, ZoneOffset.UTC)));
-                        }
-                    }
-                    if (requestEvent.getPaid() != null) {
-                        event.setPaid(requestEvent.getPaid());
-                        log.info("The user id = {} updated the event id = {} Paid", userId, event.getId());
-                    }
-                    if (requestEvent.getParticipantLimit() != null) {
-                        event.setParticipantLimit(requestEvent.getParticipantLimit());
-                        log.info("The user id = {} updated the event id = {} ParticipantLimit", userId, event.getId());
-                    }
-                    if (requestEvent.getTitle() != null) {
-                        event.setTitle(requestEvent.getTitle());
-                        log.info("The user id = {} updated the event id = {} Title", userId, event.getId());
-                    }
-                    return eventDtoMaper.toFulDto(repository.save(event));
-                } else {
-                    throw new IllegalTimeException("The event should start no earlier than 2 hours later",
-                            formatter.format(LocalDateTime.ofEpochSecond(event.getEventDate(), 0, ZoneOffset.UTC)));
-                }
-
-            } else {
-                throw new StatusException(String.format("Only pending or canceled events can be changed", event.getId()));
-            }
-
-        } else {
+        if (!Objects.equals(event.getInitiator().getId(), userId)) {
             throw new IlegalUserIdException(userId, event.getId(), "Event");
         }
+        if (event.getState().equals(EventState.PUBLISHED)) {
+            throw new StatusException(String.format("Only pending or canceled events can be changed", event.getId()));
+        }
+        if (event.getEventDate() <= LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR * 2) {
+            throw new IllegalTimeException("The event should start no earlier than 2 hours later",
+                    formatter.format(LocalDateTime.ofEpochSecond(event.getEventDate(), 0, ZoneOffset.UTC)));
+        }
+        if (requestEvent.getAnnotation() != null) {
+            event.setAnnotation(requestEvent.getAnnotation());
+            log.info("The user id = {} updated the event id = {} Annotation", userId, event.getId());
+        }
+        if (requestEvent.getCategory() != null) {
+            event.setCategory(categoryService.findByid(requestEvent.getCategory()));
+            log.info("The user id = {} updated the event id = {} category", userId, event.getId());
+        }
+        if (requestEvent.getDescription() != null) {
+            event.setDescription(requestEvent.getDescription());
+            log.info("The user id = {} updated the event id = {} Description", userId, event.getId());
+        }
+        if (requestEvent.getEventDate() != null) {
+            Long reuestDate = LocalDateTime.parse(requestEvent.getEventDate(), formatter)
+                    .toEpochSecond(ZoneOffset.UTC);
+            if (reuestDate <= LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR * 2) {
+                throw new IllegalTimeException("The event should start no earlier than 2 hours later",
+                        formatter.format(LocalDateTime.ofEpochSecond(event.getEventDate(), 0, ZoneOffset.UTC)));
+            }
+            event.setEventDate(reuestDate);
+            log.info("The user id = {} updated the event id = {} EventDate", userId, event.getId());
+        }
+        if (requestEvent.getPaid() != null) {
+            event.setPaid(requestEvent.getPaid());
+            log.info("The user id = {} updated the event id = {} Paid", userId, event.getId());
+        }
+        if (requestEvent.getParticipantLimit() != null) {
+            event.setParticipantLimit(requestEvent.getParticipantLimit());
+            log.info("The user id = {} updated the event id = {} ParticipantLimit", userId, event.getId());
+        }
+        if (requestEvent.getTitle() != null) {
+            event.setTitle(requestEvent.getTitle());
+            log.info("The user id = {} updated the event id = {} Title", userId, event.getId());
+        }
+        return eventDtoMaper.toFulDto(repository.save(event));
     }
 
+
+
+
+
     @Override
+    @Transactional
     public EventFullDto eventСancellation(Long userId, Long eventId) throws NotFoundException, StatusException {
         User user = userAdminService.findById(userId);
         Event event = repository.findById(eventId).orElseThrow(() ->
