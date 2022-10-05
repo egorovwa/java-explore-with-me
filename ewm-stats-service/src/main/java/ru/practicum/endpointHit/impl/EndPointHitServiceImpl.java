@@ -11,6 +11,9 @@ import ru.practicum.ewmstatscontract.dto.ViewStatsDto;
 import ru.practicum.models.EndpointHitDtoMaper;
 import ru.practicum.models.ParamViewStats;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -28,13 +31,15 @@ public class EndPointHitServiceImpl implements EndPointHitService {
     }
 
     @Override
-    public ViewStatsDto getStat(ParamViewStats param) {
+    public Collection<ViewStatsDto> getStat(ParamViewStats param) {
         if (param.getUnique()) {
-            Long hitCount = repository.getHitCountUnique(param.getStart(), param.getEnd(), param.getUris());
-            return new ViewStatsDto(appName, urlMainService, hitCount);
+            return param.getUris().stream().map(uri -> {
+                return new ViewStatsDto(appName, uri, repository.getHitCountUnique(param.getStart(), param.getEnd(), uri));
+            }).collect(Collectors.toList());
         } else {
-            Long hitCount = repository.getHitCountAll(param.getStart(), param.getEnd(), param.getUris());
-            return new ViewStatsDto(appName, urlMainService, hitCount);
+            return param.getUris().stream().map(uri -> {
+                return new ViewStatsDto(appName, uri, repository.getHitCountAll(param.getStart(), param.getEnd(), uri));
+            }).collect(Collectors.toList());
         }
     }
 }

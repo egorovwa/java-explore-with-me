@@ -34,7 +34,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
     @Override
     @Transactional
-    public ParticipationRequestDto createRequest(Long userId, Long eventId) throws NotFoundException,
+    public ParticipationRequestDto createRequest(Long userId, Long eventId) throws
             FiledParamNotFoundException, IlegalUserIdException, StatusException, NumberParticipantsExceededException {
         try {
             User user = userService.findById(userId);
@@ -175,8 +175,8 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         Event event = eventService.findById(eventId);
         if (user.equals(event.getInitiator())) {
             return repository.findAllByEventId(eventId).stream().map(dtoMaper::toDto).collect(Collectors.toList());
-        }else {
-           throw new  IlegalUserIdException(userId, eventId, "Event");
+        } else {
+            throw new IlegalUserIdException(userId, eventId, "Event");
         }
     }
 }

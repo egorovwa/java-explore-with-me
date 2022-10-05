@@ -16,6 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDto;
+import ru.practicum.ewmmainservice.utils.PageParam;
 
 import java.nio.charset.StandardCharsets;
 
@@ -28,12 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserAdminController.class)
 class UserAdminControllerTest {
+    private static final String API = "/admin/users";
     @MockBean
     UserAdminService userAdminService;
     @Autowired
     ObjectMapper mapper;
     MockMvc mvc;
-    private static String API = "/admin/users";
 
     @BeforeEach
     void setup(WebApplicationContext web) {
@@ -70,7 +71,7 @@ class UserAdminControllerTest {
     void test1_3addNewUser_UserAlredyExist() throws Exception {
         NewUserDto newUserDto = new NewUserDto("email@mail.com", "name");
         when(userAdminService.addNewUser(newUserDto))
-                .thenThrow(new ModelAlreadyExistsException( "param", "value", "className"));
+                .thenThrow(new ModelAlreadyExistsException("param", "value", "className"));
         mvc.perform(post("/admin/users")
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -90,18 +91,19 @@ class UserAdminControllerTest {
                 .param("size", "2"));
         Mockito.verify(userAdminService, times(1)).findAll(pageable);
     }
+
     @Test
     void test2_3findAll_withIds() throws Exception {
         Pageable pageable = PageRequest.of(0, 2);
         String[] ids = {"1", "2"};
-        Long[] idsLong = {1L,2L};
+        Long[] idsLong = {1L, 2L};
         mvc.perform(get(API)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8)
                 .param("from", "0")
                 .param("size", "2")
                 .param("ids", ids));
-        Mockito.verify(userAdminService, times(1)).findByIds(idsLong);
+        Mockito.verify(userAdminService, times(1)).findByIds(idsLong, PageParam.createPageable(0, 2));
     }
 
 

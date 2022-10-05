@@ -21,6 +21,7 @@ public class PrivatCategoryServiceImpl implements PrivatCategoryService {
     private final CategoryService adminServicr;
     private final CategoryRepository repository;
     private final CategoryDtoMaper dtoMaper;
+
     @Override
     public Collection<CategoryDto> findAllCategory() {
         return repository.findAll().stream().map(dtoMaper::toDto).collect(Collectors.toList());

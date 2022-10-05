@@ -30,12 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CategoryController.class)
 @Import(ForAllControllerErrorHendler.class)
 class CategoryControllerTest {
+    private static final String API = "/admin/categories";
     @MockBean
     CategoryService categoryService;
     @Autowired
     ObjectMapper mapper;
     MockMvc mvc;
-    private static String API = "/admin/categories";
 
     @BeforeEach
     void setup(WebApplicationContext web) {
@@ -104,20 +104,30 @@ class CategoryControllerTest {
 
     @Test
     void test3_1deleteCategory_withRelatedObjectsPresent() throws Exception {
-        doThrow(new RelatedObjectsPresent("message","Event", List.of(1L,2L, 3L)))
+        doThrow(new RelatedObjectsPresent("message", "Event", List.of(1L, 2L, 3L)))
                 .when(categoryService).deleteCategory(1L);
-        mvc.perform(delete(API+"/{catId}", 1)
+        mvc.perform(delete(API + "/{catId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8))
                 .andExpect(status().isConflict());
     }
+
     @Test
     void test3_2deleteCategory_notFound() throws Exception {
         doThrow(NotFoundException.class).when(categoryService).deleteCategory(1L);
-        mvc.perform(delete(API+"/{catId}", 1)
+        mvc.perform(delete(API + "/{catId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void test3_3deleteCategory() throws Exception {
+        mvc.perform(delete(API + "/{catId}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8))
+                .andExpect(status().isOk());
+        verify(categoryService, times(1)).deleteCategory(1L);
     }
 
 }

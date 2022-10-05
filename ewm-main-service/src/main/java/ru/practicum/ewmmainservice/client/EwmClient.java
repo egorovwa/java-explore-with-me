@@ -13,7 +13,7 @@ public class EwmClient extends Client {
     @Value("${save-hit.endpoint}")
     String saveHitEndpoint;
 
-    public EwmClient(@Value("${stasistic-server.url}")String baseUrl) {
+    public EwmClient(@Value("${stasistic-server.url}") String baseUrl) {
         super(baseUrl);
     }
 

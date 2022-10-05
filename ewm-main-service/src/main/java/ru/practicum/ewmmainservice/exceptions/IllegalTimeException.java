@@ -1,8 +1,8 @@
 package ru.practicum.ewmmainservice.exceptions;
 
 public class IllegalTimeException extends Exception {
-    String time;
-    String reason;
+    final String time;
+    final String reason;
 
     public IllegalTimeException(String message, String time) {
         super(message);

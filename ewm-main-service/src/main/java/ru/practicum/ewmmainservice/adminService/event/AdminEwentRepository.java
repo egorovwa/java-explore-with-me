@@ -14,8 +14,9 @@ import java.util.List;
 @Repository
 public interface AdminEwentRepository extends JpaRepository<Event, Long> {
     Collection<Event> findAllByCategoryId(Long catId);
- @Query("SELECT e FROM Event e WHERE e.initiator.id IN :initiatorId AND e.category.id IN :categoryId " +
-         "AND e.state IN :states AND e.eventDate > :rangeStart AND e.eventDate < :rangeEnd")
+
+    @Query("SELECT e FROM Event e WHERE e.initiator.id IN :initiatorId AND e.category.id IN :categoryId " +
+            "AND e.state IN :states AND e.eventDate > :rangeStart AND e.eventDate < :rangeEnd")
     Page<Event> findForAdmin(List<Long> initiatorId, List<Long> categoryId, List<EventState> states,
-                        Long rangeStart, Long rangeEnd, Pageable pageable);
+                             Long rangeStart, Long rangeEnd, Pageable pageable);
 }

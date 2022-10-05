@@ -11,6 +11,7 @@ public interface CompilationService {
     CompilationDto createCompilation(NewCompilationDto newCompilationDto) throws FiledParamNotFoundException;
 
     void deleteCompilation(Long compId) throws NotFoundException;
+
     Compilation findById(Long compId) throws NotFoundException;
 
     void deleteEventFromCompilation(Long compId, Long eventId) throws NotFoundException, FiledParamNotFoundException;

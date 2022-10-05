@@ -19,10 +19,12 @@ import java.util.Collection;
 @Validated
 public class PrivatCategoryController {
     private final PrivatCategoryService service;
+
     @GetMapping
-    public Collection<CategoryDto> findAllCategory(){
+    public Collection<CategoryDto> findAllCategory() {
         return service.findAllCategory();
     }
+
     @GetMapping("/{catId}")
     public Category findCategoryById(@Positive @PathVariable("catId") Long catId) throws NotFoundException {
         return service.findCategoryById(catId);

@@ -7,6 +7,7 @@ import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

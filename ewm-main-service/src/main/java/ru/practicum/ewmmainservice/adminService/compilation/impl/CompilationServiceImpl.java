@@ -42,7 +42,7 @@ public class CompilationServiceImpl implements CompilationService {
                     })
                     .collect(Collectors.toUnmodifiableList());
         } catch (RuntimeNotFoundException e) {
-            throw new FiledParamNotFoundException(String.format("Parameter %s %s = %s not found",e.getClassName(),
+            throw new FiledParamNotFoundException(String.format("Parameter %s %s = %s not found", e.getClassName(),
                     e.getParam(), e.getValue()));
         }
         Compilation compilation = new Compilation(events, null, newCompilationDto.getPinned(),
@@ -73,10 +73,7 @@ public class CompilationServiceImpl implements CompilationService {
                 filter(r -> r.getId().equals(eventId)).findFirst()
                 .orElseThrow(() -> new FiledParamNotFoundException(String.format("Event id = %s not found in compilation id = %s", eventId,
                         compId)));
-        compilation.getEvents().removeIf(r->r.getId()==eventId);
-/*        Collection<Event> events = compilation.getEvents().stream()
-                .filter(r -> r.getId() != eventId).collect(Collectors.toUnmodifiableList());*/
-
+        compilation.getEvents().removeIf(r -> r.getId() == eventId);
         repository.save(compilation);
     }
 
@@ -84,20 +81,20 @@ public class CompilationServiceImpl implements CompilationService {
     public void addEventToCompilation(Long compId, Long eventId) throws NotFoundException, NotRequiredException {
         Compilation compilation = findById(compId);
         Event event = eventService.findById(eventId);
-        if (!compilation.getEvents().contains(event)){
+        if (!compilation.getEvents().contains(event)) {
 
             compilation.getEvents().add(event);
             repository.save(compilation);
-        }else {
-           throw new NotRequiredException(String.format("Even id = %s aredy exist in Compilation id = %s",
-                   eventId, compId));
+        } else {
+            throw new NotRequiredException(String.format("Even id = %s aredy exist in Compilation id = %s",
+                    eventId, compId));
         }
     }
 
     @Override
     public void deletePinned(Long compId) throws NotFoundException, NotRequiredException {
         Compilation compilation = findById(compId);
-        if (compilation.getPinned()){
+        if (compilation.getPinned()) {
             compilation.setPinned(false);
             repository.save(compilation);
         } else {
@@ -108,7 +105,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public void addPinned(Long compId) throws NotFoundException, NotRequiredException {
         Compilation compilation = findById(compId);
-        if (!compilation.getPinned()){
+        if (!compilation.getPinned()) {
             compilation.setPinned(true);
             repository.save(compilation);
         } else {

@@ -6,7 +6,7 @@ import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
 
 import java.util.List;
 
-public interface PrivateCompilationsService {
+public interface PublicCompilationsService {
     List<CompilationDto> findCompilations(Boolean pinned, Pageable pageable);
 
     CompilationDto findCompilation(Long compId) throws NotFoundException;

@@ -2,6 +2,7 @@ package ru.practicum.ewmmainservice.models.event.dto;
 
 import lombok.Data;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
+
 @Data
 public class AdminUpdateEventRequest {
     String annotation;

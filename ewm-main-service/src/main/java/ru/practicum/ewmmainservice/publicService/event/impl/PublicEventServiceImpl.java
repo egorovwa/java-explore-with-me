@@ -36,14 +36,23 @@ public class PublicEventServiceImpl implements PublicEventService {
         if (param.getOnlyAvailable()) {
             EndpointHitDto endpointHitDto = new EndpointHitDto(null, appName, param.getEndpointPath(), param.getClientIp(),
                     formatter.format(LocalDateTime.now()));
-            client.post(endpointHitDto);
+            try {
+                client.post(endpointHitDto);
+            } catch (RuntimeException e) {
+                log.error(e.getMessage());
+            }
+
             return repository.findAllForPublicAvailable(param.getText(), param.getCatIds(), param.getPaid(),
                             param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
                     .toList();
         } else {
             EndpointHitDto endpointHitDto = new EndpointHitDto(null, appName, param.getEndpointPath(), param.getClientIp(),
                     formatter.format(LocalDateTime.now()));
-            client.post(endpointHitDto);
+            try {
+                client.post(endpointHitDto);
+            } catch (RuntimeException e) {
+                log.error(e.getMessage());
+            }
             return repository.findAllForPublic(param.getText(), param.getCatIds(), param.getPaid(),
                             param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
                     .toList();
@@ -54,7 +63,11 @@ public class PublicEventServiceImpl implements PublicEventService {
     public EventFullDto findById(Long id, String requestURI, String remoteAddr) throws NotFoundException {
         EndpointHitDto endpointHitDto = new EndpointHitDto(null, appName, requestURI, remoteAddr,
                 formatter.format(LocalDateTime.now()));
-        client.post(endpointHitDto);
+        try {
+            client.post(endpointHitDto);
+        } catch (RuntimeException e) {
+            log.error(e.getMessage());
+        }
         return dtoMaper.toFulDto(repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("id", id.toString(), "Event")));
     }

@@ -17,15 +17,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/compilations")
 @Validated
-public class PrivateCompilationsController {
-    private final PrivateCompilationsService service;
+public class PublicCompilationsController {
+    private final PublicCompilationsService service;
+
     @GetMapping
     public List<CompilationDto> findCompilations(@RequestParam(value = "pinned", defaultValue = "false") Boolean pinned,
-                                                 @PositiveOrZero @RequestParam(value = "from", defaultValue = "0")int from,
+                                                 @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                                  @Positive @RequestParam(value = "size", defaultValue = "10") int size) throws IncorrectPageValueException {
         Pageable pageable = PageParam.createPageable(from, size);
         return service.findCompilations(pinned, pageable);
     }
+
     @GetMapping("/{compId}")
     public CompilationDto findCompilation(@Positive @PathVariable("compId") Long compId) throws NotFoundException {
         return service.findCompilation(compId);

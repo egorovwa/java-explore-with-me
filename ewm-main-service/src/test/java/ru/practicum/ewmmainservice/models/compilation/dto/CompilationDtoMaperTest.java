@@ -20,9 +20,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CompilationDtoMaperTest {
-private final CompilationDtoMaper dtoMaper = new CompilationDtoMaper(new EventDtoMaper(new UserDtoMaper()
-        ,new LocationDtoMaper()));
-private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), new LocationDtoMaper());
+    private final CompilationDtoMaper dtoMaper = new CompilationDtoMaper(new EventDtoMaper(new UserDtoMaper()
+            , new LocationDtoMaper()));
+    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), new LocationDtoMaper());
+
     @Test
     void toDto() {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
@@ -41,7 +42,7 @@ private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper()
                 true, "titleCompilation");
         EventShortDto eventShortDto1 = eventDtoMaper.toShortDto(event);
         EventShortDto eventShortDto2 = eventDtoMaper.toShortDto(event2);
-        CompilationDto resultDto = new CompilationDto(List.of(eventShortDto1, eventShortDto2),1L, true,
+        CompilationDto resultDto = new CompilationDto(List.of(eventShortDto1, eventShortDto2), 1L, true,
                 "titleCompilation");
         assertEquals(dtoMaper.toDto(compilation), resultDto);
     }

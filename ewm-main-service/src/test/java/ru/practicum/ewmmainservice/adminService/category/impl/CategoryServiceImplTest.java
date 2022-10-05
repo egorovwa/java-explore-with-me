@@ -28,10 +28,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceImplTest {
 
-    CategoryRepository repository = Mockito.mock(CategoryRepository.class);
-    CategoryDtoMaper categoryDtoMaper = new CategoryDtoMaper();
-    AdminEwentRepository adminEwentRepository = Mockito.mock(AdminEwentRepository.class);
-    CategoryServiceImpl service = new CategoryServiceImpl(repository, categoryDtoMaper, adminEwentRepository);
+    final CategoryRepository repository = Mockito.mock(CategoryRepository.class);
+    final CategoryDtoMaper categoryDtoMaper = new CategoryDtoMaper();
+    final AdminEwentRepository adminEwentRepository = Mockito.mock(AdminEwentRepository.class);
+    final CategoryServiceImpl service = new CategoryServiceImpl(repository, categoryDtoMaper, adminEwentRepository);
 
     @Test
     void test1_1createCategory() throws ModelAlreadyExistsException {
@@ -44,7 +44,7 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void test1_2createCategory_whenAlredyExist() throws ModelAlreadyExistsException {
+    void test1_2createCategory_whenAlredyExist() {
         NewCategoryDto newCategoryDto = new NewCategoryDto();
         newCategoryDto.setName("name");
         when(repository.save(new Category(null, "name")))
@@ -68,7 +68,7 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void test2_3patchCategory_whenNotFound() throws NotFoundException {
+    void test2_3patchCategory_whenNotFound() {
         CategoryDto categoryDto = new CategoryDto(1L, "name");
 
         when(repository.findById(1L))
@@ -85,7 +85,7 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void test3_2deleteCategory_whenNotFound() throws NotFoundException, RelatedObjectsPresent {
+    void test3_2deleteCategory_whenNotFound() {
         when(adminEwentRepository.findAllByCategoryId(1L))
                 .thenReturn(List.of());
         doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(1L);
@@ -95,7 +95,7 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void test3_4deleteCategory_whenRelatedObjectsPresent() throws NotFoundException, RelatedObjectsPresent {
+    void test3_4deleteCategory_whenRelatedObjectsPresent() {
         when(adminEwentRepository.findAllByCategoryId(1L))
                 .thenReturn(List.of(new Event()));
         assertThrows(RelatedObjectsPresent.class, () -> {
@@ -113,7 +113,7 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void test4_1findByid_whenNotFound() throws NotFoundException {
+    void test4_1findByid_whenNotFound() {
         Category category = new Category(1L, "name");
         when(repository.findById(1L))
                 .thenReturn(Optional.empty());

@@ -25,12 +25,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AdminEventControlller.class)
 class AdminEventControlllerTest {
+    private static final String API = "/admin/events/";
     @MockBean
     AdminEventService service;
     @Autowired
     ObjectMapper mapper;
     MockMvc mvc;
-    private static String API = "/admin/events/";
 
     @BeforeEach
     void setup(WebApplicationContext web) {
@@ -71,16 +71,18 @@ class AdminEventControlllerTest {
                 .characterEncoding(StandardCharsets.UTF_8));
         verify(service, times(1)).publishEvent(1L);
     }
+
     @Test
     void test2_2_publishEvent_whenStateNotWating() throws Exception {
         when(service.publishEvent(1L))
                 .thenThrow(new StatusException("message"));
         mvc.perform(patch(API + "/{eventId}/publish", 1)
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8))
                 .andExpect(jsonPath("$.message", is("message")));
 
     }
+
     @Test
     void test3_1_rejectEvent() throws Exception {
         mvc.perform(patch(API + "/{eventId}/reject", 1)
@@ -88,6 +90,7 @@ class AdminEventControlllerTest {
                 .characterEncoding(StandardCharsets.UTF_8));
         verify(service, times(1)).rejectEvent(1L);
     }
+
     @Test
     void test3_2_rejectEvent_whenStateNotWating() throws Exception {
         when(service.rejectEvent(1L))
@@ -98,30 +101,31 @@ class AdminEventControlllerTest {
                 .andExpect(jsonPath("$.message", is("message")));
 
     }
+
     @Test
     void test4_1findAllEvents() throws Exception { // TODO: 27.09.2022 ????
-        Long[] users ={1L, 2L};
+        Long[] users = {1L, 2L};
         Long[] catid = {1L, 2L};
         String[] states = {"PENDING", "PUBLISHED", "CANCELED"};
-        String rangeStart ="2022-01-01 10:10:10";
-        String rangeEnd ="2022-01-01 20:10:10";
+        String rangeStart = "2022-01-01 10:10:10";
+        String rangeEnd = "2022-01-01 20:10:10";
         Integer from = 0;
         Integer size = 10;
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(users,states, catid, rangeStart, rangeEnd, from, size);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(users, states, catid, rangeStart, rangeEnd, from, size);
         mvc.perform(get(API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8)
-                .param("users", "1")
-                .param("users", "2")
-                .param("states", "PENDING")
-                .param("states", "PUBLISHED")
-                .param("states", "CANCELED")
-                .param("categories", "1")
-                .param("categories", "2")
-                .param("rangeStart", "2022-01-01 10:10:10")
-                .param("rangeEnd","2022-01-01 20:10:10")
-                .param("from", "0")
-                .param("size", "10"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .param("users", "1")
+                        .param("users", "2")
+                        .param("states", "PENDING")
+                        .param("states", "PUBLISHED")
+                        .param("states", "CANCELED")
+                        .param("categories", "1")
+                        .param("categories", "2")
+                        .param("rangeStart", "2022-01-01 10:10:10")
+                        .param("rangeEnd", "2022-01-01 20:10:10")
+                        .param("from", "0")
+                        .param("size", "10"))
                 .andExpect(status().isOk());
 
 

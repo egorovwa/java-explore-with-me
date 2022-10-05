@@ -2,10 +2,10 @@ package ru.practicum.ewmmainservice.exceptions;
 
 import java.util.Collection;
 
-public class RelatedObjectsPresent extends Exception{
-    String type;
-    String reason;
-    Collection<Long> relatedObjects;
+public class RelatedObjectsPresent extends Exception {
+    final String type;
+    final String reason;
+    final Collection<Long> relatedObjects;
 
     public RelatedObjectsPresent(String message, String type, Collection<Long> relatedObjects) {
         super(message);

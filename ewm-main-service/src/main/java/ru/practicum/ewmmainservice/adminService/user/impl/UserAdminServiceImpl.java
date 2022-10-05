@@ -34,7 +34,7 @@ public class UserAdminServiceImpl implements UserAdminService {
             return userDtoMaper.toDto(user);
         } catch (DataIntegrityViolationException e) {
             log.warn("Created user with email = {}, alredy exist.", newUserDto.getEmail());
-            throw new ModelAlreadyExistsException( "email", newUserDto.getEmail(), "User");
+            throw new ModelAlreadyExistsException("email", newUserDto.getEmail(), "User");
         }
     }
 
@@ -58,9 +58,9 @@ public class UserAdminServiceImpl implements UserAdminService {
     }
 
     @Override
-    public Collection<UserDto> findByIds(Long[] ids) {
+    public Collection<UserDto> findByIds(Long[] ids, Pageable pageable) {
         log.info("Search users by ids {}", Arrays.asList(ids));
-        return repository.findAllById(Arrays.asList(ids)).stream()
+        return repository.findAllById(Arrays.asList(ids), pageable).stream()
                 .map(userDtoMaper::toDto)
                 .collect(Collectors.toList());
     }
@@ -69,7 +69,7 @@ public class UserAdminServiceImpl implements UserAdminService {
     public User findById(Long userId) throws NotFoundException {
         log.debug("Find user id = {}", userId);
         return repository.findById(userId)
-                .orElseThrow(()->new NotFoundException("id", userId.toString(), "User"));
+                .orElseThrow(() -> new NotFoundException("id", userId.toString(), "User"));
     }
 
 }

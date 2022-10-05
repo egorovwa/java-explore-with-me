@@ -58,12 +58,13 @@ class AdminEwentRepositoryTest {
         List<Event> expected = new ArrayList<>();
         expected.add(event1);
         expected.add(event2);
-        List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end,pageable).toList();
+        List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end, pageable).toList();
         Event rea = expected.get(0);
         Event res = result.get(0);
         Boolean a = res.equals(rea);
         assertThat(res, is(rea));
     }
+
     @Test
     @DirtiesContext
     void test1_1findForAdmin_withStateCANCELLED() throws IncorrectPageValueException {
@@ -74,9 +75,10 @@ class AdminEwentRepositoryTest {
         Long end = LocalDateTime.of(2022, 9, 11, 1, 0, 0).toEpochSecond(ZoneOffset.UTC);
         Pageable pageable = PageParam.createPageable(0, 10);
         data();
-       List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end, pageable).toList();
+        List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end, pageable).toList();
         assertThat(result.size(), is(0));
     }
+
     @Test
     @DirtiesContext
     void test1_3findForAdmin_withSize1() throws IncorrectPageValueException {
@@ -90,11 +92,11 @@ class AdminEwentRepositoryTest {
         List<Event> expected = new ArrayList<>();
         expected.add(event1);
         expected.add(event2);
-        List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end,pageable).toList();
+        List<Event> result = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end, pageable).toList();
         assertThat(result.get(0), is(expected.get(0)));
         assertThat(result.size(), is(1));
-        Pageable pageable1 = PageParam.createPageable(1,1);
-        List<Event> result2 = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end,pageable1).toList();
+        Pageable pageable1 = PageParam.createPageable(1, 1);
+        List<Event> result2 = adminEwentRepository.findForAdmin(userIds, catIds, states, start, end, pageable1).toList();
         assertThat(result2.size(), is(1));
         assertThat(result2.get(0), is(expected.get(1)));
 
@@ -109,7 +111,7 @@ class AdminEwentRepositoryTest {
         User user2 = new User(2L, "emai@rrr.ru", "name2");
         User user3 = new User(3L, "sss@sss.fff", "name3");
         User user4 = new User(4L, "sss@sssl4.fff", "name4");
-        Collection<User> participans =  new ArrayList<>();
+        Collection<User> participans = new ArrayList<>();
         participans.add(user4);
 
         ParticipationRequest participationRequest = new ParticipationRequest();

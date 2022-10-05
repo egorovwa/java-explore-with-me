@@ -13,7 +13,6 @@ import ru.practicum.ewmmainservice.utils.PageParam;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import javax.websocket.server.PathParam;
 import java.util.Collection;
 
 @RestController
@@ -22,20 +21,23 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class UserAdminController {
     private final UserAdminService userAdminService;
+
     @PostMapping
     public UserDto addNewUser(@Valid @RequestBody NewUserDto newUserDto) throws ModelAlreadyExistsException {
         return userAdminService.addNewUser(newUserDto);
     }
+
     @GetMapping
-    public Collection<UserDto> findAll(@PositiveOrZero @RequestParam(name ="from", defaultValue = "0") Integer from,
+    public Collection<UserDto> findAll(@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                        @Positive @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                       @PathParam("ids") Long[] ids) throws IncorrectPageValueException {
-        if (ids==null || ids.length == 0){
-        return userAdminService.findAll(PageParam.createPageable(from, size));
-        }else {
-            return userAdminService.findByIds(ids);
+                                       @RequestParam(value = "ids", required = false) Long[] ids) throws IncorrectPageValueException {
+        if (ids == null) {
+            return userAdminService.findAll(PageParam.createPageable(from, size));
+        } else {
+            return userAdminService.findByIds(ids, PageParam.createPageable(from, size));
         }
     }
+
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable("userId") Long userId) throws NotFoundException {
         userAdminService.deleteUser(userId);

@@ -1,10 +1,10 @@
 package ru.practicum.ewmmainservice.exceptions;
 
-public class NotFoundException extends Exception{
-    String param;
-    String value;
-    String className;
-    String reason;
+public class NotFoundException extends Exception {
+    final String param;
+    final String value;
+    final String className;
+    final String reason;
 
     public NotFoundException(String param, String value, String className) {
         super(String.format("%s %s %s not found.", className, param, value));

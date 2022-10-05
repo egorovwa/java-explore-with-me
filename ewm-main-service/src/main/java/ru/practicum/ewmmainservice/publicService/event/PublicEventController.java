@@ -3,6 +3,7 @@ package ru.practicum.ewmmainservice.publicService.event;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.ewmmainservice.exceptions.IllegalTimeException;
 import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
@@ -30,7 +31,7 @@ public class PublicEventController {
                                                 @RequestParam("onlyAvailable") Boolean onlyAvailable,
                                                 @RequestParam("sort") String sort,
                                                 @RequestParam(value = "from", defaultValue = "0") int from,
-                                                @RequestParam(value = "size", defaultValue = "10") int size) throws IncorrectPageValueException {
+                                                @RequestParam(value = "size", defaultValue = "10") int size) throws IncorrectPageValueException, IllegalTimeException {
         String clientIp = request.getRemoteAddr();
         String endpointPath = request.getRequestURI();
         ParametersPublicEventFind param = new ParametersPublicEventFind(text, categories, paid, rangeStart, rangeEnd,

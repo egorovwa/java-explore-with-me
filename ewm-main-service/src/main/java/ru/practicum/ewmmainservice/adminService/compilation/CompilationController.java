@@ -9,6 +9,7 @@ import ru.practicum.ewmmainservice.exceptions.NotRequiredException;
 import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
 import ru.practicum.ewmmainservice.models.compilation.dto.NewCompilationDto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 @RestController
@@ -19,7 +20,7 @@ public class CompilationController {
     private final CompilationService service;
 
     @PostMapping
-    public CompilationDto createCompilation(@RequestBody NewCompilationDto newCompilationDto) throws FiledParamNotFoundException {
+    public CompilationDto createCompilation(@Valid @RequestBody NewCompilationDto newCompilationDto) throws FiledParamNotFoundException {
         return service.createCompilation(newCompilationDto);
     }
 
@@ -39,10 +40,12 @@ public class CompilationController {
                                       @Positive @PathVariable("eventId") Long eventId) throws NotRequiredException, NotFoundException {
         service.addEventToCompilation(compId, eventId);
     }
+
     @DeleteMapping("/{compId}/pin")
     public void deletePinned(@Positive @PathVariable("compId") Long compId) throws NotRequiredException, NotFoundException {
         service.deletePinned(compId);
     }
+
     @PatchMapping("/{compId}/pin")
     public void addPinned(@Positive @PathVariable("compId") Long compId) throws NotRequiredException, NotFoundException {
         service.addPinned(compId);

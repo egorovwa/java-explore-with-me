@@ -19,7 +19,7 @@ public class AdminEventControlller {
 
     @PutMapping("/{eventId}")
     public EventFullDto updateEvent(@Positive @PathVariable("eventId") Long eventId,
-                                    @RequestBody AdminUpdateEventRequest adminUpdateEventRequest) throws NotFoundException {
+                                    @RequestBody AdminUpdateEventRequest adminUpdateEventRequest) throws NotFoundException, FiledParamNotFoundException {
         return service.updateEventRequest(eventId, adminUpdateEventRequest);
     }
 
@@ -34,8 +34,8 @@ public class AdminEventControlller {
     }
 
     @GetMapping
-    public List<EventFullDto> findAllEvents(@RequestParam(value = "users",required = false) Long[] users,
-                                            @RequestParam(value = "states",required = false) String[] states,
+    public List<EventFullDto> findAllEvents(@RequestParam(value = "users", required = false) Long[] users,
+                                            @RequestParam(value = "states", required = false) String[] states,
                                             @RequestParam(value = "categories", required = false) Long[] categories,
                                             @RequestParam(value = "rangeStart", required = false) String rangeStart,
                                             @RequestParam(value = "rangeEnd", required = false) String rangeEnd,

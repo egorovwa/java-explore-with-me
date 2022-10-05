@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ParticipationRequestService {
-    ParticipationRequestDto createRequest(Long userId, Long eventId) throws NotFoundException, FiledParamNotFoundException, IlegalUserIdException, StatusException, NumberParticipantsExceededException;
+    ParticipationRequestDto createRequest(Long userId, Long eventId) throws FiledParamNotFoundException, IlegalUserIdException, StatusException, NumberParticipantsExceededException;
 
     ParticipationRequestDto cancelRequest(Long userId, Long requestId) throws NotFoundException, IlegalUserIdException;
 

@@ -1,10 +1,10 @@
 package ru.practicum.ewmmainservice.exceptions;
 
 public class ModelAlreadyExistsException extends Exception {
-    String param;
-    String value;
-    String className;
-    String reason;
+    final String param;
+    final String value;
+    final String className;
+    final String reason;
 
     public ModelAlreadyExistsException(String param, String value, String className) {
         super(String.format("%s %s = %s already exist.", className, param, value));

@@ -13,18 +13,20 @@ import java.time.format.DateTimeFormatter;
 
 @RestControllerAdvice("ru.practicum.ewmmainservice")
 public class ForAllControllerErrorHendler {
-    DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+
     @ExceptionHandler(IncorrectPageValueException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError incorrectPageValueException(IncorrectPageValueException e){
+    public ApiError incorrectPageValueException(IncorrectPageValueException e) {
         return ApiError.builder()
-                .reason(String.format("The page parameter %s with the value %s is not correct.",e.getParam(), e.value))
+                .reason(String.format("The page parameter %s with the value %s is not correct.", e.getParam(), e.value))
                 .message(e.getMessage())
                 .status(HttpStatus.BAD_REQUEST)
                 .description("The from parameter cannot be negative, the size parameter must be greater than 0.")
                 .timestamp(formatter.format(LocalDateTime.now()))
                 .build();
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError validationError(MethodArgumentNotValidException e) {
@@ -36,9 +38,10 @@ public class ForAllControllerErrorHendler {
                 .errors(e.getStackTrace())
                 .build();
     }
+
     @ExceptionHandler(FiledParamNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError filedParamNotFoundException(FiledParamNotFoundException e){
+    public ApiError filedParamNotFoundException(FiledParamNotFoundException e) {
         return ApiError.builder()
                 .message(e.getMessage())
                 .timestamp(formatter.format(LocalDateTime.now()))
@@ -46,9 +49,10 @@ public class ForAllControllerErrorHendler {
                 .status(HttpStatus.BAD_REQUEST)
                 .build();
     }
+
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError notFound(NotFoundException e){
+    public ApiError notFound(NotFoundException e) {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason(e.getReason())
@@ -56,9 +60,10 @@ public class ForAllControllerErrorHendler {
                 .timestamp(formatter.format(LocalDateTime.now()))
                 .build();
     }
+
     @ExceptionHandler(IlegalUserIdException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ApiError ilegalUserIdException(IlegalUserIdException e){
+    public ApiError ilegalUserIdException(IlegalUserIdException e) {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason(e.reason)
@@ -66,9 +71,10 @@ public class ForAllControllerErrorHendler {
                 .timestamp(formatter.format(LocalDateTime.now()))
                 .build();
     }
+
     @ExceptionHandler(IllegalTimeException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ApiError illegalTimeException(IllegalTimeException e){
+    public ApiError illegalTimeException(IllegalTimeException e) {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason(e.getReason())
@@ -76,9 +82,10 @@ public class ForAllControllerErrorHendler {
                 .status(HttpStatus.FORBIDDEN)
                 .build();
     }
+
     @ExceptionHandler(ModelAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError modelAlreadyExistsException(ModelAlreadyExistsException e){
+    public ApiError modelAlreadyExistsException(ModelAlreadyExistsException e) {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason(e.reason)
@@ -86,9 +93,10 @@ public class ForAllControllerErrorHendler {
                 .timestamp(formatter.format(LocalDateTime.now()))
                 .build();
     }
+
     @ExceptionHandler(NotRequiredException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ApiError notRequiredException(NotRequiredException e){
+    public ApiError notRequiredException(NotRequiredException e) {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason(e.getReason())
@@ -96,9 +104,10 @@ public class ForAllControllerErrorHendler {
                 .timestamp(formatter.format(LocalDateTime.now()))
                 .build();
     }
+
     @ExceptionHandler(RelatedObjectsPresent.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError relatedObjectsPresent(RelatedObjectsPresent e){
+    public ApiError relatedObjectsPresent(RelatedObjectsPresent e) {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason(e.getReason())
@@ -107,9 +116,21 @@ public class ForAllControllerErrorHendler {
                 .timestamp(formatter.format(LocalDateTime.now()))
                 .build();
     }
+
     @ExceptionHandler(StatusException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ApiError statusException(StatusException e){
+    public ApiError statusException(StatusException e) {
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(e.reason)
+                .timestamp(formatter.format(LocalDateTime.now()))
+                .status(HttpStatus.FORBIDDEN)
+                .build();
+    }
+
+    @ExceptionHandler(NumberParticipantsExceededException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiError statusException(NumberParticipantsExceededException e) {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason(e.reason)

@@ -51,10 +51,10 @@ class AdminEventServiceImplTestItegration {
     @Autowired
     AdminEwentRepository adminEwentRepository;
     @Autowired
-            AdminEventServiceImpl service;
+    AdminEventServiceImpl service;
     @Autowired
     EventDtoMaper eventDtoMaper;
-    DateTimeFormatter formatter = Utils.getDateTimeFormater();
+    final DateTimeFormatter formatter = Utils.getDateTimeFormater();
     Event event1;
     Event event2;
     Event event3;
@@ -64,47 +64,50 @@ class AdminEventServiceImplTestItegration {
     @DirtiesContext
     void test1_1findAllEvents() throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
         data();
-        Long[] usersId = {1L,2L};
-        Long[] catId = {1L,2L};
-        String[] states ={"PENDING", "PUBLISHED"};
-        String start = formatter.format(LocalDateTime.of(2022,9,5,0,0,0));
-        String end = formatter.format(LocalDateTime.of(2022,9,12,0,0,0));
-        Pageable pageable = PageParam.createPageable(0,10);
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId,start,end,0,10);
+        Long[] usersId = {1L, 2L};
+        Long[] catId = {1L, 2L};
+        String[] states = {"PENDING", "PUBLISHED"};
+        String start = formatter.format(LocalDateTime.of(2022, 9, 5, 0, 0, 0));
+        String end = formatter.format(LocalDateTime.of(2022, 9, 12, 0, 0, 0));
+        Pageable pageable = PageParam.createPageable(0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
         List<EventFullDto> expected = List.of(eventDtoMaper.toFulDto(event1), eventDtoMaper.toFulDto(event2));
         List<EventFullDto> result = service.findAllEvents(param);
-        assertThat(expected.get(0),is(expected.get(0)));
+        assertThat(expected.get(0), is(expected.get(0)));
     }
+
     @Test
     @DirtiesContext
     void test1_2findAllEvents_whenCategoryEmpty_stateWaiting() throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
         data();
-        Long[] usersId = {1L,2L};
+        Long[] usersId = {1L, 2L};
         Long[] catId = {};
-        String[] states ={"PENDING"};
-        String start = formatter.format(LocalDateTime.of(2022,9,5,0,0,0));
-        String end = formatter.format(LocalDateTime.of(2022,9,12,0,0,0));
-        Pageable pageable = PageParam.createPageable(0,10);
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId,start,end,0,10);
-        List<EventFullDto> expected = List.of( eventDtoMaper.toFulDto(event2));
+        String[] states = {"PENDING"};
+        String start = formatter.format(LocalDateTime.of(2022, 9, 5, 0, 0, 0));
+        String end = formatter.format(LocalDateTime.of(2022, 9, 12, 0, 0, 0));
+        Pageable pageable = PageParam.createPageable(0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        List<EventFullDto> expected = List.of(eventDtoMaper.toFulDto(event2));
         List<EventFullDto> result = service.findAllEvents(param);
-        assertThat(expected.get(0),is(expected.get(0)));
+        assertThat(expected.get(0), is(expected.get(0)));
     }
+
     @Test
     @DirtiesContext
     void test1_3findAllEvents_whenCategoryEmpty_user123_category1_satateWaiting() throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
         data();
-        Long[] usersId = {1L,2L,3L};
+        Long[] usersId = {1L, 2L, 3L};
         Long[] catId = {1L};
-        String[] states ={"PENDING"};
-        String start = formatter.format(LocalDateTime.of(2022,9,5,0,0,0));
-        String end = formatter.format(LocalDateTime.of(2022,9,12,0,0,0));
-        Pageable pageable = PageParam.createPageable(0,10);
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId,start,end,0,10);
-        List<EventFullDto> expected = List.of( eventDtoMaper.toFulDto(event2));
+        String[] states = {"PENDING"};
+        String start = formatter.format(LocalDateTime.of(2022, 9, 5, 0, 0, 0));
+        String end = formatter.format(LocalDateTime.of(2022, 9, 12, 0, 0, 0));
+        Pageable pageable = PageParam.createPageable(0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        List<EventFullDto> expected = List.of(eventDtoMaper.toFulDto(event2));
         List<EventFullDto> result = service.findAllEvents(param);
-        assertThat(result.size(),is(0));
+        assertThat(result.size(), is(0));
     }
+
     private void data() {
         Category category1 = new Category(1L, "category1");
         Category category2 = new Category(2L, "category2");
@@ -114,7 +117,7 @@ class AdminEventServiceImplTestItegration {
         User user2 = new User(2L, "emai@rrr.ru", "name2");
         User user3 = new User(3L, "sss@sss.fff", "name3");
         User user4 = new User(4L, "sss@sssl4.fff", "name4");
-        Collection<User> participans =  new ArrayList<>();
+        Collection<User> participans = new ArrayList<>();
         participans.add(user4);
 
         ParticipationRequest participationRequest = new ParticipationRequest();

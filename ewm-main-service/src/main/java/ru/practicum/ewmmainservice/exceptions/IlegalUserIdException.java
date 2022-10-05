@@ -1,10 +1,10 @@
 package ru.practicum.ewmmainservice.exceptions;
 
-public class IlegalUserIdException extends Exception{
-    Long userId;
-    Long modelId;
-    String className;
-    String reason;
+public class IlegalUserIdException extends Exception {
+    final Long userId;
+    final Long modelId;
+    final String className;
+    final String reason;
 
     public IlegalUserIdException(Long userId, Long modelId, String className) {
         super(String.format("The user id = %s does not have access to the %s id = %s.",
@@ -20,6 +20,6 @@ public class IlegalUserIdException extends Exception{
         this.userId = userId;
         this.modelId = modelId;
         this.className = className;
-        reason ="This user cannot perform the requested actions.";
+        reason = "This user cannot perform the requested actions.";
     }
 }

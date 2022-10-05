@@ -3,10 +3,11 @@ package ru.practicum.ewmmainservice.models.apiError;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
+
 @Value
 @Builder
 public class ApiError {
-   String description;
+    String description;
     /*:
     Сведения об ошибке
 */
@@ -15,10 +16,10 @@ public class ApiError {
 /*    example: Only pending or canceled events can be changed
     Сообщение об ошибке*/
 
-   String reason;
-   /* example: For the requested operation the conditions are not met.
-    Общее описание причины ошибки
-*/
+    String reason;
+    /* example: For the requested operation the conditions are not met.
+     Общее описание причины ошибки
+ */
     HttpStatus status;
    /* example: FORBIDDEN
     Код статуса HTTP-ответа*/

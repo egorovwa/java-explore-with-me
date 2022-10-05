@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.ewmmainservice.adminService.category.CategoryService;
 import ru.practicum.ewmmainservice.adminService.event.AdminEventService;
 import ru.practicum.ewmmainservice.adminService.event.AdminEwentRepository;
-import ru.practicum.ewmmainservice.exceptions.IllegalTimeException;
-import ru.practicum.ewmmainservice.exceptions.NotFoundException;
-import ru.practicum.ewmmainservice.exceptions.NotValidParameterException;
-import ru.practicum.ewmmainservice.exceptions.StatusException;
+import ru.practicum.ewmmainservice.exceptions.*;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
 import ru.practicum.ewmmainservice.models.event.Event;
@@ -54,18 +51,24 @@ public class AdminEventServiceImpl implements AdminEventService {
     }
 
     @Override
-    public EventFullDto updateEventRequest(Long eventId, AdminUpdateEventRequest request) throws NotFoundException {
+    public EventFullDto updateEventRequest(Long eventId, AdminUpdateEventRequest request) throws NotFoundException, FiledParamNotFoundException {
         Event event = repository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("id", eventId.toString(), "Event"));
         if (request.getAnnotation() != null) {
             event.setAnnotation(request.getAnnotation());
             log.info("Updated the annotation of the event id = {}", eventId);
         }
-        if (request.getCategory() != null && request.getCategory() != 0) {
-            Category category = categoryService.findByid(request.getCategory());
-            event.setCategory(category);
-            log.info("Updated the category of the event id = {}", eventId);
+        try {
+            if (request.getCategory() != null && request.getCategory() != 0) {
+                Category category = categoryService.findByid(request.getCategory());
+                event.setCategory(category);
+                log.info("Updated the category of the event id = {}", eventId);
+            }
+        } catch (NotFoundException e) {
+            throw new FiledParamNotFoundException(String.format("%s %s = %s not found", e.getClassName(),
+                    e.getValue(), e.getParam()));
         }
+
         if (request.getDescription() != null) {
             event.setDescription(request.getDescription());
             log.info("Updated the description of the event id = {}", eventId);
@@ -155,7 +158,7 @@ public class AdminEventServiceImpl implements AdminEventService {
     public List<EventFullDto> findAllEvents(ParametersAdminFindEvent parameters) throws NotValidParameterException, IllegalTimeException {
         validator.adminFindEvents(parameters);
         List<Event> events = repository.findForAdmin(parameters.getUsers(), parameters.getCategories(),
-                parameters.getStates(), parameters.getRangeStart(), parameters.getRangeEnd(), parameters.getPageable())
+                        parameters.getStates(), parameters.getRangeStart(), parameters.getRangeEnd(), parameters.getPageable())
                 .toList();
         return events.stream().map(eventDtoMaper::toFulDto).collect(Collectors.toList());
     }

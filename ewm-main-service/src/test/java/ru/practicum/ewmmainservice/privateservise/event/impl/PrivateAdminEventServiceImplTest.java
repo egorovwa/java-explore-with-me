@@ -39,20 +39,20 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class PrivateAdminEventServiceImplTest {
     @Mock
+    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), new LocationDtoMaper());
+    @InjectMocks
+    PrivateEventServiceImpl service;
+    final DateTimeFormatter formater = Utils.getDateTimeFormater();
+    @Mock
     private CategoryService categoryService;
     @Mock
     private UserAdminService userAdminService;
     @Mock
     private PrivateEventRepository repository;
     @Mock
-    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), new LocationDtoMaper());
-    @Mock
     private LocationService locationService;
-    @InjectMocks
-    PrivateEventServiceImpl service;
-    DateTimeFormatter formater = Utils.getDateTimeFormater();
 
-    PrivateAdminEventServiceImplTest() throws FiledParamNotFoundException {
+    PrivateAdminEventServiceImplTest() {
     }
 
     @Test
@@ -75,6 +75,34 @@ class PrivateAdminEventServiceImplTest {
                 .thenReturn(new Category(1L, "category"));
         when(locationService.findByLatAndLon(1.0f, 2.0f))
                 .thenReturn(Optional.of(new Location(1l, 1.0f, 2.0f)));
+        EventFullDto event = eventDtoMaper.toFulDto(eventDtoMaper.fromNewDto(newEventDto,
+                new Category(1L, "category"), new User(1L, "email", "name"),
+                new Location(1l, 1.0f, 2.0f)));
+        assertThat(service.createEvent(1L, newEventDto), is(event));
+    }
+
+    @Test
+    void test1_3createEvent_whenLocationNew() throws NotFoundException, FiledParamNotFoundException {
+        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
+
+        NewEventDto newEventDto = new NewEventDto();
+        newEventDto.setAnnotation("anatation");
+        newEventDto.setCategory(1L);
+        newEventDto.setDescription("Description");
+        newEventDto.setEventDate("2022-09-21 22:11:00");
+        newEventDto.setLocation(locationDto);
+        newEventDto.setPaid(true);
+        newEventDto.setParticipantLimit(10);
+        newEventDto.setRequestModeration(false);
+        newEventDto.setTitle("title");
+        when(userAdminService.findById(1L))
+                .thenReturn(new User(1L, "email", "name"));
+        when(categoryService.findByid(1L))
+                .thenReturn(new Category(1L, "category"));
+        when(locationService.findByLatAndLon(1.0f, 2.0f))
+                .thenReturn(Optional.empty());
+        when(locationService.save(locationDto))
+                .thenReturn(new Location(1L, 1.0f, 2.0f));
         EventFullDto event = eventDtoMaper.toFulDto(eventDtoMaper.fromNewDto(newEventDto,
                 new Category(1L, "category"), new User(1L, "email", "name"),
                 new Location(1l, 1.0f, 2.0f)));
@@ -135,7 +163,7 @@ class PrivateAdminEventServiceImplTest {
     }
 
     @Test
-    void test2_2patchEvent_whenUserNotInitials() throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException {
+    void test2_2patchEvent_whenUserNotInitials() {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
@@ -167,7 +195,67 @@ class PrivateAdminEventServiceImplTest {
     }
 
     @Test
-    void test2_3patchEvent_whenStaeIsPublished() throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException {
+    void test2_3patchEvent_whenEventNotFound() {
+        UpdateEventRequest request = new UpdateEventRequest();
+        request.setAnnotation("UpdatedAnatation");
+        request.setCategory(2L);
+        request.setDescription("updated d");
+        request.setEventDate(formater.format(LocalDateTime.now().plusDays(2)));
+        request.setPaid(true);
+        request.setParticipantLimit(50);
+        request.setTitle("updated Title");
+        request.setEventId(1L);
+        Event updated = new Event(1L, "UpdatedAnatation", new Category(2L, "updated"),
+                LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
+                "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
+                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                true, 50, null, true, EventState.PENDING, "updated Title", 2,
+                List.of(new User(2L, "email2@mail.ru", "name2")));
+
+        when(repository.findById(1L))
+                .thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> {
+            EventFullDto res = service.patchEvent(1L, request);
+        });
+    }
+
+    @Test
+    void test2_4patchEvent_wheTimeIncorrect() {
+        Event event = new Event(1L, "anatation", new Category(1L, "category"),
+                LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
+                "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
+                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                false, 10, null, true, EventState.PENDING, "title", 2,
+                List.of(new User(2L, "email2@mail.ru", "name2")));
+
+        UpdateEventRequest request = new UpdateEventRequest();
+        request.setAnnotation("UpdatedAnatation");
+        request.setCategory(2L);
+        request.setDescription("updated d");
+        request.setEventDate(formater.format(LocalDateTime.now().plusDays(2)));
+        request.setPaid(true);
+        request.setParticipantLimit(50);
+        request.setTitle("updated Title");
+        request.setEventId(1L);
+        Event updated = new Event(1L, "UpdatedAnatation", new Category(2L, "updated"),
+                LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
+                "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
+                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                true, 50, null, true, EventState.PENDING, "updated Title", 2,
+                List.of(new User(2L, "email2@mail.ru", "name2")));
+
+
+        when(repository.findById(1L))
+                .thenReturn(Optional.of(event));
+        assertThrows(IllegalTimeException.class, () -> {
+            EventFullDto res = service.patchEvent(1L, request);
+        });
+
+    }
+
+
+    @Test
+    void test2_3patchEvent_whenStaeIsPublished() {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
@@ -200,7 +288,7 @@ class PrivateAdminEventServiceImplTest {
     }
 
     @Test
-    void test2_4patchEvent_incorrectrDate() throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException {
+    void test2_4patchEvent_incorrectrDate() {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -249,7 +337,7 @@ class PrivateAdminEventServiceImplTest {
     }
 
     @Test
-    void test3_2eventСancellation_whenEwentStateNotWaiting() throws NotFoundException, StatusException {
+    void test3_2eventСancellation_whenEwentStateNotWaiting() throws NotFoundException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -264,6 +352,67 @@ class PrivateAdminEventServiceImplTest {
                 .thenReturn(user);
         assertThrows(StatusException.class, () -> {
             service.eventСancellation(1L, 1L);
+        });
+    }
+
+    @Test
+    void test3_3eventСancellation_whenEwentNotFound() {
+        when(repository.findById(1L))
+                .thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> {
+            service.eventСancellation(1L, 1L);
+        });
+    }
+
+    @Test
+    void test4_1_findEventForInitiator() throws NotFoundException, IlegalUserIdException {
+        User user = new User(1L, "email@mail.ru", "name");
+        Event event = new Event(1L, "anatation", new Category(1L, "category"),
+                LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
+                "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
+                user, new Location(1L, 1.0f, 2.0f),
+                false, 10, null, true, EventState.PENDING, "title", 2,
+                List.of(new User(2L, "email2@mail.ru", "name2")));
+        when(userAdminService.findById(1L))
+                .thenReturn(user);
+        when(repository.findById(1L))
+                .thenReturn(Optional.of(event));
+        service.findEventForInitiator(1L, 1L);
+        verify(eventDtoMaper, times(1)).toFulDto(event);
+    }
+
+    @Test
+    void test4_2_findEventForInitiator_whenUserNotInitiator() throws NotFoundException {
+        User user = new User(1L, "email2@mail.ru", "name");
+        Event event = new Event(1L, "anatation", new Category(1L, "category"),
+                LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
+                "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
+                new User(2L, "emai2@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                false, 10, null, true, EventState.PENDING, "title", 2,
+                List.of(new User(2L, "email2@mail.ru", "name2")));
+        when(userAdminService.findById(1L))
+                .thenReturn(user);
+        when(repository.findById(1L))
+                .thenReturn(Optional.of(event));
+        assertThrows(IlegalUserIdException.class, () -> {
+            service.findEventForInitiator(1L, 1L);
+        });
+    }
+
+    @Test
+    void test5_findAllEventByInitiator() throws NotFoundException {
+        when(userAdminService.findById(1L))
+                .thenReturn(new User(1L, "email2@mail.ru", "name"));
+        service.findAllEventByInitiator(1L);
+        verify(repository, times(1)).findByInitiatorId(1L);
+    }
+
+    @Test
+    void test5_1findAllEventByInitiator_whenUserNotFound() throws NotFoundException {
+        when(userAdminService.findById(1L))
+                .thenThrow(NotFoundException.class);
+        assertThrows(NotFoundException.class, () -> {
+            service.findAllEventByInitiator(1L);
         });
     }
 }

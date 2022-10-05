@@ -9,14 +9,14 @@ import ru.practicum.ewmmainservice.adminService.compilation.CompilationService;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
 import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDtoMaper;
-import ru.practicum.ewmmainservice.publicService.compilations.PrivateCompilationsService;
+import ru.practicum.ewmmainservice.publicService.compilations.PublicCompilationsService;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PrivateCompilationsServiceImpl implements PrivateCompilationsService {
+public class PublicCompilationsServiceImpl implements PublicCompilationsService {
     private final CompilationRepository repository;
     private final CompilationDtoMaper dtoMaper;
     private final CompilationService adminService;

@@ -11,9 +11,10 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class ParticipationRequestDtoMaper {
     private final DateTimeFormatter formatter = Utils.getDateTimeFormater();
-   public ParticipationRequestDto toDto(ParticipationRequest request){
-       return new ParticipationRequestDto(formatter.format(LocalDateTime.ofEpochSecond(request.getCreated(),0,
-               ZoneOffset.UTC)), request.getEvent().getId(), request.getId(),
-               request.getRequester().getId(), request.getStatus());
-   }
+
+    public ParticipationRequestDto toDto(ParticipationRequest request) {
+        return new ParticipationRequestDto(formatter.format(LocalDateTime.ofEpochSecond(request.getCreated(), 0,
+                ZoneOffset.UTC)), request.getEvent().getId(), request.getId(),
+                request.getRequester().getId(), request.getStatus());
+    }
 }

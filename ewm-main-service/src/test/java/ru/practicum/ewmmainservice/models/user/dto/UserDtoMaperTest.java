@@ -7,23 +7,25 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 class UserDtoMaperTest {
-private final UserDtoMaper dtoMaper = new UserDtoMaper();
+    private final UserDtoMaper dtoMaper = new UserDtoMaper();
+
     @Test
     void fromCreateDto() {
         NewUserDto newUserDto = new NewUserDto("email", "name");
-        User user = new User(null,"email", "name");
+        User user = new User(null, "email", "name");
         assertThat(dtoMaper.fromCreateDto(newUserDto), is(user));
 
     }
 
     @Test
     void toDto() {
-        User user = new User(1L,"email", "name");
-        UserDto userDto=new UserDto(1L,"email", "name");
+        User user = new User(1L, "email", "name");
+        UserDto userDto = new UserDto(1L, "email", "name");
         assertThat(dtoMaper.toDto(user), is(userDto));
     }
+
     @Test
-    void toShortDto(){
+    void toShortDto() {
         User user = new User(1L, "emaik@mail.com", "name");
         UserShortDto dto = new UserShortDto(1L, "name");
         assertThat(dtoMaper.toShortDto(user), is(dto));

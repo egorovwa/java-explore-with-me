@@ -10,5 +10,5 @@ public class ViewStats {
 
     String uri;    //URI сервиса
 
-    Long hits;	    //Количество просмотров
+    Long hits;        //Количество просмотров
 }

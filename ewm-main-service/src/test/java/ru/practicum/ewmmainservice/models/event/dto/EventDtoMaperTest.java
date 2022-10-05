@@ -101,17 +101,18 @@ class EventDtoMaperTest {
         assertThat(dto.getViews(), is(5));
         assertThat(dto.getConfirmedRequests(), is(2));
     }
-    @Test
-    void toShortDto(){
 
-            Category category = new Category(1l, "category");
-            User user = new User(1L, "email@mail.ru", "name");
-            UserShortDto userShortDto = new UserShortDto(1L, "name");
-            Location location = new Location(1L, 1.0f, 2.0f);
-            LocationDto locationDto = new LocationDto(1.0f, 2.0f);
-            List<User> participans = List.of(new User(2L, "emai@rrr.ru", "name2"),
-                    new User(3L, "sss@sss.fff", "name3"));
-            ParticipationRequest participationRequest = new ParticipationRequest();
+    @Test
+    void toShortDto() {
+
+        Category category = new Category(1l, "category");
+        User user = new User(1L, "email@mail.ru", "name");
+        UserShortDto userShortDto = new UserShortDto(1L, "name");
+        Location location = new Location(1L, 1.0f, 2.0f);
+        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
+        List<User> participans = List.of(new User(2L, "emai@rrr.ru", "name2"),
+                new User(3L, "sss@sss.fff", "name3"));
+        ParticipationRequest participationRequest = new ParticipationRequest();
         Event event = new Event(1l,
                 "anatation",
                 category,

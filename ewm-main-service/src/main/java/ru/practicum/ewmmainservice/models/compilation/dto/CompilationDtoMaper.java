@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CompilationDtoMaper {
     private final EventDtoMaper eventDtoMaper;
-    public CompilationDto toDto(Compilation compilation){
+
+    public CompilationDto toDto(Compilation compilation) {
         Collection<EventShortDto> eventShortDtos = compilation.getEvents().stream()
                 .map(eventDtoMaper::toShortDto).collect(Collectors.toList());
         return new CompilationDto(eventShortDtos, compilation.getId(), compilation.getPinned(), compilation.getTitle());

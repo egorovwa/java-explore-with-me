@@ -22,10 +22,12 @@ public class CategoryController {
     public CategoryDto createCategory(@RequestBody @Valid NewCategoryDto newCategoryDto) throws ModelAlreadyExistsException {
         return categoryService.createCategory(newCategoryDto);
     }
+
     @PatchMapping
     public CategoryDto updateCategory(@RequestBody @Valid CategoryDto categoryDto) throws NotFoundException {
         return categoryService.patchCategory(categoryDto);
     }
+
     @DeleteMapping("/{catId}")
     public void deleteCategory(@PathVariable("catId") Long catId) throws NotFoundException, RelatedObjectsPresent {
         categoryService.deleteCategory(catId);

@@ -7,11 +7,12 @@ import reactor.core.publisher.Mono;
 
 public class Client {
     private final WebClient webClient;
+
     public Client(String baseUrl) {
         this.webClient = WebClient.create(baseUrl);
     }
 
-     protected ResponseEntity<Object> post(String path, Object object) {
+    protected ResponseEntity<Object> post(String path, Object object) {
         return webClient
                 .post()
                 .uri(path)
@@ -19,7 +20,7 @@ public class Client {
                 .body(Mono.just(object), Object.class)
                 .retrieve()
                 .toEntity(Object.class)
-                .onErrorReturn(ResponseEntity.internalServerError().build())
+                .onErrorResume(e -> Mono.error(new RuntimeException("Statistic server error")))
                 .block();
 
 

@@ -19,6 +19,7 @@ public interface PrivateEventRepository extends JpaRepository<Event, Long> {
             " AND e.participants.size < e.participantLimit")
     Page<Event> findAllForPublicAvailable(String text, List<Long> catIds, Boolean paid, Long rangeStart, Long rangeEnd,
                                           Pageable pageable);
+
     @Query("SELECT e FROM Event e WHERE (LOWER(e.description) LIKE LOWER(CONCAT('%',:text,'%')) OR " +
             "LOWER(e.annotation) LIKE LOWER(CONCAT('%', :text, '%')) OR LOWER(e.title) LIKE LOWER(CONCAT('%', :text, '%')))" +
             "AND e.category.id IN :catIds AND e.paid = :paid AND e.eventDate > :rangeStart AND e.eventDate < :rangeEnd")

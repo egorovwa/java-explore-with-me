@@ -130,17 +130,17 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     public EventFullDto findEventForInitiator(Long userId, Long eventId) throws NotFoundException, IlegalUserIdException {
         User user = userAdminService.findById(userId);
         Event event = repository.findById(eventId)
-                .orElseThrow(()-> new NotFoundException("id", eventId.toString(), "Event"));
-        if (user.equals(event.getInitiator())){
+                .orElseThrow(() -> new NotFoundException("id", eventId.toString(), "Event"));
+        if (user.equals(event.getInitiator())) {
             return eventDtoMaper.toFulDto(event);
-        }else {
+        } else {
             throw new IlegalUserIdException(userId, eventId, "Event");
         }
 
     }
 
     @Override
-    public List<EventShortDto> findAllEventByInitiatur(Long userId) throws NotFoundException {
+    public List<EventShortDto> findAllEventByInitiator(Long userId) throws NotFoundException {
         userAdminService.findById(userId);
         return repository.findByInitiatorId(userId).stream().map(eventDtoMaper::toShortDto).collect(Collectors.toList());
     }

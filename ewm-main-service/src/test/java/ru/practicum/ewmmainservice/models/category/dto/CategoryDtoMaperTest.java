@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 class CategoryDtoMaperTest {
-    CategoryDtoMaper maper = new CategoryDtoMaper();
+    final CategoryDtoMaper maper = new CategoryDtoMaper();
 
     @Test
     void fromNewCategoryDto() {

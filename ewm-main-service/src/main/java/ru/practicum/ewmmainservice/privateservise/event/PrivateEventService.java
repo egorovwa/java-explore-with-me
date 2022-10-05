@@ -17,5 +17,5 @@ public interface PrivateEventService {
 
     EventFullDto findEventForInitiator(Long userId, Long eventId) throws NotFoundException, IlegalUserIdException;
 
-    List<EventShortDto> findAllEventByInitiatur(Long userId) throws NotFoundException;
+    List<EventShortDto> findAllEventByInitiator(Long userId) throws NotFoundException;
 }

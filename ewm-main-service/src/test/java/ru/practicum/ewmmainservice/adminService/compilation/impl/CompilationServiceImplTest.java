@@ -37,15 +37,15 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CompilationServiceImplTest {
+    final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), new LocationDtoMaper());
+    @InjectMocks
+    CompilationServiceImpl service;
     @Mock
     private CompilationRepository repository;
     @Mock
     private AdminEventService eventService;
-    EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMaper(), new LocationDtoMaper());
     @Mock
     private CompilationDtoMaper dtoMaper = new CompilationDtoMaper(eventDtoMaper);
-    @InjectMocks
-    CompilationServiceImpl service;
 
     @Test
     void test1_1createCompilation() throws NotFoundException, FiledParamNotFoundException {
@@ -72,7 +72,7 @@ class CompilationServiceImplTest {
     }
 
     @Test
-    void test1_2createCompilation_whenEventNotFound() throws NotFoundException, FiledParamNotFoundException {
+    void test1_2createCompilation_whenEventNotFound() throws NotFoundException {
         NewCompilationDto newCompilationDto = new NewCompilationDto(List.of(1L, 2L), true, "title");
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
@@ -121,7 +121,7 @@ class CompilationServiceImplTest {
     }
 
     @Test
-    void test2_1Compilation_whenNotFound() throws NotFoundException {
+    void test2_1Compilation_whenNotFound() {
         when(repository.findById(1L))
                 .thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> {
@@ -150,7 +150,7 @@ class CompilationServiceImplTest {
     }
 
     @Test
-    void test3_2findById_wheNotFound() throws NotFoundException {
+    void test3_2findById_wheNotFound() {
         when(repository.findById(1L))
                 .thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> {
@@ -190,7 +190,7 @@ class CompilationServiceImplTest {
     }
 
     @Test
-    void test4_2deleteEventFromCompilation_whenEventNotFound() throws NotFoundException, FiledParamNotFoundException {
+    void test4_2deleteEventFromCompilation_whenEventNotFound() {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -215,7 +215,7 @@ class CompilationServiceImplTest {
     }
 
     @Test
-    void test4_3deleteEventFromCompilation_whenCompilationNotFound() throws NotFoundException, FiledParamNotFoundException {
+    void test4_3deleteEventFromCompilation_whenCompilationNotFound() {
         when(repository.findById(1L))
                 .thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> {
@@ -225,7 +225,7 @@ class CompilationServiceImplTest {
     }
 
     @Test
-    void test5_1addEventToCompilation() throws NotFoundException, NotRequiredException, FiledParamNotFoundException {
+    void test5_1addEventToCompilation() throws NotFoundException, NotRequiredException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -256,7 +256,7 @@ class CompilationServiceImplTest {
     }
 
     @Test
-    void test5_1addEventToCompilation_whenCompilationContantEvent() throws NotFoundException, NotRequiredException, FiledParamNotFoundException {
+    void test5_1addEventToCompilation_whenCompilationContantEvent() throws NotFoundException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -280,8 +280,9 @@ class CompilationServiceImplTest {
         });
         verify(repository, times(0)).save(any());
     }
+
     @Test
-    void test5_1addEventToCompilation_whenCompilationNotFound() throws NotFoundException, NotRequiredException, FiledParamNotFoundException {
+    void test5_1addEventToCompilation_whenCompilationNotFound() {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -297,8 +298,9 @@ class CompilationServiceImplTest {
         });
         verify(repository, times(0)).save(any());
     }
+
     @Test
-    void test5_2addEventToCompilation_whenEventNotFound() throws NotFoundException, NotRequiredException, FiledParamNotFoundException {
+    void test5_2addEventToCompilation_whenEventNotFound() throws NotFoundException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -322,6 +324,7 @@ class CompilationServiceImplTest {
         });
         verify(repository, times(0)).save(any());
     }
+
     @Test
     void test6_1deletePinned() throws NotRequiredException, NotFoundException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
@@ -343,8 +346,9 @@ class CompilationServiceImplTest {
         service.deletePinned(1L);
         verify(repository, times(1)).save(compilationSaved);
     }
+
     @Test
-    void test6_2deletePinned_whenNotPinned() throws NotRequiredException, NotFoundException {
+    void test6_2deletePinned_whenNotPinned() {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -361,18 +365,20 @@ class CompilationServiceImplTest {
         Compilation compilationSaved = new Compilation(List.of(event), 1L, false, "title");
         when(repository.findById(1L))
                 .thenReturn(Optional.of(compilation));
-        assertThrows(NotRequiredException.class, ()->{
-        service.deletePinned(1L);
-    });
-    }
-    @Test
-    void test6_3deletePinned_whenCompilationNotFound() throws NotRequiredException, NotFoundException {
-        when(repository.findById(1L))
-                .thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, ()->{
+        assertThrows(NotRequiredException.class, () -> {
             service.deletePinned(1L);
         });
     }
+
+    @Test
+    void test6_3deletePinned_whenCompilationNotFound() {
+        when(repository.findById(1L))
+                .thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> {
+            service.deletePinned(1L);
+        });
+    }
+
     @Test
     void test7_1compilationPinned() throws NotRequiredException, NotFoundException {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
@@ -394,8 +400,9 @@ class CompilationServiceImplTest {
         service.addPinned(1L);
         verify(repository, times(1)).save(compilationSaved);
     }
+
     @Test
-    void test7_2compilationPinned_whenPinned() throws NotRequiredException, NotFoundException {
+    void test7_2compilationPinned_whenPinned() {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
@@ -412,15 +419,16 @@ class CompilationServiceImplTest {
         Compilation compilationSaved = new Compilation(List.of(event), 1L, false, "title");
         when(repository.findById(1L))
                 .thenReturn(Optional.of(compilation));
-        assertThrows(NotRequiredException.class, ()->{
+        assertThrows(NotRequiredException.class, () -> {
             service.addPinned(1L);
         });
     }
+
     @Test
-    void test7_3deletePinned_whenCompilationNotFound() throws NotRequiredException, NotFoundException {
+    void test7_3deletePinned_whenCompilationNotFound() {
         when(repository.findById(1L))
                 .thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, ()->{
+        assertThrows(NotFoundException.class, () -> {
             service.addPinned(1L);
         });
     }
