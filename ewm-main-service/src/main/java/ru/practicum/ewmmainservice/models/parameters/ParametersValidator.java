@@ -24,25 +24,26 @@ public class ParametersValidator {
     private final UserAdminService userAdminService;
     private final CategoryService categoryService;
     private final DateTimeFormatter formatter = Utils.getDateTimeFormater();
+
     public boolean adminFindEvents(ParametersAdminFindEvent parameters) throws NotValidParameterException, IllegalTimeException {
-       if (parameters.getRangeStart()>= parameters.getRangeEnd()){
-          throw new  IllegalTimeException("Конец должен быть после старта.",
-                  String.format("statr %s end %s",
-                          formatter.format(LocalDateTime.ofEpochSecond(parameters.getRangeStart(), 0, ZoneOffset.UTC)),
-                          formatter.format(LocalDateTime.ofEpochSecond(parameters.getRangeEnd(),0, ZoneOffset.UTC))));
-       }
+        if (parameters.getRangeStart() >= parameters.getRangeEnd()) {
+            throw new IllegalTimeException("Конец должен быть после старта.",
+                    String.format("statr %s end %s",
+                            formatter.format(LocalDateTime.ofEpochSecond(parameters.getRangeStart(), 0, ZoneOffset.UTC)),
+                            formatter.format(LocalDateTime.ofEpochSecond(parameters.getRangeEnd(), 0, ZoneOffset.UTC))));
+        }
         List<ErrorParam> errors = new ArrayList<>();
-       errors.addAll(usersValidation(parameters.getUsers()));
-       errors.addAll(categoryValidation(parameters.getCategories()));
-       if (!errors.isEmpty()){
-           throw new NotValidParameterException(String.format("%s parameters not valid", errors.size()),errors);
-       }
-       return true;
+        errors.addAll(usersValidation(parameters.getUsers()));
+        errors.addAll(categoryValidation(parameters.getCategories()));
+        if (!errors.isEmpty()) {
+            throw new NotValidParameterException(String.format("%s parameters not valid", errors.size()), errors);
+        }
+        return true;
     }
 
     private Collection<ErrorParam> categoryValidation(List<Long> categories) {
         List<ErrorParam> categoryErrors = new ArrayList<>();
-        categories.forEach(id->{
+        categories.forEach(id -> {
             try {
                 categoryService.findByid(id);
             } catch (NotFoundException e) {
@@ -54,7 +55,7 @@ public class ParametersValidator {
 
     private List<ErrorParam> usersValidation(List<Long> users) {
         List<ErrorParam> userErrors = new ArrayList<>();
-        users.forEach(id->{
+        users.forEach(id -> {
             try {
                 userAdminService.findById(id);
             } catch (NotFoundException e) {

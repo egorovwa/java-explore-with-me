@@ -28,10 +28,10 @@ public class ParametersAdminFindEvent {
                                     String rangeEnd, Integer from, Integer size) throws IncorrectPageValueException {
         this.users = Arrays.asList(users);
         this.states = Arrays.asList(states).stream().map(EventState::from)
-                .map(r-> r.orElseThrow(()-> new IllegalArgumentException("Unknown state: " + r)))
+                .map(r -> r.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + r)))
                 .collect(Collectors.toList());
         this.categories = Arrays.asList(categories);
-        this.rangeStart = LocalDateTime.parse(rangeStart,formatter).toEpochSecond(ZoneOffset.UTC);
+        this.rangeStart = LocalDateTime.parse(rangeStart, formatter).toEpochSecond(ZoneOffset.UTC);
         this.rangeEnd = LocalDateTime.parse(rangeEnd, formatter).toEpochSecond(ZoneOffset.UTC);
         this.pageable = PageParam.createPageable(from, size);
     }

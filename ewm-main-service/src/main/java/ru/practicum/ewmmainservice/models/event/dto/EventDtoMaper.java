@@ -64,11 +64,12 @@ public class EventDtoMaper {
                 event.getTitle(),
                 event.getViews());
     }
-    public EventShortDto toShortDto(Event event){
+
+    public EventShortDto toShortDto(Event event) {
         return new EventShortDto(event.getId(),
                 event.getAnnotation(),
                 event.getCategory(),
-                formatter.format(LocalDateTime.ofEpochSecond(event.getEventDate(),0,ZoneOffset.UTC)),
+                formatter.format(LocalDateTime.ofEpochSecond(event.getEventDate(), 0, ZoneOffset.UTC)),
                 event.getParticipants().size(),
                 userDtoMaper.toShortDto(event.getInitiator()),
                 event.getPaid(),

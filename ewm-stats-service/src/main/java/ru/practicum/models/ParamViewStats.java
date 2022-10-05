@@ -20,7 +20,7 @@ public class ParamViewStats {
     DateTimeFormatter formatter = Utils.getDateTimeFormater();
 
     public ParamViewStats(String start, String end, String[] uris, Boolean unique) {
-        this.start = LocalDateTime.parse(URLDecoder.decode(start, StandardCharsets.UTF_8),formatter)
+        this.start = LocalDateTime.parse(URLDecoder.decode(start, StandardCharsets.UTF_8), formatter)
                 .toEpochSecond(ZoneOffset.UTC);
         this.end = LocalDateTime.parse(URLDecoder.decode(end, StandardCharsets.UTF_8), formatter)
                 .toEpochSecond(ZoneOffset.UTC);

@@ -83,6 +83,7 @@ class ParametersValidatorTest {
                 new ErrorParam("Category", "id", "2"))));
         assertThat(e.getMessage(), is("2 parameters not valid"));
     }
+
     @Test
     void adminFindEvents_illegalTime() throws IncorrectPageValueException, NotFoundException, NotValidParameterException, IllegalTimeException {
         Long[] usersId = {1L, 2L};
@@ -91,7 +92,7 @@ class ParametersValidatorTest {
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().minusSeconds(1));
         ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
-        assertThrows(IllegalTimeException.class, ()-> validator.adminFindEvents(param));
+        assertThrows(IllegalTimeException.class, () -> validator.adminFindEvents(param));
     }
 
 }
