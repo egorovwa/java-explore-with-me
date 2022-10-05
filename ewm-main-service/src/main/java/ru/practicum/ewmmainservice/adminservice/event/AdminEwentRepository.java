@@ -16,8 +16,7 @@ import java.util.List;
 public interface AdminEwentRepository extends JpaRepository<Event, Long> {
     Collection<Event> findAllByCategoryId(Long catId);
 
-    @EntityGraph(attributePaths = {"category", "initiator", "location", "participants"},
-            type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(attributePaths = {"category", "initiator", "location", "participants"})
     @Query("SELECT e FROM Event e WHERE e.initiator.id IN :initiatorId AND e.category.id IN :categoryId " +
             "AND e.state IN :states AND e.eventDate > :rangeStart AND e.eventDate < :rangeEnd")
     Page<Event> findForAdmin(List<Long> initiatorId, List<Long> categoryId, List<EventState> states,
