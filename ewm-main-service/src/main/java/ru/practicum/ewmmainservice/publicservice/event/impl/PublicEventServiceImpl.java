@@ -32,7 +32,7 @@ public class PublicEventServiceImpl implements PublicEventService {
     private String appName;
 
     @Override
-    public Collection<EventShortDto> findEvents(ParametersPublicEventFind param) {
+    public Collection<EventShortDto> findEvents(ParametersPublicEventFind param) { // TODO: 05.10.2022  интеграционных тестов
         if (param.getOnlyAvailable()) {
             EndpointHitDto endpointHitDto = new EndpointHitDto(null, appName, param.getEndpointPath(), param.getClientIp(),
                     formatter.format(LocalDateTime.now()));

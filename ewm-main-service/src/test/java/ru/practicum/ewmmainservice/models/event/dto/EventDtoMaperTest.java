@@ -7,7 +7,7 @@ import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
-import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
+import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 import ru.practicum.ewmmainservice.models.user.dto.UserShortDto;

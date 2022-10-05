@@ -1,7 +1,7 @@
-package ru.practicum.ewmmainservice.models.participationRequest.dto;
+package ru.practicum.ewmmainservice.models.participationrequest.dto;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
+import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.time.LocalDateTime;

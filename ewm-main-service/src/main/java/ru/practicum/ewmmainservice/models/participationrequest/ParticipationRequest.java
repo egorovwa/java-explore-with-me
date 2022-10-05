@@ -1,4 +1,4 @@
-package ru.practicum.ewmmainservice.models.participationRequest;
+package ru.practicum.ewmmainservice.models.participationrequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -160,10 +160,10 @@ public class AdminEventServiceImpl implements AdminEventService {
     @Override
     public List<EventFullDto> findAllEvents(ParametersAdminFindEvent parameters) throws NotValidParameterException, IllegalTimeException {
         validator.adminFindEvents(parameters);
+        log.info("Find events with parameters {}", parameters);
         List<Event> events = repository.findForAdmin(parameters.getUsers(), parameters.getCategories(),
                         parameters.getStates(), parameters.getRangeStart(), parameters.getRangeEnd(), parameters.getPageable())
                 .toList();
-        log.info("Find events with parameters {}", parameters);
         return events.stream().map(eventDtoMaper::toFulDto).collect(Collectors.toList());
     }
 

@@ -31,10 +31,11 @@ public class UserAdminController {
     public Collection<UserDto> findAll(@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                        @Positive @RequestParam(name = "size", defaultValue = "10") Integer size,
                                        @RequestParam(value = "ids", required = false) Long[] ids) throws IncorrectPageValueException {
+        var pageable = PageParam.createPageable(from, size);
         if (ids == null) {
-            return userAdminService.findAll(PageParam.createPageable(from, size));
+            return userAdminService.findAll(pageable);
         } else {
-            return userAdminService.findByIds(ids, PageParam.createPageable(from, size));
+            return userAdminService.findByIds(ids, pageable);
         }
     }
 

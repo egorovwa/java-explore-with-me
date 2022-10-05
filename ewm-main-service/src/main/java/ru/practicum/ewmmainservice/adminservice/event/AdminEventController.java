@@ -45,7 +45,6 @@ public class AdminEventController {
 
         ParametersAdminFindEvent parameters = new ParametersAdminFindEvent(users, states, categories,
                 rangeStart, rangeEnd, from, size);
-
         return service.findAllEvents(parameters);
     }
 

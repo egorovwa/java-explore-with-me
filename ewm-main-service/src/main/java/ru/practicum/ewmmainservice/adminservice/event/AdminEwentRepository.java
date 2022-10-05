@@ -2,6 +2,7 @@ package ru.practicum.ewmmainservice.adminservice.event;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,8 @@ import java.util.List;
 public interface AdminEwentRepository extends JpaRepository<Event, Long> {
     Collection<Event> findAllByCategoryId(Long catId);
 
+    @EntityGraph(attributePaths = {"category", "initiator", "location", "participants"},
+            type = EntityGraph.EntityGraphType.FETCH)
     @Query("SELECT e FROM Event e WHERE e.initiator.id IN :initiatorId AND e.category.id IN :categoryId " +
             "AND e.state IN :states AND e.eventDate > :rangeStart AND e.eventDate < :rangeEnd")
     Page<Event> findForAdmin(List<Long> initiatorId, List<Long> categoryId, List<EventState> states,

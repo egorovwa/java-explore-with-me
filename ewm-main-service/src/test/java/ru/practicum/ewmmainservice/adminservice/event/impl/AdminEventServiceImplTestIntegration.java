@@ -20,7 +20,7 @@ import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
-import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
+import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.privateservise.location.LocationRepository;
 import ru.practicum.ewmmainservice.utils.PageParam;

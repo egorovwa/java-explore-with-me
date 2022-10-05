@@ -12,7 +12,7 @@ import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
+import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;
 import ru.practicum.ewmmainservice.privateservise.location.LocationRepository;

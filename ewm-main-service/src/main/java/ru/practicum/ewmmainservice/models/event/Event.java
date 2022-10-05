@@ -56,7 +56,7 @@ public class Event {
     @Size(min = 3, max = 120)
     private String title;
     private int views; // кол-во поросмоьров
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     private Collection<User> participants; // подтвержденные участники
 
     public Event(String annotation, Category category, long createdOn, String description,

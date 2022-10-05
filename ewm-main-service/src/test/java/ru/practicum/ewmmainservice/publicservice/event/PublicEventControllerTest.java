@@ -21,7 +21,7 @@ import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.participationRequest.ParticipationRequest;
+import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.privateservise.location.LocationRepository;
 import ru.practicum.ewmstatscontract.utils.Utils;
@@ -93,7 +93,8 @@ class PublicEventControllerTest {
                         .param("from", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(1)));
+                .andExpect(jsonPath("$.size()", is(1)))
+                .andExpect(jsonPath("$[0].title", is("event2")));
     }
 
     @Test
@@ -149,7 +150,7 @@ class PublicEventControllerTest {
                 LocalDateTime.of(2022, 9, 11, 16, 11, 0).toEpochSecond(ZoneOffset.UTC),
                 true,
                 PENDING,
-                "title",
+                "event2",
                 5,
                 participans);
         event3 = new Event(3L,

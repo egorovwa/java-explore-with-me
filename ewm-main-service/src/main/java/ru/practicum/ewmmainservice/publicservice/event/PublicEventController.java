@@ -42,7 +42,6 @@ public class PublicEventController {
     @GetMapping("/{id}")
     public EventFullDto findById(HttpServletRequest request,
                                  @Positive @PathVariable("id") Long id) throws NotFoundException {
-
         return service.findById(id, request.getRequestURI(), request.getRemoteAddr());
     }
 }
