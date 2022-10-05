@@ -60,18 +60,6 @@ class ParticipationRequestControllerTest {
     }
 
     @Test
-    void test1_3createRequest_whenNotFound() throws Exception {
-        when(service.createRequest(1L, 1L))
-                .thenThrow(new NotFoundException("param", "value", "ClassName"));
-        mvc.perform(post(API + "/{userId}/requests", 1)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("eventId", "1"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.reason", is("The required object was not found.")));
-    }
-
-    @Test
     void test2_1_cancelRequest() throws Exception {
         mvc.perform(patch(API + "/{userId}/requests/{requestId}/cancel", 1L, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
