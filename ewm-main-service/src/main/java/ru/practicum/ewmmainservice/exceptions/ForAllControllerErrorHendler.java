@@ -138,4 +138,14 @@ public class ForAllControllerErrorHendler {
                 .status(HttpStatus.FORBIDDEN)
                 .build();
     }
+    @ExceptionHandler(LocationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError locationException(LocationException e){
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(e.reason)
+                .timestamp(formatter.format(LocalDateTime.now()))
+                .status(HttpStatus.BAD_REQUEST)
+                .build();
+    }
 }

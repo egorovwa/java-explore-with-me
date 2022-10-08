@@ -1,12 +1,12 @@
 package ru.practicum.ewmmainservice.privateservise.location;
 
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 
 import java.util.Optional;
 
 public interface LocationService {
-    Optional<Location> findByLatAndLon(Float lat, Float lon);
+    Optional<Location> findByLatAndLon(double lat, double lon);
 
-    Location save(LocationDto locationDto);
+    Location save(LocationFullDto locationFullDto);
 }

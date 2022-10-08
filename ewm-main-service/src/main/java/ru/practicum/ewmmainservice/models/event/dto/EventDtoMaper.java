@@ -55,7 +55,7 @@ public class EventDtoMaper {
                 event.getDescription(),
                 formatter.format(LocalDateTime.ofEpochSecond(event.getEventDate(), 0, ZoneOffset.UTC)),
                 userDtoMapper.toShortDto(event.getInitiator()),
-                locationDtoMaper.toDto(event.getLocation()),
+                locationDtoMaper.toFullDto(event.getLocation()),
                 event.getPaid(),
                 event.getParticipantLimit(),
                 publishedOn,

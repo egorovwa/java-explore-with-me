@@ -2,7 +2,7 @@ package ru.practicum.ewmmainservice.models.event.dto;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,7 +18,7 @@ public class NewEventDto {
     @DateTimeFormat
     private String eventDate;
     @NotNull
-    private LocationDto location;
+    private LocationFullDto location;
     @NotNull
     private Boolean paid;
     private int participantLimit = 0;
