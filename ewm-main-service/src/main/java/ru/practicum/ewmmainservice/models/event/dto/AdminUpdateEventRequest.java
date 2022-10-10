@@ -9,7 +9,7 @@ public class AdminUpdateEventRequest {
     private Long category;
     private String description;
     private String eventDate;
-    private LocationFullDto location;
+    private Long location;
     private Boolean paid;
     private Integer participantLimit;
     private Boolean requestModeration;

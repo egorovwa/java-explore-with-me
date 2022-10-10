@@ -1,5 +1,7 @@
 package ru.practicum.ewmmainservice.adminservice.location;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,4 +19,6 @@ public interface AdminLocationRepository extends JpaRepository<Location, Long> {
         " WHERE (distance(:lat, :lon, loc.lat, loc.lon) < loc.radius /1000)  AND loc.radius > :radius ORDER BY loc.radius"
         , nativeQuery = true)
     Collection<Location> findParents(double lat, double lon, int radius);
+
+    Page<Location> findAllByApproved(Boolean approved, Pageable pageable);
 }

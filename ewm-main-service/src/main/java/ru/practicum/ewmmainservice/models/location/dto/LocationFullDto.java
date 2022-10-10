@@ -21,5 +21,6 @@ public class LocationFullDto implements Coordinates {
     private int radius;
     private Long parentId;
     private Collection<LocationFullDto> childs; // TODO: 06.10.2022 или Целиком
+    private Boolean approved;
 
 }

@@ -10,17 +10,14 @@ import java.util.stream.Collectors;
 public class LocationDtoMaper {
     public LocationFullDto toFullDto(Location location) {
         Long parentId;
+        Collection<LocationFullDto> childs = location.getChilds().stream().map(this::toFullDto).collect(Collectors.toList());
         if (location.getParent()!=null){
             parentId = location.getParent().getId();
         }else parentId = null;
         return new LocationFullDto(location.getId(), location.getName(), location.getLat(), location.getLon(),
-                location.getRadius(), parentId,
-                location.getChilds().stream().map(this::toFullDto).collect(Collectors.toList())); // TODO: 06.10.2022 shortDto
+                location.getRadius(), parentId, childs, location.getApproved());
     }
 
-    public Location fromDto(LocationFullDto locationFullDto) {
-        return null;//new Location(null, locationFullDto.getLat(), locationFullDto.getLon());
-    }
 
     public Location fromNewDto(NewLocationDto newLocationDto, Location parent) {
         int radius;

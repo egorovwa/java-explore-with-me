@@ -17,6 +17,7 @@ import java.util.List;
 public class ParametersPublicEventFind {
     private String text;
     private List<Long> catIds;
+    private List<Long> locIds;
     private Boolean paid;
     private Long rangeStart;
     private Long rangeEnd;
@@ -24,13 +25,15 @@ public class ParametersPublicEventFind {
     private Pageable pageable;
     private String clientIp;
     private String endpointPath;
+    private boolean withChilds;
     private DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
-    public ParametersPublicEventFind(String text, Long[] catIds, Boolean paid, String rangeStart,
+    public ParametersPublicEventFind(String text, Long[] catIds, Long[] locIds, Boolean paid, String rangeStart,
                                      String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size,
-                                     String clientIp, String endpointPath) throws IncorrectPageValueException, IllegalTimeException {
+                                     String clientIp, String endpointPath, Boolean withChilds) throws IncorrectPageValueException, IllegalTimeException {
         this.text = text;
         this.catIds = Arrays.asList(catIds);
+        this.locIds = Arrays.asList(locIds);
         this.paid = paid;
 
         this.rangeStart = LocalDateTime.parse(rangeStart, formatter).toEpochSecond(ZoneOffset.UTC);
@@ -50,5 +53,6 @@ public class ParametersPublicEventFind {
         } else {
             throw new IllegalArgumentException(String.format("Sort by %s not found", sort));
         }
+        this.withChilds = withChilds;
     }
 }
