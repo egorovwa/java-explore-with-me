@@ -76,7 +76,7 @@ class PrivateAdminEventServiceImplTest {
                 .thenReturn(new User(1L, "email", "name"));
         when(categoryService.findByid(1L))
                 .thenReturn(new Category(1L, "category"));
-        when(locationService.findLocation(1L))
+        when(locationService.findLocationById(1L))
                 .thenReturn(location);
         EventFullDto event = eventDtoMaper.toFulDto(eventDtoMaper.fromNewDto(newEventDto,
                 new Category(1L, "category"), new User(1L, "email", "name"),
@@ -101,7 +101,7 @@ class PrivateAdminEventServiceImplTest {
                 .thenReturn(new User(1L, "email", "name"));
         when(categoryService.findByid(1L))
                 .thenReturn(new Category(1L, "category"));
-        when(locationService.findLocation(1L))
+        when(locationService.findLocationById(1L))
                 .thenReturn(location);
         EventFullDto event = eventDtoMaper.toFulDto(eventDtoMaper.fromNewDto(newEventDto,
                 new Category(1L, "category"), new User(1L, "email", "name"),

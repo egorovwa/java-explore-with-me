@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface AdminLocationService {
-    Location createLocation(NewLocationDto newLocationDto) throws NotFoundException, LocationException, ModelAlreadyExistsException;
+    Location createLocation(NewLocationDto newLocationDto, Boolean approved) throws NotFoundException, LocationException, ModelAlreadyExistsException;
 
     LocationFullDto adminCreateLocation(NewLocationDto newLocationDto) throws ModelAlreadyExistsException, NotFoundException, LocationException;
 

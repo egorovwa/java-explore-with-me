@@ -6,7 +6,9 @@ import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
+import ru.practicum.ewmmainservice.models.location.dto.LocationForEventDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
+import ru.practicum.ewmmainservice.models.location.dto.LocationShortDto;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
@@ -25,7 +27,8 @@ class EventDtoMaperTest {
     private final LocationDtoMaper locationDtoMaper = new LocationDtoMaper();
     private final EventDtoMaper maper = new EventDtoMaper(new UserDtoMapper(), locationDtoMaper);
     Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
-    LocationFullDto locationFullDto = locationDtoMaper.toFullDto(location);
+    LocationForEventDto locationForEventDto = locationDtoMaper.toFoeEventDto(location);
+
 
     @Test
     void fromNewDto() {
@@ -92,7 +95,7 @@ class EventDtoMaperTest {
         assertThat(dto.getDescription(), is("Description"));
         assertThat(dto.getEventDate(), is("2022-09-07 11:00:23"));
         assertThat(dto.getInitiator(), is(userShortDto));
-        assertThat(dto.getLocation(), is(locationFullDto));
+        assertThat(dto.getLocation(), is(locationForEventDto));
         assertThat(dto.getPaid(), is(true));
         assertThat(dto.getParticipantLimit(), is(10));
         assertThat(dto.getPublishedOn(), is("2022-09-11 16:11:00"));

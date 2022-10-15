@@ -31,8 +31,12 @@ public class ParametersAdminFindEvent {
         this.states = Arrays.asList(states).stream().map(EventState::from)
                 .map(r -> r.orElseThrow(() -> new IllegalArgumentException("Unknown state: " + r)))
                 .collect(Collectors.toList());
-        this.categories = Arrays.asList(categories);
-        this.locIds = Arrays.asList(locIds);
+        if (categories != null) {
+            this.categories = Arrays.asList(categories);
+        }
+        if (locIds != null) {
+            this.locIds = Arrays.asList(locIds);
+        }
         this.rangeStart = LocalDateTime.parse(rangeStart, formatter).toEpochSecond(ZoneOffset.UTC);
         this.rangeEnd = LocalDateTime.parse(rangeEnd, formatter).toEpochSecond(ZoneOffset.UTC);
         this.pageable = PageParam.createPageable(from, size);

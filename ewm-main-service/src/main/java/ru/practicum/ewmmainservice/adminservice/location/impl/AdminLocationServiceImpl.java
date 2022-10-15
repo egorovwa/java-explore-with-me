@@ -36,23 +36,22 @@ public class AdminLocationServiceImpl implements AdminLocationService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public Location createLocation(NewLocationDto newLocationDto) throws NotFoundException, LocationException, ModelAlreadyExistsException {
+    public Location createLocation(NewLocationDto newLocationDto, Boolean approved) throws NotFoundException, LocationException, ModelAlreadyExistsException {
         Collection<Location> toSave = new ArrayList();
         if (newLocationDto.getParentId() != null) {
-            return createWithParent(newLocationDto, toSave);
+            return createWithParent(newLocationDto, toSave, approved);
         } else {
-            return createWithOutParent(newLocationDto, toSave);
+            return createWithOutParent(newLocationDto, toSave, approved);
         }
     }
 
     @Override
     public LocationFullDto adminCreateLocation(NewLocationDto newLocationDto) throws ModelAlreadyExistsException, NotFoundException, LocationException {
-        return dtoMaper.toFullDto(createLocation(newLocationDto));
+        return dtoMaper.toFullDto(createLocation(newLocationDto, true));
     }
 
-    private Location createWithOutParent(NewLocationDto newLocationDto, Collection<Location> toSave) throws ModelAlreadyExistsException {
-        Location location = dtoMaper.fromNewDto(newLocationDto, null);
-        location.setApproved(true);
+    private Location createWithOutParent(NewLocationDto newLocationDto, Collection<Location> toSave, Boolean approved) throws ModelAlreadyExistsException {
+        Location location = dtoMaper.fromNewDto(newLocationDto, null, approved);
         findParent(location)
                 .ifPresent(p -> {
                     p.getChilds().add(location);
@@ -69,10 +68,11 @@ public class AdminLocationServiceImpl implements AdminLocationService {
                     String.format("lat = %s lon = %s radius = %s", location.getLat(),
                             location.getLon(), location.getRadius()), "Location");
         }
+        log.info("Created location {}", location);
         return location;
     }
 
-    private Location createWithParent(NewLocationDto newLocationDto, Collection<Location> toSave) throws NotFoundException, LocationException, ModelAlreadyExistsException {
+    private Location createWithParent(NewLocationDto newLocationDto, Collection<Location> toSave, Boolean approved) throws NotFoundException, LocationException, ModelAlreadyExistsException {
         Location parent = repository.findById(newLocationDto.getParentId())
                 .orElseThrow(() -> new NotFoundException("id", newLocationDto.getParentId().toString(), "Parent location"));
         Long distant = PointsOperations.getDistance(parent, newLocationDto);
@@ -80,8 +80,7 @@ public class AdminLocationServiceImpl implements AdminLocationService {
             throw new LocationException(String.format("Location %s cannot be the parent for location %s, because it is located at a distance of %sm, and the radius of parent is %sm.",
                     parent, newLocationDto, distant, parent.getRadius()), "Error creating a location.");
         }
-        Location location = dtoMaper.fromNewDto(newLocationDto, parent);
-        location.setApproved(true);
+        Location location = dtoMaper.fromNewDto(newLocationDto, parent,approved);
         Collection<Location> childs = findChilds(location);
         location.setChilds(childs);
         parent.getChilds().add(location);
@@ -90,6 +89,7 @@ public class AdminLocationServiceImpl implements AdminLocationService {
         toSave.addAll(childs);
         try {
             repository.saveAll(toSave);
+            log.info("Created location {}", location);
         } catch (DataIntegrityViolationException e) {
             throw new ModelAlreadyExistsException("coordinats",
                     String.format("lat = %s lon = %s radius = %s", location.getLat(),
@@ -104,7 +104,7 @@ public class AdminLocationServiceImpl implements AdminLocationService {
             return repository.findAll(pageable).map(dtoMaper::toShortDto)
                     .toList();
         }else {
-
+log.info("Find all location with approved status = {}", approved);
             return repository.findAllByApproved(approved, pageable)
                     .map(dtoMaper::toShortDto).toList();
         }
@@ -112,6 +112,7 @@ public class AdminLocationServiceImpl implements AdminLocationService {
 
     @Override
     public LocationFullDto findById(Long locId) throws NotFoundException {
+        log.info("Find location by id = {}", locId);
         return dtoMaper.toFullDto(repository.findById(locId)
                 .orElseThrow(() -> new NotFoundException("id", locId.toString(),
                         "Location")));
@@ -123,10 +124,12 @@ public class AdminLocationServiceImpl implements AdminLocationService {
                 .orElseThrow(() -> new NotFoundException("id", locId.toString(),
                         "Location"));
         if (withNested) {
+            log.info("Find childs location id = {}, withNested = {}", locId, withNested);
             return location.getChilds().stream()
                     .map(dtoMaper::toFullDto)
                     .collect(Collectors.toList());
         } else {
+            log.info("Find childs location id = {}, withNested = {}", locId, withNested);
             return location.getChilds().stream()
                     .map(dtoMaper::toShortDto)
                     .collect(Collectors.toList());
@@ -134,6 +137,7 @@ public class AdminLocationServiceImpl implements AdminLocationService {
     }
 
     private Optional<Location> findParent(Location location) {
+        log.debug("Find parent for location id = {}", location.getId());
         Collection<Location> parents = repository.findParents(location.getLat(), location.getLon(), location.getRadius());
         return parents.stream().findFirst();
     }
@@ -142,6 +146,7 @@ public class AdminLocationServiceImpl implements AdminLocationService {
     public Collection<Location> findChilds(Location location) {
         double radiusKm = location.getRadius() / 1000.0;
         Collection<Location> childs = repository.findChilds(location.getLat(), location.getLon(), radiusKm);
+        log.debug("Childs location from repository {}", childs);
         childs = childs.stream()
                 .filter(loc -> (loc.getLat() != location.getLat() || loc.getLon() != location.getLon()) &&
                         loc.getRadius() < location.getRadius())
@@ -154,12 +159,13 @@ public class AdminLocationServiceImpl implements AdminLocationService {
                 .forEach(loc -> {
                     loc.setParent(location);
                 });
+        log.debug("Finded childs {}", childs);
         return childs;
     }
 
     @Override
     public Optional<Location> findParrent(NewLocationDto newLocationDto) {
-        Location location = dtoMaper.fromNewDto(newLocationDto, null);
+        Location location = dtoMaper.fromNewDto(newLocationDto, null, null);
 
         return findParent(location);
     }
@@ -172,6 +178,7 @@ public class AdminLocationServiceImpl implements AdminLocationService {
             throw new NotRequiredException(String.format("Location id = %s aredy approved", locId));
         }
         location.setApproved(true);
+        log.info("Location id = {} approved", locId);
         return dtoMaper.toFullDto(repository.save(location));
     }
 
@@ -182,6 +189,7 @@ public class AdminLocationServiceImpl implements AdminLocationService {
         if (location.getApproved()){
             throw new NotRequiredException(String.format("Location id = %s aredy approved", locId));
         }
+        log.info("Location id = {} rejected and deleted", locId);
         repository.deleteById(locId);
     }
 }

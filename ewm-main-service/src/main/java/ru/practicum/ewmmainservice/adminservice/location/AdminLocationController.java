@@ -50,8 +50,9 @@ public class AdminLocationController {
     public LocationFullDto approvedLocation(@PathVariable("locId") Long locId) throws NotRequiredException, NotFoundException {
        return service.approvedLocation(locId);
     }
-    @PatchMapping("/{locId}/reject")
+    @DeleteMapping("/{locId}/reject")
     public void rejectLocation(@PathVariable("locId") Long locId) throws NotRequiredException, NotFoundException {
         service.rejectLocation(locId);
     }
+
 }

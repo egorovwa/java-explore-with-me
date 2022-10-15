@@ -22,17 +22,20 @@ import java.util.Collection;
 @Validated
 public class LocationController {
     private final LocationService service;
-    @GetMapping("/{userId}")
+    @GetMapping
     public Collection<LocationShortDto> findLocations(@RequestParam(value = "locId",required = false) Long locId,
                                                       @RequestParam(value = "from", defaultValue = "0") Integer from,
-                                                      @RequestParam(value = "size", required = false) Integer size,
-                                                      @PathVariable("userId") Long userId) throws IncorrectPageValueException {
+                                                      @RequestParam(value = "size", defaultValue = "10") Integer size) throws IncorrectPageValueException {
         Pageable pageable = PageParam.createPageable(from, size);
-        return service.fidLocations(userId, locId, pageable);
+        return service.fidLocations(locId, pageable);
+    }
+    @GetMapping("/{locId}")
+    public LocationFullDto findById(@PathVariable("locId") Long locId) throws NotFoundException {
+        return service.findLocationDtoById(locId);
     }
     @PostMapping("/{userId}")
     public LocationFullDto createLocation(@Valid @RequestBody NewLocationDto newLocationDto,
-                                          @RequestParam("userId") Long userId) throws ModelAlreadyExistsException, NotFoundException, LocationException {
+                                          @PathVariable("userId") Long userId) throws ModelAlreadyExistsException, NotFoundException, LocationException {
         return service.createLocation(newLocationDto, userId);
     }
 }

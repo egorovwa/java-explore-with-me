@@ -15,7 +15,6 @@ import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
-import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 import ru.practicum.ewmmainservice.models.parameters.ParametersValidator;
@@ -80,7 +79,7 @@ public class AdminEventServiceImpl implements AdminEventService {
             log.info("Updated the eventDate of the event id = {}", eventId);
         }
         if (request.getLocation() != null) {
-            event.setLocation(locationService.findLocation(request.getLocation()));
+            event.setLocation(locationService.findLocationById(request.getLocation()));
             log.info("Updated the location of the event id = {}, new location id = {}", eventId, request.getLocation());
         }
         if (request.getPaid() != null) {

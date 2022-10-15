@@ -46,7 +46,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         try {
             Category category = categoryService.findByid(newEventDto.getCategory());
             User user = userAdminService.findById(userId);
-            Location location = locationService.findLocation(newEventDto.getLocation());
+            Location location = locationService.findLocationById(newEventDto.getLocation());
 
             log.info("Created new event {}", newEventDto);
             return eventDtoMaper.toFulDto(repository.save(eventDtoMaper.fromNewDto(newEventDto, category, user, location)));

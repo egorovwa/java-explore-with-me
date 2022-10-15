@@ -19,7 +19,6 @@ import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
-import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 import ru.practicum.ewmmainservice.models.parameters.ParametersValidator;
 import ru.practicum.ewmmainservice.models.user.User;
@@ -58,7 +57,6 @@ class AdminEventServiceImplTest {
     @Mock
     private EventDtoMaper eventDtoMaper;
     Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
-    LocationFullDto locationFullDto = locationDtoMaper.toFullDto(location);
     @BeforeEach
     void setup() {
 
@@ -111,7 +109,7 @@ class AdminEventServiceImplTest {
                 .thenReturn(Optional.ofNullable(event));
         when(repository.save(saved))
                 .thenReturn(saved);
-        when(locationService.findLocation(1L))
+        when(locationService.findLocationById(1L))
                 .thenReturn(location);
         service.updateEventRequest(1L, request);
     }
@@ -350,8 +348,6 @@ class AdminEventServiceImplTest {
         assertThrows(NotValidParameterException.class, () -> {
             List<EventFullDto> result = service.findAllEvents(param);
         });
-        verify(repository, times(0)).findForAdmin(anyList(), anyList(), anyList(), anyLong(), anyLong(), param.getLocIds(), any());
-
     }
 
     @Test

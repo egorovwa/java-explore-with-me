@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.EventState;
+import ru.practicum.ewmmainservice.models.location.dto.LocationForEventDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
+import ru.practicum.ewmmainservice.models.location.dto.LocationShortDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserShortDto;
 
 import javax.validation.constraints.NotNull;
@@ -31,7 +33,7 @@ public class EventFullDto {
     @NotNull
     private UserShortDto initiator;
     @NotNull
-    private LocationFullDto location;
+    private LocationForEventDto location;
     @NotNull
     private Boolean paid;
     private int participantLimit;

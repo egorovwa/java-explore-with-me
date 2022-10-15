@@ -79,7 +79,7 @@ public class PublicEventServiceImpl implements PublicEventService {
             List<Long> childs = toFind.stream().flatMap(r ->
                     {
                         try {
-                            return locationService.findLocation(r).getChilds().stream().map(Location::getId);
+                            return locationService.findLocationById(r).getChilds().stream().map(Location::getId);
                         } catch (NotFoundException e) {
                             throw new RuntimeException(e);
                         }

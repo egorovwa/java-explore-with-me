@@ -19,13 +19,13 @@ public class LocationDtoMaper {
     }
 
 
-    public Location fromNewDto(NewLocationDto newLocationDto, Location parent) {
+    public Location fromNewDto(NewLocationDto newLocationDto, Location parent, Boolean approved) {
         int radius;
         if (newLocationDto.getRadius() != null){
             radius = newLocationDto.getRadius();
         } else radius = 10;
         return new Location(newLocationDto.getName(), newLocationDto.getLat(), newLocationDto.getLon(),
-                radius, parent, false);
+                radius, parent, approved);
     }
     public LocationShortDto toShortDto(Location location){
         Long parentId = null;
@@ -36,5 +36,13 @@ public class LocationDtoMaper {
                 .map(Location::getId).collect(Collectors.toList());
         return new LocationShortDto(location.getId(), location.getName(), location.getLat(), location.getLon(), location.getRadius(),
                 parentId,location.getApproved(), childsId);
+    }
+    public LocationForEventDto toFoeEventDto(Location location){
+        Long parentId = null;
+        if (location.getParent() != null){
+            parentId = location.getParent().getId();
+        }
+        return new LocationForEventDto(location.getId(), location.getName(), location.getLat(), location.getLon(),
+                location.getRadius(), parentId);
     }
 }

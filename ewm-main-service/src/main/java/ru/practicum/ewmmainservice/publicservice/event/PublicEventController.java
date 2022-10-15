@@ -22,10 +22,10 @@ public class PublicEventController {
     private final PublicEventService service;
 
     @GetMapping
-    public Collection<EventShortDto> findEfents(HttpServletRequest request,
+    public Collection<EventShortDto> findEvents(HttpServletRequest request,
                                                 @RequestParam("text") String text,
                                                 @RequestParam(value = "categories", required = false) Long[] categories,
-                                                @RequestParam(value = "locIds", required = false) Long[] locIds,
+                                                @RequestParam(value = "locations", required = false) Long[] locIds,
                                                 @RequestParam(value = "paid", required = false) Boolean paid,
                                                 @RequestParam(value = "rangeStart", required = false) String rangeStart,
                                                 @RequestParam(value = "rangeEnd", required = false) String rangeEnd,

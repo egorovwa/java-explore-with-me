@@ -28,16 +28,19 @@ public class LocationServiceImpl implements LocationService {
 
 
     @Override
-    public Location findLocation(Long locationId) throws NotFoundException {
+    public Location findLocationById(Long locationId) throws NotFoundException {
+        log.info("Find location by id = {}", locationId);
         return locationRepository.findById(locationId)
                 .orElseThrow(() -> new NotFoundException("Id", locationId.toString(), "Location"));
     }
 
     @Override
-    public Collection<LocationShortDto> fidLocations(Long userId, Long locId, Pageable pageable) {
+    public Collection<LocationShortDto> fidLocations(Long locId, Pageable pageable) {
         if (locId == null) {
+            log.info("Find all location");
             return locationRepository.findAll(pageable).map(locationDtoMaper::toShortDto).toList();
         } else {
+            log.info("Find all location in location id = {}", locId);
             return locationRepository.findAllByParentId(locId, pageable)
                     .map(locationDtoMaper::toShortDto).toList();
         }
@@ -46,9 +49,15 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationFullDto createLocation(NewLocationDto newLocationDto, Long userId) throws NotFoundException, ModelAlreadyExistsException, LocationException {
         userAdminService.findById(userId);
-        Location location = adminLocationService.createLocation(newLocationDto);
-        location.setApproved(false);
+        Location location = adminLocationService.createLocation(newLocationDto,false);
+
+        log.info("User id = {} create location {}", userId, location);
         return locationDtoMaper.toFullDto(location);
+    }
+
+    @Override
+    public LocationFullDto findLocationDtoById(Long locId) throws NotFoundException {
+        return locationDtoMaper.toFullDto(findLocationById(locId));
     }
 
 

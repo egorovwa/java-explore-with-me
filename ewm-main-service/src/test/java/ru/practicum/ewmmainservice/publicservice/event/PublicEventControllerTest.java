@@ -43,7 +43,6 @@ import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@AutoConfigureTestDatabase
 class PublicEventControllerTest {
     private static final String API = "/events";
     @Autowired
@@ -86,13 +85,15 @@ class PublicEventControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .param("text", "event")
                         .param("categories", "2")
+                        .param("locations", "1")
                         .param("paid", String.valueOf(true))
                         .param("rangeStart", "2022-09-08 00:00:00")
                         .param("rangeEnd", "2022-09-10 00:00:00")
                         .param("onlyAvailable", String.valueOf(true))
                         .param("sort", "VIEWS")
                         .param("from", "0")
-                        .param("size", "10"))
+                        .param("size", "10")
+                        .param("withChilds", String.valueOf(false)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(1)))
                 .andExpect(jsonPath("$[0].title", is("event2")));
@@ -150,7 +151,7 @@ class PublicEventControllerTest {
                 10,
                 LocalDateTime.of(2022, 9, 11, 16, 11, 0).toEpochSecond(ZoneOffset.UTC),
                 true,
-                PENDING,
+                PUBLISHED,
                 "event2",
                 5,
                 participans);
