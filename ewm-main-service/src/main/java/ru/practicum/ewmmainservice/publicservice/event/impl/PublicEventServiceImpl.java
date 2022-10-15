@@ -19,9 +19,7 @@ import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,11 +37,11 @@ public class PublicEventServiceImpl implements PublicEventService {
 
     @Override
     public Collection<EventShortDto> findEvents(ParametersPublicEventFind param) {
-        List<Long> locationsIds;
+        Set<Long> locationsIds;
         if (param.isWithChilds()) {
-            locationsIds = findChilds(param.getCatIds(), new ArrayList<Long>(), false);
+            locationsIds = findChilds(new HashSet<Long>(), new HashSet<>(param.getLocIds()), false);
         } else {
-            locationsIds = param.getLocIds();
+            locationsIds = new HashSet<>(param.getLocIds());
         }
         if (param.getOnlyAvailable()) {
             EndpointHitDto endpointHitDto = new EndpointHitDto(null, appName, param.getEndpointPath(), param.getClientIp(),
@@ -54,7 +52,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                 log.error(e.getMessage());
             }
             log.info("Find events with parameters {}", param);
-            return repository.findAllForPublicAvailable(param.getText(), param.getCatIds(), locationsIds, param.getPaid(),
+            return repository.findAllForPublicAvailable(param.getText(), param.getCatIds(), new ArrayList<>(locationsIds), param.getPaid(),
                             param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
                     .toList();
         } else {
@@ -65,18 +63,18 @@ public class PublicEventServiceImpl implements PublicEventService {
             } catch (RuntimeException e) {
                 log.error(e.getMessage());
             }
-            return repository.findAllForPublic(param.getText(), param.getCatIds(), locationsIds, param.getPaid(),
+            return repository.findAllForPublic(param.getText(),List.copyOf(locationsIds), param.getCatIds(),  param.getPaid(),
                             param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
                     .toList();
         }
     }
 
-    private List<Long> findChilds(List<Long> finded, List<Long> toFind, boolean notAded) {
+    private Set<Long> findChilds(Set<Long> finded, Set<Long> toFind, boolean notAded) {
 
         if (notAded) {
             return finded;
         } else {
-            List<Long> childs = toFind.stream().flatMap(r ->
+            Set<Long> childs = toFind.stream().flatMap(r ->
                     {
                         try {
                             return locationService.findLocationById(r).getChilds().stream().map(Location::getId);
@@ -84,7 +82,7 @@ public class PublicEventServiceImpl implements PublicEventService {
                             throw new RuntimeException(e);
                         }
                     }
-            ).collect(Collectors.toList());
+            ).collect(Collectors.toSet());
             finded.addAll(toFind);
             notAded = childs.isEmpty();
             return findChilds(finded, childs, notAded);

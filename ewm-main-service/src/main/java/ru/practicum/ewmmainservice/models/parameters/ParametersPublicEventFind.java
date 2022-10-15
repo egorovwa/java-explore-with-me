@@ -31,23 +31,34 @@ public class ParametersPublicEventFind {
     public ParametersPublicEventFind(String text, Long[] catIds, Long[] locIds, Boolean paid, String rangeStart,
                                      String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size,
                                      String clientIp, String endpointPath, Boolean withChilds) throws IncorrectPageValueException, IllegalTimeException {
-        this.text = text;
+        if (text != null) {
+            this.text = text;
+        }
         if (catIds != null) {
             this.catIds = Arrays.asList(catIds);
         }
         if (locIds != null) {
             this.locIds = Arrays.asList(locIds);
         }
-        this.paid = paid;
-
-        this.rangeStart = LocalDateTime.parse(rangeStart, formatter).toEpochSecond(ZoneOffset.UTC);
-        this.rangeEnd = LocalDateTime.parse(rangeEnd, formatter).toEpochSecond(ZoneOffset.UTC);
-        if (this.rangeStart >= this.rangeEnd) {
-            throw new IllegalTimeException(String.format("The start (%s) should be greater than the end (%s).",
-                    formatter.format(LocalDateTime.parse(rangeStart, formatter)),
-                    formatter.format(LocalDateTime.parse(rangeEnd, formatter))), "");
+        if (paid != null) {
+            this.paid = paid;
         }
-        this.onlyAvailable = onlyAvailable;
+        if (rangeStart != null) {
+            this.rangeStart = LocalDateTime.parse(rangeStart, formatter).toEpochSecond(ZoneOffset.UTC);
+        }
+        if (rangeEnd != null) {
+            this.rangeEnd = LocalDateTime.parse(rangeEnd, formatter).toEpochSecond(ZoneOffset.UTC);
+        }
+        if (rangeStart != null) {
+            if (this.rangeStart >= this.rangeEnd) {
+                throw new IllegalTimeException(String.format("The start (%s) should be greater than the end (%s).",
+                        formatter.format(LocalDateTime.parse(rangeStart, formatter)),
+                        formatter.format(LocalDateTime.parse(rangeEnd, formatter))), "");
+            }
+        }
+        if (onlyAvailable != null) {
+            this.onlyAvailable = onlyAvailable;
+        }
         this.clientIp = clientIp;
         this.endpointPath = endpointPath;
         if (sort.equals("EVENT_DATE")) {

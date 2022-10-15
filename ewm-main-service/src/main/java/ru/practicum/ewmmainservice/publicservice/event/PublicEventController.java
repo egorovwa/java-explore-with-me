@@ -23,15 +23,15 @@ public class PublicEventController {
 
     @GetMapping
     public Collection<EventShortDto> findEvents(HttpServletRequest request,
-                                                @RequestParam("text") String text,
+                                                @RequestParam(value = "text", required = false) String text,
                                                 @RequestParam(value = "categories", required = false) Long[] categories,
                                                 @RequestParam(value = "locations", required = false) Long[] locIds,
                                                 @RequestParam(value = "paid", required = false) Boolean paid,
                                                 @RequestParam(value = "rangeStart", required = false) String rangeStart,
                                                 @RequestParam(value = "rangeEnd", required = false) String rangeEnd,
-                                                @RequestParam("onlyAvailable") Boolean onlyAvailable,
-                                                @RequestParam(value = "withChilds",required = false) Boolean withChilds,
-                                                @RequestParam("sort") String sort,
+                                                @RequestParam(value = "onlyAvailable", defaultValue = "true") Boolean onlyAvailable,
+                                                @RequestParam(value = "withChilds",defaultValue = "false") Boolean withChilds,
+                                                @RequestParam(value = "sort", defaultValue = "EVENT_DATE") String sort,
                                                 @RequestParam(value = "from", defaultValue = "0") int from,
                                                 @RequestParam(value = "size", defaultValue = "10") int size) throws IncorrectPageValueException, IllegalTimeException {
         String clientIp = request.getRemoteAddr();

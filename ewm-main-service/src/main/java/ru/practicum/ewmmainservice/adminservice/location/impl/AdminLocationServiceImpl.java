@@ -100,7 +100,7 @@ public class AdminLocationServiceImpl implements AdminLocationService {
 
     @Override
     public Collection<LocationShortDto> findAll(Boolean approved, Pageable pageable) {
-        if (approved != null) {
+        if (approved == null) {
             return repository.findAll(pageable).map(dtoMaper::toShortDto)
                     .toList();
         }else {
