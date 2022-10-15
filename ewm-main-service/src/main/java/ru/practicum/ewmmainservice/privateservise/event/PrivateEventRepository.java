@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import ru.practicum.ewmmainservice.models.event.Event;
 
 import java.util.List;
-import java.util.Set;
+
 
 @Repository
 public interface PrivateEventRepository extends JpaRepository<Event, Long> {
