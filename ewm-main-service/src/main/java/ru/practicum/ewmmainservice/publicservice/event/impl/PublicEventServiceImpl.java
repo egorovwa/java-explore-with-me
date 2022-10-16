@@ -63,7 +63,7 @@ public class PublicEventServiceImpl implements PublicEventService {
             } catch (RuntimeException e) {
                 log.error(e.getMessage());
             }
-            return repository.findAllForPublic(param.getText(),List.copyOf(locationsIds), param.getCatIds(),  param.getPaid(),
+            return repository.findAllForPublic(param.getText(), List.copyOf(locationsIds), param.getCatIds(), param.getPaid(),
                             param.getRangeStart(), param.getRangeEnd(), param.getPageable()).map(dtoMaper::toShortDto)
                     .toList();
         }
@@ -71,7 +71,7 @@ public class PublicEventServiceImpl implements PublicEventService {
 
     private Set<Long> findChilds(Set<Long> finded, Set<Long> toFind, boolean notAded) {
 
-        if (notAded) {
+        if (notAded || toFind.size() < 1) {
             return finded;
         } else {
             Set<Long> childs = toFind.stream().flatMap(r ->

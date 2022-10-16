@@ -68,7 +68,8 @@ public class ParametersPublicEventFind {
         } else {
             throw new IllegalArgumentException(String.format("Sort by %s not found", sort));
         }
-        if (locIds != null) {
+
+        if (locIds != null && locIds.length > 1) {
             this.withChilds = withChilds;
         }
     }

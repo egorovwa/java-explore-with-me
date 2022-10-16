@@ -2,8 +2,9 @@ package ru.practicum.ewmmainservice.utils;
 
 import ru.practicum.ewmmainservice.models.location.Coordinates;
 
+import static ru.practicum.ewmmainservice.utils.Constants.EARTH_RADIUS;
+
 public class PointsOperations {
-    private static final float EARTH_RADIUS = 6378137;
 
     private static double rad(double d) {
         return d * Math.PI / 180.0;

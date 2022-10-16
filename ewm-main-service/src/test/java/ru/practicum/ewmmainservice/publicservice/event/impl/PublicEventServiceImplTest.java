@@ -65,7 +65,7 @@ class PublicEventServiceImplTest {
     @Test
     void test1_2findEvents_whenSortEventDateAvalibleTrue() throws IncorrectPageValueException, IllegalTimeException {
         Long[] catIds = {1L};
-        Long[] locIds = {1L};
+        Long[] locIds = {null};
         Page<Event> eventPage = new PageImpl<>(List.of(new Event()));
         ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, locIds, true,
                 "2022-09-09 00:00:00", "2022-09-10 00:00:00", true, "EVENT_DATE", 0, 10,
