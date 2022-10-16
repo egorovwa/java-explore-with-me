@@ -5,8 +5,10 @@ import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
+import ru.practicum.ewmmainservice.models.location.dto.LocationForEventDto;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
+import ru.practicum.ewmmainservice.models.location.dto.LocationShortDto;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
@@ -14,6 +16,7 @@ import ru.practicum.ewmmainservice.models.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -23,13 +26,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 class EventDtoMaperTest {
     private final LocationDtoMaper locationDtoMaper = new LocationDtoMaper();
     private final EventDtoMaper maper = new EventDtoMaper(new UserDtoMapper(), locationDtoMaper);
+    Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
+    LocationForEventDto locationForEventDto = locationDtoMaper.toFoeEventDto(location);
+
 
     @Test
     void fromNewDto() {
         LocalDateTime eventDate = LocalDateTime.of(2022, 9, 21, 22, 11, 0);
         User user = new User(1L, "email@mail", "name");
         Category category = new Category(1L, "category");
-        LocationDto locationDto = new LocationDto();
+        LocationFullDto locationDto = new LocationFullDto();
         locationDto.setLat(1.0f);
         locationDto.setLon(2.0f);
 
@@ -38,19 +44,19 @@ class EventDtoMaperTest {
         newEventDto.setCategory(1L);
         newEventDto.setDescription("Description");
         newEventDto.setEventDate("2022-09-21 22:11:00");
-        newEventDto.setLocation(locationDto);
+        newEventDto.setLocation(1L);
         newEventDto.setPaid(true);
         newEventDto.setParticipantLimit(10);
         newEventDto.setRequestModeration(false);
         newEventDto.setTitle("title");
-        Event event = maper.fromNewDto(newEventDto, category, user, locationDtoMaper.fromDto(locationDto));
+        Event event = maper.fromNewDto(newEventDto, category, user, location);
 
 
         assertThat(event.getAnnotation(), is("anatation"));
         assertThat(event.getCategory(), is(category));
         assertThat(event.getDescription(), is("Description"));
         assertThat(event.getEventDate(), is(eventDate.toEpochSecond(ZoneOffset.UTC)));
-        assertThat(event.getLocation(), is(locationDtoMaper.fromDto(locationDto)));
+        assertThat(event.getLocation(), is(location));
         assertThat(event.getPaid(), is(true));
         assertThat(event.getParticipantLimit(), is(10));
         assertThat(event.getRequestModeration(), is(false));
@@ -62,8 +68,6 @@ class EventDtoMaperTest {
         Category category = new Category(1l, "category");
         User user = new User(1L, "email@mail.ru", "name");
         UserShortDto userShortDto = new UserShortDto(1L, "name");
-        Location location = new Location(1L, 1.0f, 2.0f);
-        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
         List<User> participans = List.of(new User(2L, "emai@rrr.ru", "name2"),
                 new User(3L, "sss@sss.fff", "name3"));
         ParticipationRequest participationRequest = new ParticipationRequest();
@@ -91,7 +95,7 @@ class EventDtoMaperTest {
         assertThat(dto.getDescription(), is("Description"));
         assertThat(dto.getEventDate(), is("2022-09-07 11:00:23"));
         assertThat(dto.getInitiator(), is(userShortDto));
-        assertThat(dto.getLocation(), is(locationDto));
+        assertThat(dto.getLocation(), is(locationForEventDto));
         assertThat(dto.getPaid(), is(true));
         assertThat(dto.getParticipantLimit(), is(10));
         assertThat(dto.getPublishedOn(), is("2022-09-11 16:11:00"));
@@ -108,8 +112,6 @@ class EventDtoMaperTest {
         Category category = new Category(1l, "category");
         User user = new User(1L, "email@mail.ru", "name");
         UserShortDto userShortDto = new UserShortDto(1L, "name");
-        Location location = new Location(1L, 1.0f, 2.0f);
-        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
         List<User> participans = List.of(new User(2L, "emai@rrr.ru", "name2"),
                 new User(3L, "sss@sss.fff", "name3"));
         ParticipationRequest participationRequest = new ParticipationRequest();

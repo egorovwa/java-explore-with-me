@@ -21,6 +21,7 @@ import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.location.Location;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.privateservise.location.LocationRepository;
@@ -42,7 +43,6 @@ import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@AutoConfigureTestDatabase
 class PublicEventControllerTest {
     private static final String API = "/events";
     @Autowired
@@ -85,13 +85,15 @@ class PublicEventControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .param("text", "event")
                         .param("categories", "2")
+                        .param("locations", "1")
                         .param("paid", String.valueOf(true))
                         .param("rangeStart", "2022-09-08 00:00:00")
                         .param("rangeEnd", "2022-09-10 00:00:00")
                         .param("onlyAvailable", String.valueOf(true))
                         .param("sort", "VIEWS")
                         .param("from", "0")
-                        .param("size", "10"))
+                        .param("size", "10")
+                        .param("withChilds", String.valueOf(false)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(1)))
                 .andExpect(jsonPath("$[0].title", is("event2")));
@@ -113,7 +115,7 @@ class PublicEventControllerTest {
         Category category2 = new Category(2L, "category2");
         Category category3 = new Category(3L, "category3");
         User user1 = new User(1L, "email@mail.ru", "name");
-        Location location = new Location(1L, 1.0f, 2.0f);
+        Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
         User user2 = new User(2L, "emai@rrr.ru", "name2");
         User user3 = new User(3L, "sss@sss.fff", "name3");
         User user4 = new User(4L, "sss@sssl4.fff", "name4");
@@ -149,7 +151,7 @@ class PublicEventControllerTest {
                 10,
                 LocalDateTime.of(2022, 9, 11, 16, 11, 0).toEpochSecond(ZoneOffset.UTC),
                 true,
-                PENDING,
+                PUBLISHED,
                 "event2",
                 5,
                 participans);

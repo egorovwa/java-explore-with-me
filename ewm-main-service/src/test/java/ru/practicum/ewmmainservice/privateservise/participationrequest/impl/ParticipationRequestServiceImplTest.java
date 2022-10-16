@@ -12,6 +12,8 @@ import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
 import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.location.Location;
+import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.participationrequest.RequestStatus;
 import ru.practicum.ewmmainservice.models.participationrequest.dto.ParticipationRequestDto;
@@ -41,6 +43,9 @@ class ParticipationRequestServiceImplTest {
     private ParticipationRequestDtoMaper dtoMaper = new ParticipationRequestDtoMaper();
     @InjectMocks
     private ParticipationRequestServiceImpl service;
+    LocationDtoMaper locationDtoMaper = new LocationDtoMaper();
+    Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
+    LocationFullDto locationFullDto = locationDtoMaper.toFullDto(location);
 
     @Test
     void test1_1createRequest() throws NotFoundException, NumberParticipantsExceededException, FiledParamNotFoundException, StatusException, IlegalUserIdException {
@@ -48,7 +53,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PUBLISHED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -67,7 +72,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -87,7 +92,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -107,7 +112,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(5L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(5L, "email@mail.ru", "name"), location,
                 false, 1, null, false, EventState.PUBLISHED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -127,7 +132,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(5L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(5L, "email@mail.ru", "name"), location,
                 false, 1, null, true, EventState.PUBLISHED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -149,7 +154,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(5L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(5L, "email@mail.ru", "name"), location,
                 false, 1, null, true, EventState.PUBLISHED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
@@ -196,13 +201,13 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 10, null, true, EventState.PUBLISHED, "title", 2,
                 participants);
         Event eventSaved = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 10, null, true, EventState.PUBLISHED, "title", 2,
                 participantsSaved);
         List<ParticipationRequest> participationRequests = List.of(new ParticipationRequest(LocalDateTime.now().
@@ -235,13 +240,13 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 2, null, true, EventState.PUBLISHED, "title", 2,
                 participants);
         Event eventSaved = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 2, null, true, EventState.PUBLISHED, "title", 2,
                 participantsSaved);
         List<ParticipationRequest> participationRequests = List.of(new ParticipationRequest(LocalDateTime.now().
@@ -280,7 +285,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 2, null, false, EventState.PUBLISHED, "title", 2,
                 participants);
         List<ParticipationRequest> participationRequests = List.of(new ParticipationRequest(LocalDateTime.now().
@@ -313,13 +318,13 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 1, null, true, EventState.PUBLISHED, "title", 2,
                 participants);
         Event eventSaved = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 2, null, true, EventState.PUBLISHED, "title", 2,
                 participantsSaved);
         List<ParticipationRequest> participationRequests = List.of(new ParticipationRequest(LocalDateTime.now().
@@ -358,7 +363,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 1, null, true, EventState.PUBLISHED, "title", 2,
                 participants);
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
@@ -384,7 +389,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 1, null, true, EventState.PUBLISHED, "title", 2,
                 participants);
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
@@ -407,7 +412,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                requestor, new Location(1L, 1.0f, 2.0f),
+                requestor, location,
                 false, 1, null, true, EventState.PUBLISHED, "title", 2,
                 participants);
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),
@@ -433,7 +438,7 @@ class ParticipationRequestServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minusHours(1).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 1, null, true, EventState.PUBLISHED, "title", 2,
                 participants);
         ParticipationRequest request = new ParticipationRequest(LocalDateTime.now().minusMinutes(30).toEpochSecond(ZoneOffset.UTC),

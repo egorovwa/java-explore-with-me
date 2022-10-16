@@ -16,8 +16,8 @@ import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.event.dto.NewEventDto;
 import ru.practicum.ewmmainservice.models.event.dto.UpdateEventRequest;
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;
@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,20 +52,22 @@ class PrivateAdminEventServiceImplTest {
     private PrivateEventRepository repository;
     @Mock
     private LocationService locationService;
+    LocationDtoMaper locationDtoMaper = new LocationDtoMaper();
+    Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
+    LocationFullDto locationFullDto = locationDtoMaper.toFullDto(location);
 
     PrivateAdminEventServiceImplTest() {
     }
 
     @Test
     void test1_1createEvent() throws NotFoundException, FiledParamNotFoundException {
-        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
 
         NewEventDto newEventDto = new NewEventDto();
         newEventDto.setAnnotation("anatation");
         newEventDto.setCategory(1L);
         newEventDto.setDescription("Description");
         newEventDto.setEventDate("2022-09-21 22:11:00");
-        newEventDto.setLocation(locationDto);
+        newEventDto.setLocation(1L);
         newEventDto.setPaid(true);
         newEventDto.setParticipantLimit(10);
         newEventDto.setRequestModeration(false);
@@ -73,24 +76,23 @@ class PrivateAdminEventServiceImplTest {
                 .thenReturn(new User(1L, "email", "name"));
         when(categoryService.findByid(1L))
                 .thenReturn(new Category(1L, "category"));
-        when(locationService.findByLatAndLon(1.0f, 2.0f))
-                .thenReturn(Optional.of(new Location(1l, 1.0f, 2.0f)));
+        when(locationService.findLocationById(1L))
+                .thenReturn(location);
         EventFullDto event = eventDtoMaper.toFulDto(eventDtoMaper.fromNewDto(newEventDto,
                 new Category(1L, "category"), new User(1L, "email", "name"),
-                new Location(1l, 1.0f, 2.0f)));
+                location));
         assertThat(service.createEvent(1L, newEventDto), is(event));
     }
 
     @Test
     void test1_3createEvent_whenLocationNew() throws NotFoundException, FiledParamNotFoundException {
-        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
 
         NewEventDto newEventDto = new NewEventDto();
         newEventDto.setAnnotation("anatation");
         newEventDto.setCategory(1L);
         newEventDto.setDescription("Description");
         newEventDto.setEventDate("2022-09-21 22:11:00");
-        newEventDto.setLocation(locationDto);
+        newEventDto.setLocation(1L);
         newEventDto.setPaid(true);
         newEventDto.setParticipantLimit(10);
         newEventDto.setRequestModeration(false);
@@ -99,26 +101,23 @@ class PrivateAdminEventServiceImplTest {
                 .thenReturn(new User(1L, "email", "name"));
         when(categoryService.findByid(1L))
                 .thenReturn(new Category(1L, "category"));
-        when(locationService.findByLatAndLon(1.0f, 2.0f))
-                .thenReturn(Optional.empty());
-        when(locationService.save(locationDto))
-                .thenReturn(new Location(1L, 1.0f, 2.0f));
+        when(locationService.findLocationById(1L))
+                .thenReturn(location);
         EventFullDto event = eventDtoMaper.toFulDto(eventDtoMaper.fromNewDto(newEventDto,
                 new Category(1L, "category"), new User(1L, "email", "name"),
-                new Location(1l, 1.0f, 2.0f)));
+                location));
         assertThat(service.createEvent(1L, newEventDto), is(event));
     }
 
     @Test
     void test1_2createEvent_whenAnyFiledNotFound() throws NotFoundException {
-        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
 
         NewEventDto newEventDto = new NewEventDto();
         newEventDto.setAnnotation("anatation");
         newEventDto.setCategory(1L);
         newEventDto.setDescription("Description");
         newEventDto.setEventDate("2022-09-21 22:11:00");
-        newEventDto.setLocation(locationDto);
+        newEventDto.setLocation(1L);
         newEventDto.setPaid(true);
         newEventDto.setParticipantLimit(10);
         newEventDto.setRequestModeration(false);
@@ -134,7 +133,7 @@ class PrivateAdminEventServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -150,7 +149,7 @@ class PrivateAdminEventServiceImplTest {
         Event updated = new Event(1L, "UpdatedAnatation", new Category(2L, "updated"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 true, 50, null, true, EventState.PENDING, "updated Title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -167,7 +166,7 @@ class PrivateAdminEventServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(2L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(2L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -183,7 +182,7 @@ class PrivateAdminEventServiceImplTest {
         Event updated = new Event(1L, "UpdatedAnatation", new Category(2L, "updated"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 true, 50, null, true, EventState.PENDING, "updated Title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -208,7 +207,7 @@ class PrivateAdminEventServiceImplTest {
         Event updated = new Event(1L, "UpdatedAnatation", new Category(2L, "updated"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 true, 50, null, true, EventState.PENDING, "updated Title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -224,7 +223,7 @@ class PrivateAdminEventServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -240,7 +239,7 @@ class PrivateAdminEventServiceImplTest {
         Event updated = new Event(1L, "UpdatedAnatation", new Category(2L, "updated"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 true, 50, null, true, EventState.PENDING, "updated Title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -259,7 +258,7 @@ class PrivateAdminEventServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PUBLISHED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -275,7 +274,7 @@ class PrivateAdminEventServiceImplTest {
         Event updated = new Event(1L, "UpdatedAnatation", new Category(2L, "updated"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "updated d", LocalDateTime.now().plusDays(2).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 true, 50, null, true, EventState.PENDING, "updated Title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -292,7 +291,7 @@ class PrivateAdminEventServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -318,13 +317,13 @@ class PrivateAdminEventServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"),location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event cancelled = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         User user = new User(1L, "email@mail.ru", "name");
@@ -341,7 +340,7 @@ class PrivateAdminEventServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PUBLISHED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -370,7 +369,7 @@ class PrivateAdminEventServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                user, new Location(1L, 1.0f, 2.0f),
+                user, location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(userAdminService.findById(1L))
@@ -387,7 +386,7 @@ class PrivateAdminEventServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(2L, "emai2@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(2L, "emai2@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(userAdminService.findById(1L))

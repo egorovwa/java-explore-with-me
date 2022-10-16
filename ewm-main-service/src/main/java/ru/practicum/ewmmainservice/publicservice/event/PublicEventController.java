@@ -22,20 +22,22 @@ public class PublicEventController {
     private final PublicEventService service;
 
     @GetMapping
-    public Collection<EventShortDto> findEfents(HttpServletRequest request,
-                                                @RequestParam("text") String text,
+    public Collection<EventShortDto> findEvents(HttpServletRequest request,
+                                                @RequestParam(value = "text", required = false) String text,
                                                 @RequestParam(value = "categories", required = false) Long[] categories,
+                                                @RequestParam(value = "locations", required = false) Long[] locIds,
                                                 @RequestParam(value = "paid", required = false) Boolean paid,
                                                 @RequestParam(value = "rangeStart", required = false) String rangeStart,
                                                 @RequestParam(value = "rangeEnd", required = false) String rangeEnd,
-                                                @RequestParam("onlyAvailable") Boolean onlyAvailable,
-                                                @RequestParam("sort") String sort,
+                                                @RequestParam(value = "onlyAvailable", defaultValue = "true") Boolean onlyAvailable,
+                                                @RequestParam(value = "withChilds",defaultValue = "false") Boolean withChilds,
+                                                @RequestParam(value = "sort", defaultValue = "EVENT_DATE") String sort,
                                                 @RequestParam(value = "from", defaultValue = "0") int from,
                                                 @RequestParam(value = "size", defaultValue = "10") int size) throws IncorrectPageValueException, IllegalTimeException {
         String clientIp = request.getRemoteAddr();
         String endpointPath = request.getRequestURI();
-        ParametersPublicEventFind param = new ParametersPublicEventFind(text, categories, paid, rangeStart, rangeEnd,
-                onlyAvailable, sort, from, size, clientIp, endpointPath);
+        ParametersPublicEventFind param = new ParametersPublicEventFind(text, categories, locIds, paid, rangeStart, rangeEnd,
+                onlyAvailable, sort, from, size, clientIp, endpointPath, withChilds);
         return service.findEvents(param);
     }
 

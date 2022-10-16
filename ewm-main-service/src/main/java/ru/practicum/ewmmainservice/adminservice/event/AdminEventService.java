@@ -14,7 +14,7 @@ public interface AdminEventService {
 
     EventFullDto updateEventRequest(Long eventId, AdminUpdateEventRequest adminUpdateEventRequest) throws NotFoundException, FiledParamNotFoundException;
 
-    EventFullDto publishEvent(Long eventId) throws NotFoundException, IllegalTimeException, StatusException;
+    EventFullDto publishEvent(Long eventId) throws NotFoundException, IllegalTimeException, StatusException, LocationException;
 
     EventFullDto rejectEvent(Long eventId) throws NotFoundException, StatusException, IllegalTimeException;
 

@@ -24,7 +24,7 @@ public class AdminEventController {
     }
 
     @PatchMapping("/{eventId}/publish")
-    public EventFullDto publishEvent(@Positive @PathVariable Long eventId) throws NotFoundException, StatusException, IllegalTimeException {
+    public EventFullDto publishEvent(@Positive @PathVariable Long eventId) throws NotFoundException, StatusException, IllegalTimeException, LocationException {
         return service.publishEvent(eventId);
     }
 
@@ -37,6 +37,7 @@ public class AdminEventController {
     public List<EventFullDto> findAllEvents(@RequestParam(value = "users", required = false) Long[] users,
                                             @RequestParam(value = "states", required = false) String[] states,
                                             @RequestParam(value = "categories", required = false) Long[] categories,
+                                            @RequestParam(value = "locIds", required = false) Long[] locIds,
                                             @RequestParam(value = "rangeStart", required = false) String rangeStart,
                                             @RequestParam(value = "rangeEnd", required = false) String rangeEnd,
                                             @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
@@ -44,7 +45,7 @@ public class AdminEventController {
             throws IncorrectPageValueException, NotValidParameterException, IllegalTimeException {
 
         ParametersAdminFindEvent parameters = new ParametersAdminFindEvent(users, states, categories,
-                rangeStart, rangeEnd, from, size);
+                locIds, rangeStart, rangeEnd, from, size);
         return service.findAllEvents(parameters);
     }
 

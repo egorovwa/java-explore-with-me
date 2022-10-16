@@ -106,12 +106,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void test4_1findAllEvents() throws Exception {
         Long[] users = {1L, 2L};
         Long[] catId = {1L, 2L};
+        Long[] locIds = {1L};
         String[] states = {"PENDING", "PUBLISHED", "CANCELED"};
         String rangeStart = "2022-01-01 10:10:10";
         String rangeEnd = "2022-01-01 20:10:10";
         Integer from = 0;
         Integer size = 10;
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(users, states, catId, rangeStart, rangeEnd, from, size);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(users, states, catId,locIds, rangeStart, rangeEnd, from, size);
         mvc.perform(get(API)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)

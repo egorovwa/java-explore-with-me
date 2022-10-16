@@ -18,7 +18,6 @@ import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 import ru.practicum.ewmmainservice.models.parameters.ParametersValidator;
@@ -31,6 +30,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -56,13 +56,14 @@ class AdminEventServiceImplTest {
     private LocationDtoMaper locationDtoMaper;
     @Mock
     private EventDtoMaper eventDtoMaper;
-
+    Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
     @BeforeEach
     void setup() {
+
         event = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
     }
@@ -82,7 +83,7 @@ class AdminEventServiceImplTest {
         request.setCategory(2L);
         request.setDescription("update description");
         request.setEventDate("2022-10-01 00:00:00");
-        request.setLocation(new LocationDto(1f, 2f));
+        request.setLocation(1L);
         request.setPaid(true);
         request.setParticipantLimit(100);
         request.setRequestModeration(false);
@@ -90,26 +91,26 @@ class AdminEventServiceImplTest {
         Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         saved.setAnnotation("update annotation");
         saved.setCategory(new Category(2L, "update"));
         saved.setDescription("update description");
         saved.setEventDate(LocalDateTime.parse("2022-10-01 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC));
-        saved.setLocation(new Location(2L, 1f, 2f));
+        saved.setLocation(location);
         saved.setPaid(true);
         saved.setParticipantLimit(100);
         saved.setRequestModeration(false);
         saved.setTitle("updated");
         when(categoryService.findByid(2L))
                 .thenReturn(new Category(2L, "update"));
-        when(locationService.save(new LocationDto(1f, 2f)))
-                .thenReturn(new Location(2L, 1f, 2f));
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
         when(repository.save(saved))
                 .thenReturn(saved);
+        when(locationService.findLocationById(1L))
+                .thenReturn(location);
         service.updateEventRequest(1L, request);
     }
 
@@ -120,7 +121,7 @@ class AdminEventServiceImplTest {
         request.setCategory(2L);
         request.setDescription("update description");
         request.setEventDate("2022-10-01 00:00:00");
-        request.setLocation(new LocationDto(1f, 2f));
+        request.setLocation(1L);
         request.setPaid(true);
         request.setParticipantLimit(100);
         request.setRequestModeration(false);
@@ -128,14 +129,14 @@ class AdminEventServiceImplTest {
         Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         saved.setAnnotation("update annotation");
         saved.setCategory(new Category(2L, "update"));
         saved.setDescription("update description");
         saved.setEventDate(LocalDateTime.parse("2022-10-01 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC));
-        saved.setLocation(new Location(2L, 1f, 2f));
+        saved.setLocation(location);
         saved.setPaid(true);
         saved.setParticipantLimit(100);
         saved.setRequestModeration(false);
@@ -155,7 +156,7 @@ class AdminEventServiceImplTest {
         request.setCategory(2L);
         request.setDescription("update description");
         request.setEventDate("2022-10-01 00:00:00");
-        request.setLocation(new LocationDto(1f, 2f));
+        request.setLocation(1L);
         request.setPaid(true);
         request.setParticipantLimit(100);
         request.setRequestModeration(false);
@@ -163,14 +164,14 @@ class AdminEventServiceImplTest {
         Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         saved.setAnnotation("update annotation");
         saved.setCategory(new Category(2L, "update"));
         saved.setDescription("update description");
         saved.setEventDate(LocalDateTime.parse("2022-10-01 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC));
-        saved.setLocation(new Location(2L, 1f, 2f));
+        saved.setLocation(location);
         saved.setPaid(true);
         saved.setParticipantLimit(100);
         saved.setRequestModeration(false);
@@ -188,13 +189,13 @@ class AdminEventServiceImplTest {
     }
 
     @Test
-    void test3_1publishEvent() throws NotFoundException, StatusException, IllegalTimeException {
+    void test3_1publishEvent() throws NotFoundException, StatusException, IllegalTimeException, LocationException {
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
         Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PUBLISHED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         saved.setPublishedOn(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
@@ -211,7 +212,7 @@ class AdminEventServiceImplTest {
         Event notWaiting = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PUBLISHED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
@@ -221,13 +222,13 @@ class AdminEventServiceImplTest {
     }
 
     @Test
-    void test3_3publishEvent_whenNotFound() throws NotFoundException, StatusException, IllegalTimeException {
+    void test3_3publishEvent_whenNotFound() throws NotFoundException, StatusException, IllegalTimeException, LocationException {
         when(repository.findById(1L))
                 .thenReturn(Optional.ofNullable(event));
         Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         saved.setPublishedOn(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
@@ -244,7 +245,7 @@ class AdminEventServiceImplTest {
         Event timeNow = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
@@ -260,7 +261,7 @@ class AdminEventServiceImplTest {
         Event saved = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         saved.setState(EventState.CANCELED);
@@ -276,7 +277,7 @@ class AdminEventServiceImplTest {
         Event notWaiting = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusDays(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
@@ -290,7 +291,7 @@ class AdminEventServiceImplTest {
         Event timeNow = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         when(repository.findById(1L))
@@ -303,26 +304,27 @@ class AdminEventServiceImplTest {
         Event timeNow = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Long[] usersId = {1L, 2L, 3L};
         Long[] catId = {1L};
+        Long[] locIds = {1L};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().plusHours(1));
         String[] states = {"PENDING"};
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId,locIds, start, end, 0, 10);
         Page<Event> eventPage = new PageImpl<>(List.of(event));
         when(repository.findForAdmin(List.of(1L, 2L, 3L),
                 List.of(1L), List.of(EventState.PENDING),
                 LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC), PageParam.createPageable(0, 10)))
+                LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC), param.getCategories(), PageParam.createPageable(0, 10)))
                 .thenReturn(eventPage);
         List<EventFullDto> result = service.findAllEvents(param);
         verify(repository, times(1)).findForAdmin(List.of(1L, 2L, 3L),
                 List.of(1L), List.of(EventState.PENDING),
                 LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC), PageParam.createPageable(0, 10));
+                LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC), param.getLocIds(), PageParam.createPageable(0, 10));
 
     }
 
@@ -331,22 +333,21 @@ class AdminEventServiceImplTest {
         Event timeNow = new Event(1L, "annotation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Long[] usersId = {1L, 2L, 3L};
         Long[] catId = {1L};
+        Long[] locIds = {1L};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().plusHours(1));
         String[] states = {"PENDING"};
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId,locIds, start, end, 0, 10);
         Page<Event> eventPage = new PageImpl<>(List.of(event));
         doThrow(NotValidParameterException.class).when(validator).adminFindEvents(param);
         assertThrows(NotValidParameterException.class, () -> {
             List<EventFullDto> result = service.findAllEvents(param);
         });
-        verify(repository, times(0)).findForAdmin(anyList(), anyList(), anyList(), anyLong(), anyLong(), any());
-
     }
 
     @Test

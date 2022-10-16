@@ -15,7 +15,6 @@ import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
-import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 import ru.practicum.ewmmainservice.models.parameters.ParametersValidator;
@@ -80,9 +79,8 @@ public class AdminEventServiceImpl implements AdminEventService {
             log.info("Updated the eventDate of the event id = {}", eventId);
         }
         if (request.getLocation() != null) {
-            Location location = locationService.save(request.getLocation());
-            event.setLocation(location);
-            log.info("Updated the location of the event id = {}", eventId);
+            event.setLocation(locationService.findLocationById(request.getLocation()));
+            log.info("Updated the location of the event id = {}, new location id = {}", eventId, request.getLocation());
         }
         if (request.getPaid() != null) {
             event.setPaid(request.getPaid());
@@ -106,7 +104,7 @@ public class AdminEventServiceImpl implements AdminEventService {
 
     @Override
     @Transactional
-    public EventFullDto publishEvent(Long eventId) throws NotFoundException, IllegalTimeException, StatusException {
+    public EventFullDto publishEvent(Long eventId) throws NotFoundException, IllegalTimeException, StatusException, LocationException {
         Event event = repository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("id", eventId.toString(), "Event"));
         if (event.getEventDate() <= LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + HOUR) {
@@ -117,6 +115,10 @@ public class AdminEventServiceImpl implements AdminEventService {
         if (!event.getState().equals(EventState.PENDING)) {
             log.warn("Publication of the event  by the status not WAITING");
             throw new StatusException("Status event is not WAITING");
+        }
+        if (!event.getLocation().getApproved()){
+            throw new LocationException(String.format("Location id %s not approved. You must first approve the location.",
+                    event.getLocation().getId()), "Location not approved.");
         }
         log.info("Event published  {}", formatter.format(LocalDateTime.now()));
         event.setState(EventState.PUBLISHED);
@@ -162,7 +164,8 @@ public class AdminEventServiceImpl implements AdminEventService {
         validator.adminFindEvents(parameters);
         log.info("Find events with parameters {}", parameters);
         List<Event> events = repository.findForAdmin(parameters.getUsers(), parameters.getCategories(),
-                        parameters.getStates(), parameters.getRangeStart(), parameters.getRangeEnd(), parameters.getPageable())
+                        parameters.getStates(), parameters.getRangeStart(), parameters.getRangeEnd(),
+                        parameters.getLocIds(), parameters.getPageable())
                 .toList();
         return events.stream().map(eventDtoMaper::toFulDto).collect(Collectors.toList());
     }

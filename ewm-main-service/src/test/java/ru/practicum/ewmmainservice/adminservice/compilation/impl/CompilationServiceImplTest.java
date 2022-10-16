@@ -20,6 +20,7 @@ import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 
@@ -46,6 +47,8 @@ class CompilationServiceImplTest {
     private AdminEventService eventService;
     @Mock
     private CompilationDtoMaper dtoMaper = new CompilationDtoMaper(eventDtoMaper);
+    Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
+
 
     @Test
     void test1_1createCompilation() throws NotFoundException, FiledParamNotFoundException {
@@ -53,13 +56,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event, event2), null, true, "title");
@@ -77,13 +80,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event, event2), null, true, "title");
@@ -102,13 +105,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event, event2), null, true, "title");
@@ -134,13 +137,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event, event2), null, true, "title");
@@ -163,14 +166,14 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Collection<Event> comp1 = new ArrayList<>();
@@ -194,13 +197,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event, event2), null, true, "title");
@@ -229,13 +232,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Collection<Event> comp1 = new ArrayList<>();
@@ -260,13 +263,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event, event2), 1L, true, "title");
@@ -286,7 +289,7 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
 
@@ -304,13 +307,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event), 1L, true, "title");
@@ -330,13 +333,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event), 1L, true, "title");
@@ -352,13 +355,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event), 1L, false, "title");
@@ -384,13 +387,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event), 1L, false, "title");
@@ -406,13 +409,13 @@ class CompilationServiceImplTest {
         Event event = new Event(1L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.PENDING, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Event event2 = new Event(2L, "anatation", new Category(1L, "category"),
                 LocalDateTime.now().minus(Duration.ofMinutes(60)).toEpochSecond(ZoneOffset.UTC),
                 "description", LocalDateTime.now().plusHours(1).toEpochSecond(ZoneOffset.UTC),
-                new User(1L, "email@mail.ru", "name"), new Location(1L, 1.0f, 2.0f),
+                new User(1L, "email@mail.ru", "name"), location,
                 false, 10, null, true, EventState.CANCELED, "title", 2,
                 List.of(new User(2L, "email2@mail.ru", "name2")));
         Compilation compilation = new Compilation(List.of(event), 1L, true, "title");

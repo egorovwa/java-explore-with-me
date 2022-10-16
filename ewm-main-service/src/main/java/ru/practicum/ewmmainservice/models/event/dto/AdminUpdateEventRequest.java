@@ -1,7 +1,7 @@
 package ru.practicum.ewmmainservice.models.event.dto;
 
 import lombok.Data;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 
 @Data
 public class AdminUpdateEventRequest {
@@ -9,7 +9,7 @@ public class AdminUpdateEventRequest {
     private Long category;
     private String description;
     private String eventDate;
-    private LocationDto location;
+    private Long location;
     private Boolean paid;
     private Integer participantLimit;
     private Boolean requestModeration;

@@ -19,6 +19,7 @@ import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.location.Location;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
@@ -40,7 +41,6 @@ import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@AutoConfigureTestDatabase
 class AdminEventServiceImplTestIntegration {
     @Autowired
     UserAdminRepository userAdminRepository;
@@ -66,11 +66,12 @@ class AdminEventServiceImplTestIntegration {
         data();
         Long[] usersId = {1L, 2L};
         Long[] catId = {1L, 2L};
+        Long[] locIds = {1L};
         String[] states = {"PENDING", "PUBLISHED"};
         String start = formatter.format(LocalDateTime.of(2022, 9, 5, 0, 0, 0));
         String end = formatter.format(LocalDateTime.of(2022, 9, 12, 0, 0, 0));
         Pageable pageable = PageParam.createPageable(0, 10);
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, locIds, start, end, 0, 10);
         List<EventFullDto> expected = List.of(eventDtoMaper.toFulDto(event1), eventDtoMaper.toFulDto(event2));
         List<EventFullDto> result = service.findAllEvents(param);
         assertThat(expected.get(0), is(expected.get(0)));
@@ -82,11 +83,12 @@ class AdminEventServiceImplTestIntegration {
         data();
         Long[] usersId = {1L, 2L};
         Long[] catId = {};
+        Long[] locIds = {1L};
         String[] states = {"PENDING"};
         String start = formatter.format(LocalDateTime.of(2022, 9, 5, 0, 0, 0));
         String end = formatter.format(LocalDateTime.of(2022, 9, 12, 0, 0, 0));
         Pageable pageable = PageParam.createPageable(0, 10);
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId,locIds, start, end, 0, 10);
         List<EventFullDto> expected = List.of(eventDtoMaper.toFulDto(event2));
         List<EventFullDto> result = service.findAllEvents(param);
         assertThat(expected.get(0), is(expected.get(0)));
@@ -98,11 +100,12 @@ class AdminEventServiceImplTestIntegration {
         data();
         Long[] usersId = {1L, 2L, 3L};
         Long[] catId = {1L};
+        Long[] locIds = {1L};
         String[] states = {"PENDING"};
         String start = formatter.format(LocalDateTime.of(2022, 9, 5, 0, 0, 0));
         String end = formatter.format(LocalDateTime.of(2022, 9, 12, 0, 0, 0));
         Pageable pageable = PageParam.createPageable(0, 10);
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, locIds, start, end, 0, 10);
         List<EventFullDto> expected = List.of(eventDtoMaper.toFulDto(event2));
         List<EventFullDto> result = service.findAllEvents(param);
         assertThat(result.size(), is(0));
@@ -113,7 +116,7 @@ class AdminEventServiceImplTestIntegration {
         Category category2 = new Category(2L, "category2");
         Category category3 = new Category(3L, "category3");
         User user1 = new User(1L, "email@mail.ru", "name");
-        Location location = new Location(1L, 1.0f, 2.0f);
+        Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
         User user2 = new User(2L, "emai@rrr.ru", "name2");
         User user3 = new User(3L, "sss@sss.fff", "name3");
         User user4 = new User(4L, "sss@sssl4.fff", "name4");

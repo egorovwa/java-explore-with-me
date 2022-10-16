@@ -14,25 +14,40 @@ class ParametersPublicEventFindTest {
     @Test
     void test_1createParametersPublicEventFind_whenillegalTime() {
         Long[] catIds = {1L};
-        assertThrows(IllegalTimeException.class, () -> new ParametersPublicEventFind("text", catIds, true,
-                "2020-02-02 00:00:00", "2020-01-01 00:00:00", true, "VIEWS", 0,
-                10, "ip", "/event"));
+        Long[] locIds = {1L};
+        assertThrows(IllegalTimeException.class, () -> new ParametersPublicEventFind(
+                        "text",
+                        catIds,
+                        locIds,
+                        true,
+                        "2020-02-02 00:00:00",
+                        "2020-01-01 00:00:00",
+                        true,
+                        "VIEWS",
+                        0,
+                        10,
+                        "ip",
+                        "/event", true));
     }
 
     @Test
     void test2_createParametersPublicEventFind_whenIllegalSort() {
         Long[] catIds = {1L};
+        Long[] locIds = {1L};
         assertThrows(IllegalArgumentException.class, () -> {
-            new ParametersPublicEventFind("text", catIds, true, "2020-02-02 00:00:00",
-                    "2020-03-01 00:00:00", true, "aaaaa", 0, 10, "ip", "/event");
+            new ParametersPublicEventFind("text", catIds, locIds, true, "2020-02-02 00:00:00",
+                    "2020-03-01 00:00:00", true, "aaaaa", 0, 10, "ip",
+                    "/event", true);
         });
     }
 
     @Test
     void test3_createParametersPublicEventFind_whenSortView() throws IncorrectPageValueException, IllegalTimeException {
         Long[] catIds = {1L};
-        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, true, "2020-02-02 00:00:00",
-                "2020-03-01 00:00:00", true, "VIEWS", 0, 10, "ip", "/event");
+        Long[] locIds = {1L};
+        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, locIds, true, "2020-02-02 00:00:00",
+                "2020-03-01 00:00:00", true, "VIEWS", 0, 10, "ip",
+                "/event", true);
         Pageable pageable = PageParam.createPageable(0, 10, "views");
         assertThat(param.getPageable(), is(pageable));
     }
@@ -40,8 +55,10 @@ class ParametersPublicEventFindTest {
     @Test
     void test4_createParametersPublicEventFind_whenSortEVENT_DATE() throws IncorrectPageValueException, IllegalTimeException {
         Long[] catIds = {1L};
-        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, true, "2020-02-02 00:00:00",
-                "2020-03-01 00:00:00", true, "EVENT_DATE", 0, 10, "ip", "/event");
+        Long[] locIds = {1L};
+        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, locIds, true, "2020-02-02 00:00:00",
+                "2020-03-01 00:00:00", true, "EVENT_DATE", 0, 10, "ip",
+                "/event", true);
         Pageable pageable = PageParam.createPageable(0, 10, "eventDate");
         assertThat(param.getPageable(), is(pageable));
     }

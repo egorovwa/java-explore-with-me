@@ -24,12 +24,20 @@
       "name": "Public: Категории"
     },
     {
+      "description": "Публичный API для работы с локациями",
+      "name": "Public: Локации"
+    },
+    {
       "description": "Закрытый API для работы с событиями",
       "name": "Private: События"
     },
     {
       "description": "Закрытый API для работы с запросами текущего пользователя на участие в событиях",
       "name": "Private: Запросы на участие"
+    },
+    {
+      "description": "Закрытый API для работы с локациями",
+      "name": "Private: Локации"
     },
     {
       "description": "API для работы с событиями",
@@ -46,6 +54,10 @@
     {
       "description": "API для работы с подборками событий",
       "name": "Admin: Подборки событий"
+    },
+    {
+      "description": "API для работы с локациями",
+      "name": "Admin: Локации"
     }
   ],
   "paths": {
@@ -1420,6 +1432,540 @@
         ]
       }
     },
+    "/admin/locations": {
+      "post": {
+        "description": "Lat и Lon локации должны быть уникальными",
+        "operationId": "addLocation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewLocationDto"
+              }
+            }
+          },
+          "description": "данные добавляемой локации",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationFullDto"
+                }
+              }
+            },
+            "description": "Локация добавлена"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен с ошибкой"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Не выполнены условия для совершения операции"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "NOT_FOUND",
+                  "reason": "The required object was not found.",
+                  "message": "Event with id=21 was not found.",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Объект не найден"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "CONFLICT",
+                  "reason": "Integrity constraint has been violated",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:47:58"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос приводит к нарушению целостности данных"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "INTERNAL_SERVER_ERROR",
+                  "reason": "Error occurred",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:23:27"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Внутренняя ошибка сервера"
+          }
+        },
+        "summary": "Добавление новой локации",
+        "tags": [
+          "Admin: Локации"
+        ]
+      },
+      "get": {
+        "description": "Эндпоинт возвращает полную информацию обо всех локациях",
+        "operationId": "findAll",
+        "parameters": [
+          {
+            "description": "Одобренно/ не одобренно",
+            "in": "query",
+            "name": "approved",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+
+
+
+
+          {
+            "description": "количество локций, которые нужно пропустить для формирования текущего набора",
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "description": "количество локаций в наборе",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationFullDto"
+                  }
+                }
+              }
+            },
+            "description": "Локации найдены"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен с ошибкой"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Не выполнены условия для совершения операции"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "NOT_FOUND",
+                  "reason": "The required object was not found.",
+                  "message": "Event with id=21 was not found.",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Объект не найден"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "CONFLICT",
+                  "reason": "Integrity constraint has been violated",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:47:58"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос приводит к нарушению целостности данных"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "INTERNAL_SERVER_ERROR",
+                  "reason": "Error occurred",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:23:27"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Внутренняя ошибка сервера"
+          }
+        },
+        "summary": "Поиск локаций",
+        "tags": [
+          "Admin: Локации"
+        ]
+      }
+
+    },
+    "/admin/locations/{locId}": {
+      "get": {
+        "description": "Поиск локации по id",
+        "operationId": "getLocation",
+        "parameters": [
+          {
+            "description": "id локации",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationFullDto"
+                }
+              }
+            },
+            "description": "Локация найдено"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен с ошибкой"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Не выполнены условия для совершения операции"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "NOT_FOUND",
+                  "reason": "The required object was not found.",
+                  "message": "Event with id=21 was not found.",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Объект не найден"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "CONFLICT",
+                  "reason": "Integrity constraint has been violated",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:47:58"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос приводит к нарушению целостности данных"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "INTERNAL_SERVER_ERROR",
+                  "reason": "Error occurred",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:23:27"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Внутренняя ошибка сервера"
+          }
+        },
+        "summary": "Получение подробной информации локации",
+        "tags": [
+          "Admin: Локации"
+        ]
+      }
+
+    },
+    "/admin/locations/{locId}/approved": {
+      "patch": {
+        "description": "Одобрение локации",
+        "operationId": "approvedLocation",
+        "parameters": [
+          {
+            "description": "id локации",
+            "in": "path",
+            "name": "locId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationFullDto"
+                }
+              }
+            },
+            "description": "Событие отклонено"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен с ошибкой"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Не выполнены условия для совершения операции"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "NOT_FOUND",
+                  "reason": "The required object was not found.",
+                  "message": "Event with id=21 was not found.",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Объект не найден"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "CONFLICT",
+                  "reason": "Integrity constraint has been violated",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:47:58"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос приводит к нарушению целостности данных"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "INTERNAL_SERVER_ERROR",
+                  "reason": "Error occurred",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:23:27"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Внутренняя ошибка сервера"
+          }
+        },
+        "summary": "Одобрение локации",
+        "tags": [
+          "Admin: Локации"
+        ]
+      }
+    },
+    "/admin/locations/{locId}/reject":{
+      "delete": {
+        "description": "Отклонение локации",
+        "operationId": "deleteLocation",
+        "parameters": [
+          {
+            "description": "id локации",
+            "in": "query",
+            "name": "locId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Локация удалена"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен с ошибкой"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Не выполнены условия для совершения операции"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "NOT_FOUND",
+                  "reason": "The required object was not found.",
+                  "message": "Event with id=21 was not found.",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Объект не найден"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "CONFLICT",
+                  "reason": "Integrity constraint has been violated",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:47:58"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос приводит к нарушению целостности данных"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "INTERNAL_SERVER_ERROR",
+                  "reason": "Error occurred",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:23:27"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Внутренняя ошибка сервера"
+          }
+        },
+        "summary": "Удаление локации",
+        "tags": [
+          "Admin: Локации"
+        ]
+      }
+
+    },
     "/admin/users": {
       "get": {
         "description": "Возвращает информацию обо всех пользователях (учитываются параметры ограничения выборки), либо о конкретных (учитываются указанные идентификаторы)",
@@ -2213,6 +2759,19 @@
             }
           },
           {
+            "description": "список идентификаторов локаций в которых будет вестись поиск",
+            "in": "query",
+            "name": "locations",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          },
+          {
             "description": "поиск только платных/бесплатных событий",
             "in": "query",
             "name": "paid",
@@ -2475,6 +3034,248 @@
           "Public: События"
         ]
       }
+    },
+     "/location" : {
+       "get": {
+         "description": "Поиск всех локаций, или поис дочерних локаций указанной локации",
+         "operationId": "getEvents_1",
+         "parameters": [
+           {
+             "description": "Id локации в которой осуществляется поиск",
+             "in": "query",
+             "name": "locId",
+             "required": false,
+             "schema": {
+               "type": "integer"
+             }
+           },
+
+           {
+             "description": "количество локаций, которые нужно пропустить для формирования текущего набора",
+             "in": "query",
+             "name": "from",
+             "required": false,
+             "schema": {
+               "type": "integer",
+               "format": "int32",
+               "default": 0
+             }
+           },
+           {
+             "description": "количество локаций в наборе",
+             "in": "query",
+             "name": "size",
+             "required": false,
+             "schema": {
+               "type": "integer",
+               "format": "int32",
+               "default": 10
+             }
+           }
+         ],
+         "responses": {
+           "200": {
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "array",
+                   "items": {
+                     "$ref": "#/components/schemas/EventShortDto"
+                   }
+                 }
+               }
+             },
+             "description": "Локации найдены найдены"
+           },
+           "400": {
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "$ref": "#/components/schemas/ApiError"
+                 }
+               }
+             },
+             "description": "Запрос составлен с ошибкой"
+           },
+           "403": {
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "$ref": "#/components/schemas/ApiError"
+                 }
+               }
+             },
+             "description": "Не выполнены условия для совершения операции"
+           },
+           "404": {
+             "content": {
+               "application/json": {
+                 "example": {
+                   "status": "NOT_FOUND",
+                   "reason": "The required object was not found.",
+                   "message": "Event with id=21 was not found.",
+                   "timestamp": "2022-09-07 09:10:50"
+                 },
+                 "schema": {
+                   "$ref": "#/components/schemas/ApiError"
+                 }
+               }
+             },
+             "description": "Объект не найден"
+           },
+           "409": {
+             "content": {
+               "application/json": {
+                 "example": {
+                   "status": "CONFLICT",
+                   "reason": "Integrity constraint has been violated",
+                   "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                   "timestamp": "2022-09-07 10:47:58"
+                 },
+                 "schema": {
+                   "$ref": "#/components/schemas/ApiError"
+                 }
+               }
+             },
+             "description": "Запрос приводит к нарушению целостности данных"
+           },
+           "500": {
+             "content": {
+               "application/json": {
+                 "example": {
+                   "status": "INTERNAL_SERVER_ERROR",
+                   "reason": "Error occurred",
+                   "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                   "timestamp": "2022-09-07 10:23:27"
+                 },
+                 "schema": {
+                   "$ref": "#/components/schemas/ApiError"
+                 }
+               }
+             },
+             "description": "Внутренняя ошибка сервера"
+           }
+         },
+         "summary": "Получение всех лолкаций, или дочерних локаций ",
+         "tags": [
+           "Public: Локации"
+         ]
+       }
+
+     },
+    "/location/{userId}": {
+      "post": {
+        "description": "Запрос на создание локации",
+        "operationId": "createLocation",
+        "parameters": [
+          {
+            "description": "id текущего пользователя",
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewLocationDto"
+              }
+            }
+          },
+          "description": "данные добавляемого локации",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventFullDto"
+                }
+              }
+            },
+            "description": "Событие добавлено"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен с ошибкой"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Не выполнены условия для совершения операции"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "NOT_FOUND",
+                  "reason": "The required object was not found.",
+                  "message": "Event with id=21 was not found.",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Объект не найден"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "CONFLICT",
+                  "reason": "Integrity constraint has been violated",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:47:58"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос приводит к нарушению целостности данных"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "INTERNAL_SERVER_ERROR",
+                  "reason": "Error occurred",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_category_name]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 10:23:27"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Внутренняя ошибка сервера"
+          }
+        },
+        "summary": "Добавление новой локации",
+        "tags": [
+          "Private: Локации"
+        ]
+      }
+
     },
     "/users/{userId}/events": {
       "get": {
@@ -3754,7 +4555,7 @@
             "example": "2025-01-01 09:08:07"
           },
           "location": {
-            "$ref": "#/components/schemas/Location"
+            "$ref": "#/components/schemas/LocationShortDto"
           },
           "paid": {
             "type": "boolean",
@@ -4029,7 +4830,7 @@
             "$ref": "#/components/schemas/UserShortDto"
           },
           "location": {
-            "$ref": "#/components/schemas/Location"
+            "$ref": "#/components/schemas/LocationShortDto"
           },
           "paid": {
             "type": "boolean",
@@ -4171,9 +4972,15 @@
           }
         ]
       },
-      "Location": {
+      "NewLocationDto": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "Название локации",
+            "format": "String",
+            "example": "Барнаул"
+          },
           "lat": {
             "type": "number",
             "description": "Широта",
@@ -4185,9 +4992,108 @@
             "description": "Долгота",
             "format": "float",
             "example": 37.62
+          },
+          "radius": {
+            "type": "integer",
+            "description": "Радиус локации в метрах",
+            "format": "int64",
+            "example": "500"
           }
-        },
-        "description": "Широта и долгота места проведения события"
+        }
+      },
+      "LocationFullDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "id локации.",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Название локации",
+            "format": "String",
+            "example": "Барнаул"
+          },
+          "lat": {
+            "type": "number",
+            "description": "Широта",
+            "format": "float",
+            "example": 55.754167
+          },
+          "lon": {
+            "type": "number",
+            "description": "Долгота",
+            "format": "float",
+            "example": 37.62
+          },
+          "radius": {
+            "type": "integer",
+            "description": "Радиус локации в метрах",
+            "format": "int64",
+            "example": "500"
+          },
+          "parentId": {
+            "type": "integer",
+            "description": "Id родительской локации",
+            "format": "String",
+            "example": 2
+          },
+          "childs": {
+            "type": "array",
+            "description": "Дочернии локации",
+            "format": "array"
+          }
+        }
+      },
+      "LocationShortDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "id локации.",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Название локации",
+            "format": "String",
+            "example": "Барнаул"
+          },
+          "lat": {
+            "type": "number",
+            "description": "Широта",
+            "format": "float",
+            "example": 55.754167
+          },
+          "lon": {
+            "type": "number",
+            "description": "Долгота",
+            "format": "float",
+            "example": 37.62
+          },
+          "radius": {
+            "type": "integer",
+            "description": "Радиус локации в метрах",
+            "format": "int64",
+            "example": "500"
+          },
+          "parentId": {
+            "type": "integer",
+            "description": "Id родительской локации",
+            "format": "String",
+            "example": 2
+          },
+          "childs": {
+            "type": "array",
+            "description": "Id дочерних локаций",
+            "format": "array",
+            "example": [1,2,3]
+          }
+        }
+
       },
       "NewCategoryDto": {
         "required": [
@@ -4275,7 +5181,9 @@
             "example": "2024-12-31 15:10:05"
           },
           "location": {
-            "$ref": "#/components/schemas/Location"
+            "type": "integer",
+            "description": "Id локации",
+            "format": "int64"
           },
           "paid": {
             "type": "boolean",

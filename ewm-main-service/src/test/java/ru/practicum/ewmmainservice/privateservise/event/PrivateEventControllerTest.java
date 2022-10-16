@@ -19,12 +19,14 @@ import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.event.dto.NewEventDto;
 import ru.practicum.ewmmainservice.models.event.dto.UpdateEventRequest;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
+import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
+import ru.practicum.ewmmainservice.models.location.dto.LocationFullDto;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
@@ -42,7 +44,8 @@ class PrivateEventControllerTest {
     @Autowired
     ObjectMapper mapper;
     MockMvc mvc;
-
+    Location location = new Location(1L, "location", 83.1454, 53.4545, 5000, null, new ArrayList<>(), true);
+    LocationFullDto locationFullDto = locationDtoMaper.toFullDto(location);
     @BeforeEach
     void setup(WebApplicationContext web) {
         mvc = MockMvcBuilders.webAppContextSetup(web).build();
@@ -52,13 +55,12 @@ class PrivateEventControllerTest {
     void test1_1createEvent() throws Exception {
         User user = new User(1L, "Email@mail.com", "name");
         Category category = new Category(1L, "categoty");
-        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
-        NewEventDto newEventDto = new NewEventDto();
+                NewEventDto newEventDto = new NewEventDto();
         newEventDto.setAnnotation("annotation annotation annotation");
         newEventDto.setCategory(1L);
         newEventDto.setDescription("Description Description Description");
         newEventDto.setEventDate("2022-09-21 22:11:00");
-        newEventDto.setLocation(locationDto);
+        newEventDto.setLocation(1L);
         newEventDto.setPaid(true);
         newEventDto.setParticipantLimit(10);
         newEventDto.setRequestModeration(false);
@@ -75,13 +77,12 @@ class PrivateEventControllerTest {
     void test1_2createEvent_whenFiledParamNotFoundException() throws Exception {
         User user = new User(1L, "Email@mail.com", "name");
         Category category = new Category(1L, "categoty");
-        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
         NewEventDto newEventDto = new NewEventDto();
         newEventDto.setAnnotation("annotation annotation annotation");
         newEventDto.setCategory(1L);
         newEventDto.setDescription("Description Description Description");
         newEventDto.setEventDate("2022-09-21 22:11:00");
-        newEventDto.setLocation(locationDto);
+        newEventDto.setLocation(1L);
         newEventDto.setPaid(true);
         newEventDto.setParticipantLimit(10);
         newEventDto.setRequestModeration(false);
@@ -100,13 +101,12 @@ class PrivateEventControllerTest {
     void test1_3createEvent_anyFiledNotValid() throws Exception {
         User user = new User(1L, "Email@mail.com", "name");
         Category category = new Category(1L, "categoty");
-        LocationDto locationDto = new LocationDto(1.0f, 2.0f);
         NewEventDto newEventDto = new NewEventDto();
         newEventDto.setAnnotation("annotation");
         newEventDto.setCategory(1L);
         newEventDto.setDescription("Description Description Description");
         newEventDto.setEventDate("2022-09-21 22:11:00");
-        newEventDto.setLocation(locationDto);
+        newEventDto.setLocation(1L);
         newEventDto.setPaid(true);
         newEventDto.setParticipantLimit(10);
         newEventDto.setRequestModeration(false);

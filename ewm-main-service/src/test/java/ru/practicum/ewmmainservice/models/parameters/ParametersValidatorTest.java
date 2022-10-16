@@ -46,10 +46,11 @@ class ParametersValidatorTest {
         User user4 = new User(4L, "sss@sssl4.fff", "name4");
         Long[] usersId = {1L, 2L};
         Long[] catId = {1L, 2L};
+        Long[] locIds = {1L};
         String[] states = {"PENDING", "CANCELED"};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().plusHours(1));
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, locIds, start, end, 0, 10);
 
         when(userAdminService.findById(1L)).thenReturn(user1);
         when(userAdminService.findById(2L)).thenReturn(user2);
@@ -69,10 +70,11 @@ class ParametersValidatorTest {
         User user4 = new User(4L, "sss@sssl4.fff", "name4");
         Long[] usersId = {1L, 2L};
         Long[] catId = {1L, 2L};
+        Long[] locIds = {1L};
         String[] states = {"PENDING", "CANCELED"};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().plusHours(1));
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, locIds, start, end, 0, 10);
 
         when(userAdminService.findById(1L)).thenReturn(user1);
         when(userAdminService.findById(2L)).thenThrow(new NotFoundException("id", "1", "User"));
@@ -88,10 +90,11 @@ class ParametersValidatorTest {
     void adminFindEvents_illegalTime() throws IncorrectPageValueException, NotFoundException, NotValidParameterException, IllegalTimeException {
         Long[] usersId = {1L, 2L};
         Long[] catId = {1L, 2L};
+        Long[] locIds = {1L};
         String[] states = {"PENDING", "CANCELED"};
         String start = formatter.format(LocalDateTime.now());
         String end = formatter.format(LocalDateTime.now().minusSeconds(1));
-        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, start, end, 0, 10);
+        ParametersAdminFindEvent param = new ParametersAdminFindEvent(usersId, states, catId, locIds, start, end, 0, 10);
         assertThrows(IllegalTimeException.class, () -> validator.adminFindEvents(param));
     }
 

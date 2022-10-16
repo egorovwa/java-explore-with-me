@@ -22,6 +22,7 @@ import ru.practicum.ewmstatscontract.utils.Utils;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,18 +44,19 @@ class PublicEventServiceImplTest {
     @Test
     void test1_findEvents_whenSortViewAvalibleTrue() throws IncorrectPageValueException, IllegalTimeException {
         Long[] catIds = {1L};
+        Long[] locIds = {1L};
         Page<Event> eventPage = new PageImpl<>(List.of(new Event()));
-        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, true,
+        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, locIds, true,
                 "2022-09-09 00:00:00", "2022-09-10 00:00:00", true, "VIEWS", 0, 10,
-                "ip", "/events");
-        when(repository.findAllForPublicAvailable("text", List.of(1L),
+                "ip", "/events", true);
+        when(repository.findAllForPublicAvailable("text", List.of(1L), Arrays.asList(locIds),
                 true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.parse("2022-09-10 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 PageParam.createPageable(0, 10, "views")))
                 .thenReturn(eventPage);
         service.findEvents(param);
         verify(repository, times(1)).findAllForPublicAvailable("text", List.of(1L),
-                true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
+                Arrays.asList(locIds), true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.parse("2022-09-10 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 PageParam.createPageable(0, 10, "views"));
 
@@ -63,18 +65,19 @@ class PublicEventServiceImplTest {
     @Test
     void test1_2findEvents_whenSortEventDateAvalibleTrue() throws IncorrectPageValueException, IllegalTimeException {
         Long[] catIds = {1L};
+        Long[] locIds = {null};
         Page<Event> eventPage = new PageImpl<>(List.of(new Event()));
-        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, true,
+        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, locIds, true,
                 "2022-09-09 00:00:00", "2022-09-10 00:00:00", true, "EVENT_DATE", 0, 10,
-                "ip", "/events");
-        when(repository.findAllForPublicAvailable("text", List.of(1L),
+                "ip", "/events", true);
+        when(repository.findAllForPublicAvailable("text", List.of(1L), Arrays.asList(locIds),
                 true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.parse("2022-09-10 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 PageParam.createPageable(0, 10, "eventDate")))
                 .thenReturn(eventPage);
         service.findEvents(param);
         verify(repository, times(1)).findAllForPublicAvailable("text", List.of(1L),
-                true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
+                Arrays.asList(locIds), true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.parse("2022-09-10 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 PageParam.createPageable(0, 10, "eventDate"));
 
@@ -83,18 +86,19 @@ class PublicEventServiceImplTest {
     @Test
     void test1_3findEvents_whenSortViewAvalibleFalse() throws IncorrectPageValueException, IllegalTimeException {
         Long[] catIds = {1L};
+        Long[] locIds = {1L};
         Page<Event> eventPage = new PageImpl<>(List.of(new Event()));
-        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, true,
+        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, locIds, true,
                 "2022-09-09 00:00:00", "2022-09-10 00:00:00", false, "VIEWS", 0, 10,
-                "ip", "/events");
-        when(repository.findAllForPublic("text", List.of(1L),
+                "ip", "/events", true);
+        when(repository.findAllForPublic("text", List.of(1L), Arrays.asList(locIds),
                 true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.parse("2022-09-10 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 PageParam.createPageable(0, 10, "views")))
                 .thenReturn(eventPage);
         service.findEvents(param);
         verify(repository, times(1)).findAllForPublic("text", List.of(1L),
-                true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
+                Arrays.asList(locIds), true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.parse("2022-09-10 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 PageParam.createPageable(0, 10, "views"));
 
@@ -103,20 +107,21 @@ class PublicEventServiceImplTest {
     @Test
     void test1_3findEvents_whenSortEventDateAvalibleFalse() throws IncorrectPageValueException, IllegalTimeException {
         Long[] catIds = {1L};
+        Long[] locIds = {1L};
         Page<Event> eventPage = new PageImpl<>(List.of(new Event()));
         EndpointHitDto endpointHitDto = new EndpointHitDto(null, "ewm-main-service", "/events", "ip",
                 formatter.format(LocalDateTime.now()));
-        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, true,
+        ParametersPublicEventFind param = new ParametersPublicEventFind("text", catIds, locIds,true,
                 "2022-09-09 00:00:00", "2022-09-10 00:00:00", false, "EVENT_DATE", 0, 10,
-                "ip", "/events");
+                "ip", "/events", true);
         when(repository.findAllForPublic("text", List.of(1L),
-                true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
+                Arrays.asList(locIds), true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.parse("2022-09-10 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 PageParam.createPageable(0, 10, "eventDate")))
                 .thenReturn(eventPage);
         service.findEvents(param);
         verify(repository, times(1)).findAllForPublic("text", List.of(1L),
-                true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
+                Arrays.asList(locIds), true, LocalDateTime.parse("2022-09-09 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 LocalDateTime.parse("2022-09-10 00:00:00", formatter).toEpochSecond(ZoneOffset.UTC),
                 PageParam.createPageable(0, 10, "eventDate"));
     }

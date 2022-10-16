@@ -17,6 +17,7 @@ import java.util.List;
 public class ParametersPublicEventFind {
     private String text;
     private List<Long> catIds;
+    private List<Long> locIds;
     private Boolean paid;
     private Long rangeStart;
     private Long rangeEnd;
@@ -24,23 +25,40 @@ public class ParametersPublicEventFind {
     private Pageable pageable;
     private String clientIp;
     private String endpointPath;
+    private boolean withChilds;
     private DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
-    public ParametersPublicEventFind(String text, Long[] catIds, Boolean paid, String rangeStart,
+    public ParametersPublicEventFind(String text, Long[] catIds, Long[] locIds, Boolean paid, String rangeStart,
                                      String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size,
-                                     String clientIp, String endpointPath) throws IncorrectPageValueException, IllegalTimeException {
-        this.text = text;
-        this.catIds = Arrays.asList(catIds);
-        this.paid = paid;
-
-        this.rangeStart = LocalDateTime.parse(rangeStart, formatter).toEpochSecond(ZoneOffset.UTC);
-        this.rangeEnd = LocalDateTime.parse(rangeEnd, formatter).toEpochSecond(ZoneOffset.UTC);
-        if (this.rangeStart >= this.rangeEnd) {
-            throw new IllegalTimeException(String.format("The start (%s) should be greater than the end (%s).",
-                    formatter.format(LocalDateTime.parse(rangeStart, formatter)),
-                    formatter.format(LocalDateTime.parse(rangeEnd, formatter))), "");
+                                     String clientIp, String endpointPath, Boolean withChilds) throws IncorrectPageValueException, IllegalTimeException {
+        if (text != null) {
+            this.text = text;
         }
-        this.onlyAvailable = onlyAvailable;
+        if (catIds != null) {
+            this.catIds = Arrays.asList(catIds);
+        }
+        if (locIds != null) {
+            this.locIds = Arrays.asList(locIds);
+        }
+        if (paid != null) {
+            this.paid = paid;
+        }
+        if (rangeStart != null) {
+            this.rangeStart = LocalDateTime.parse(rangeStart, formatter).toEpochSecond(ZoneOffset.UTC);
+        }
+        if (rangeEnd != null) {
+            this.rangeEnd = LocalDateTime.parse(rangeEnd, formatter).toEpochSecond(ZoneOffset.UTC);
+        }
+        if (rangeStart != null) {
+            if (this.rangeStart >= this.rangeEnd) {
+                throw new IllegalTimeException(String.format("The start (%s) should be greater than the end (%s).",
+                        formatter.format(LocalDateTime.parse(rangeStart, formatter)),
+                        formatter.format(LocalDateTime.parse(rangeEnd, formatter))), "");
+            }
+        }
+        if (onlyAvailable != null) {
+            this.onlyAvailable = onlyAvailable;
+        }
         this.clientIp = clientIp;
         this.endpointPath = endpointPath;
         if (sort.equals("EVENT_DATE")) {
@@ -49,6 +67,10 @@ public class ParametersPublicEventFind {
             this.pageable = PageParam.createPageable(from, size, "views");
         } else {
             throw new IllegalArgumentException(String.format("Sort by %s not found", sort));
+        }
+
+        if (locIds != null && locIds.length > 1) {
+            this.withChilds = withChilds;
         }
     }
 }
