@@ -26,6 +26,18 @@
         <module>ewm-stats-service</module>
         <module>ewm-stats-contract</module>
     </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.kappadrive.testcontainers</groupId>
+            <artifactId>testcontainers-junit5</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>au.com.dius.pact.provider</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.3.15</version>
+        </dependency>
+    </dependencies>
     <build>
         <pluginManagement>
             <plugins>
