@@ -1,7 +1,7 @@
 package ru.practicum.ewmmainservice.privateservise.location;
 
+import com.example.evmdtocontract.dto.location.LocationDto;
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 
 import java.util.Optional;
 

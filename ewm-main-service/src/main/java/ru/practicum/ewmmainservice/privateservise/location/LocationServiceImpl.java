@@ -1,11 +1,11 @@
 package ru.practicum.ewmmainservice.privateservise.location;
 
+import com.example.evmdtocontract.dto.location.LocationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 
 import java.util.Optional;

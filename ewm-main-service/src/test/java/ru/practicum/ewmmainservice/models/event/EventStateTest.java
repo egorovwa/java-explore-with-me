@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.models.event;
 
+import com.example.evmdtocontract.dto.event.EventState;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

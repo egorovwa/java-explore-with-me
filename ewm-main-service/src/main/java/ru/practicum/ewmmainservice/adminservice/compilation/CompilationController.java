@@ -1,13 +1,13 @@
 package ru.practicum.ewmmainservice.adminservice.compilation;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
+import com.example.evmdtocontract.dto.compilation.NewCompilationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmainservice.exceptions.FiledParamNotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotRequiredException;
-import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
-import ru.practicum.ewmmainservice.models.compilation.dto.NewCompilationDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;

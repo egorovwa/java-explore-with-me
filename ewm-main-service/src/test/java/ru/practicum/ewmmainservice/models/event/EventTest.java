@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.models.event;
 
+import com.example.evmdtocontract.dto.event.EventState;
 import org.junit.jupiter.api.Test;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.location.Location;

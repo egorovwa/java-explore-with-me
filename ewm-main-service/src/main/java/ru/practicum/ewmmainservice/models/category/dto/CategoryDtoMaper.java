@@ -1,8 +1,9 @@
 package ru.practicum.ewmmainservice.models.category.dto;
 
+import com.example.evmdtocontract.dto.category.CategoryDto;
+import com.example.evmdtocontract.dto.category.NewCategoryDto;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewmmainservice.models.category.Category;
-
 @Component
 public class CategoryDtoMaper {
     public Category fromNewCategoryDto(NewCategoryDto newCategoryDto) {

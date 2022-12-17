@@ -1,7 +1,8 @@
 package ru.practicum.ewmmainservice.privateservise.participationrequest;
 
+
+import com.example.evmdtocontract.dto.participationrequest.ParticipationRequestDto;
 import ru.practicum.ewmmainservice.exceptions.*;
-import ru.practicum.ewmmainservice.models.participationrequest.dto.ParticipationRequestDto;
 
 import java.util.Collection;
 import java.util.List;

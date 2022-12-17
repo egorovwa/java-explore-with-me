@@ -1,9 +1,9 @@
 package ru.practicum.ewmmainservice.models.parameters;
 
+import com.example.evmdtocontract.dto.event.EventState;
 import lombok.Data;
 import org.springframework.data.domain.Pageable;
 import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.utils.PageParam;
 import ru.practicum.ewmstatscontract.utils.Utils;
 

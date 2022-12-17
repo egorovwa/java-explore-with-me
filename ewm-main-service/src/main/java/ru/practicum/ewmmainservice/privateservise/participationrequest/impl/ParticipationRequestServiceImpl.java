@@ -1,5 +1,8 @@
 package ru.practicum.ewmmainservice.privateservise.participationrequest.impl;
 
+import com.example.evmdtocontract.dto.event.EventState;
+import com.example.evmdtocontract.dto.participationrequest.ParticipationRequestDto;
+import com.example.evmdtocontract.dto.participationrequest.RequestStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -7,10 +10,7 @@ import ru.practicum.ewmmainservice.adminservice.event.AdminEventService;
 import ru.practicum.ewmmainservice.adminservice.user.UserAdminService;
 import ru.practicum.ewmmainservice.exceptions.*;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
-import ru.practicum.ewmmainservice.models.participationrequest.RequestStatus;
-import ru.practicum.ewmmainservice.models.participationrequest.dto.ParticipationRequestDto;
 import ru.practicum.ewmmainservice.models.participationrequest.dto.ParticipationRequestDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.privateservise.participationrequest.ParticipationRequestRepository;

@@ -1,5 +1,7 @@
 package ru.practicum.ewmmainservice.adminservice.compilation.impl;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
+import com.example.evmdtocontract.dto.compilation.NewCompilationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,7 @@ import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotRequiredException;
 import ru.practicum.ewmmainservice.exceptions.RuntimeNotFoundException;
 import ru.practicum.ewmmainservice.models.compilation.Compilation;
-import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
 import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDtoMaper;
-import ru.practicum.ewmmainservice.models.compilation.dto.NewCompilationDto;
 import ru.practicum.ewmmainservice.models.event.Event;
 
 import java.util.List;

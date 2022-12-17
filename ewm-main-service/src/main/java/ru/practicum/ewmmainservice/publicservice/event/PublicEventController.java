@@ -1,13 +1,13 @@
 package ru.practicum.ewmmainservice.publicservice.event;
 
+import com.example.evmdtocontract.dto.event.EventFullDto;
+import com.example.evmdtocontract.dto.event.EventShortDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmainservice.exceptions.IllegalTimeException;
 import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
-import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
-import ru.practicum.ewmmainservice.models.event.dto.EventShortDto;
 import ru.practicum.ewmmainservice.models.parameters.ParametersPublicEventFind;
 
 import javax.servlet.http.HttpServletRequest;

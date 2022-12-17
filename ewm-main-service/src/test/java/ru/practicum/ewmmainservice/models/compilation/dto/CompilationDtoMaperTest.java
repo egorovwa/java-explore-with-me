@@ -1,12 +1,14 @@
 package ru.practicum.ewmmainservice.models.compilation.dto;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
+import com.example.evmdtocontract.dto.event.EventShortDto;
+import com.example.evmdtocontract.dto.event.EventState;
 import org.junit.jupiter.api.Test;
 import ru.practicum.ewmmainservice.models.category.Category;
+import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
 import ru.practicum.ewmmainservice.models.compilation.Compilation;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
-import ru.practicum.ewmmainservice.models.event.dto.EventShortDto;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
@@ -21,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CompilationDtoMaperTest {
     private final CompilationDtoMaper dtoMaper = new CompilationDtoMaper(new EventDtoMaper(new UserDtoMapper()
-            , new LocationDtoMaper()));
-    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), new LocationDtoMaper());
+            , new LocationDtoMaper(), new CategoryDtoMaper()));
+    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), new LocationDtoMaper(), new CategoryDtoMaper());
 
     @Test
     void toDto() {

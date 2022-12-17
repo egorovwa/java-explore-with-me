@@ -1,5 +1,7 @@
 package ru.practicum.ewmmainservice.adminservice.event.impl;
 
+import com.example.evmdtocontract.dto.event.EventFullDto;
+import com.example.evmdtocontract.dto.event.EventState;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,7 @@ import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
 import ru.practicum.ewmmainservice.exceptions.NotValidParameterException;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
-import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.example.evmdtocontract.dto.event.EventState.PENDING;
+import static com.example.evmdtocontract.dto.event.EventState.PUBLISHED;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static ru.practicum.ewmmainservice.models.event.EventState.PENDING;
-import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)

@@ -1,8 +1,8 @@
 package ru.practicum.ewmmainservice.publicservice.category;
 
+import com.example.evmdtocontract.dto.category.CategoryDto;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.Category;
-import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 
 import java.util.Collection;
 

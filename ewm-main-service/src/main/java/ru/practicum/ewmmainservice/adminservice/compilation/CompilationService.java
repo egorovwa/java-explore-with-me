@@ -1,11 +1,12 @@
 package ru.practicum.ewmmainservice.adminservice.compilation;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
+import com.example.evmdtocontract.dto.compilation.NewCompilationDto;
 import ru.practicum.ewmmainservice.exceptions.FiledParamNotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotRequiredException;
 import ru.practicum.ewmmainservice.models.compilation.Compilation;
-import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
-import ru.practicum.ewmmainservice.models.compilation.dto.NewCompilationDto;
+
 
 public interface CompilationService {
     CompilationDto createCompilation(NewCompilationDto newCompilationDto) throws FiledParamNotFoundException;

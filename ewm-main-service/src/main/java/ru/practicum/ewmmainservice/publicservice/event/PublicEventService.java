@@ -1,8 +1,8 @@
 package ru.practicum.ewmmainservice.publicservice.event;
 
+import com.example.evmdtocontract.dto.event.EventFullDto;
+import com.example.evmdtocontract.dto.event.EventShortDto;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
-import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
-import ru.practicum.ewmmainservice.models.event.dto.EventShortDto;
 import ru.practicum.ewmmainservice.models.parameters.ParametersPublicEventFind;
 
 import java.util.Collection;

@@ -1,10 +1,10 @@
 package ru.practicum.ewmmainservice.adminservice.event;
 
+import com.example.evmdtocontract.dto.event.AdminUpdateEventRequest;
+import com.example.evmdtocontract.dto.event.EventFullDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmainservice.exceptions.*;
-import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
-import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 
 import javax.validation.constraints.Positive;

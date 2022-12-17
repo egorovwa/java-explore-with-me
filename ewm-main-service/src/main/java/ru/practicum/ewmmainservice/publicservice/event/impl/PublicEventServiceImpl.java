@@ -1,5 +1,7 @@
 package ru.practicum.ewmmainservice.publicservice.event.impl;
 
+import com.example.evmdtocontract.dto.event.EventFullDto;
+import com.example.evmdtocontract.dto.event.EventShortDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,8 +9,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.ewmmainservice.client.EwmClient;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
-import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
-import ru.practicum.ewmmainservice.models.event.dto.EventShortDto;
 import ru.practicum.ewmmainservice.models.parameters.ParametersPublicEventFind;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;
 import ru.practicum.ewmmainservice.publicservice.event.PublicEventService;

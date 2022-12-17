@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.publicservice.compilations.impl;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.ewmmainservice.adminservice.compilation.CompilationRepository;
 import ru.practicum.ewmmainservice.adminservice.compilation.CompilationService;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
-import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
 import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDtoMaper;
 import ru.practicum.ewmmainservice.publicservice.compilations.PublicCompilationsService;
 

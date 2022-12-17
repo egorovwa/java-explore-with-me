@@ -1,5 +1,8 @@
 package ru.practicum.ewmmainservice.adminservice.event.impl;
 
+import com.example.evmdtocontract.dto.event.AdminUpdateEventRequest;
+import com.example.evmdtocontract.dto.event.EventFullDto;
+import com.example.evmdtocontract.dto.event.EventState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,10 +14,7 @@ import ru.practicum.ewmmainservice.exceptions.*;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
-import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
-import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;

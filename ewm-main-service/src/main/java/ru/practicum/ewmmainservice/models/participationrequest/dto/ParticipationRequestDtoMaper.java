@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.models.participationrequest.dto;
 
+import com.example.evmdtocontract.dto.participationrequest.ParticipationRequestDto;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmstatscontract.utils.Utils;

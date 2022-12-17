@@ -1,5 +1,7 @@
 package ru.practicum.ewmmainservice.models.category.dto;
 
+import com.example.evmdtocontract.dto.category.CategoryDto;
+import com.example.evmdtocontract.dto.category.NewCategoryDto;
 import org.junit.jupiter.api.Test;
 import ru.practicum.ewmmainservice.models.category.Category;
 

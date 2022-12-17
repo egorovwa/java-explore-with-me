@@ -1,10 +1,10 @@
 package ru.practicum.ewmmainservice.privateservise.participationrequest;
 
+import com.example.evmdtocontract.dto.participationrequest.ParticipationRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmainservice.exceptions.*;
-import ru.practicum.ewmmainservice.models.participationrequest.dto.ParticipationRequestDto;
 
 import javax.validation.constraints.Positive;
 import javax.websocket.server.PathParam;

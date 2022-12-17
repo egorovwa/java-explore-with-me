@@ -1,5 +1,8 @@
 package ru.practicum.ewmmainservice.adminservice.compilation;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
+import com.example.evmdtocontract.dto.compilation.NewCompilationDto;
+import com.example.evmdtocontract.dto.event.EventShortDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,9 +17,6 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.practicum.ewmmainservice.exceptions.FiledParamNotFoundException;
 import ru.practicum.ewmmainservice.exceptions.ForAllControllerErrorHendler;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
-import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
-import ru.practicum.ewmmainservice.models.compilation.dto.NewCompilationDto;
-import ru.practicum.ewmmainservice.models.event.dto.EventShortDto;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

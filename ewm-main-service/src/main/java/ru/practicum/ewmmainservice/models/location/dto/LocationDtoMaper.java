@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.models.location.dto;
 
+import com.example.evmdtocontract.dto.location.LocationDto;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewmmainservice.models.location.Location;
 

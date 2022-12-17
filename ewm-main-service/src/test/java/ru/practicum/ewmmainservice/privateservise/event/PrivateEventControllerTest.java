@@ -1,5 +1,8 @@
 package ru.practicum.ewmmainservice.privateservise.event;
 
+import com.example.evmdtocontract.dto.event.NewEventDto;
+import com.example.evmdtocontract.dto.event.UpdateEventRequest;
+import com.example.evmdtocontract.dto.location.LocationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +19,8 @@ import ru.practicum.ewmmainservice.exceptions.IlegalUserIdException;
 import ru.practicum.ewmmainservice.exceptions.IllegalTimeException;
 import ru.practicum.ewmmainservice.exceptions.StatusException;
 import ru.practicum.ewmmainservice.models.category.Category;
+import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
-import ru.practicum.ewmmainservice.models.event.dto.NewEventDto;
-import ru.practicum.ewmmainservice.models.event.dto.UpdateEventRequest;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PrivateEventControllerTest {
     private static final String API = "/users";
     private final LocationDtoMaper locationDtoMaper = new LocationDtoMaper();
-    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), locationDtoMaper);
+    private final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), locationDtoMaper, new CategoryDtoMaper());
     @MockBean
     PrivateEventService service;
     @Autowired

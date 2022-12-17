@@ -1,9 +1,9 @@
 package ru.practicum.ewmmainservice.privateservise.participationrequest;
 
+import com.example.evmdtocontract.dto.participationrequest.RequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
-import ru.practicum.ewmmainservice.models.participationrequest.RequestStatus;
 
 import java.util.Collection;
 import java.util.List;

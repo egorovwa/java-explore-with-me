@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.models.participationrequest;
 
+import com.example.evmdtocontract.dto.participationrequest.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

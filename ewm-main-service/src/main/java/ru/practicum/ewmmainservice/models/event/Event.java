@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.models.event;
 
+import com.example.evmdtocontract.dto.event.EventState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

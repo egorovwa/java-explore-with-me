@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.publicservice.event;
 
+import com.example.evmdtocontract.dto.event.EventState;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,6 @@ import ru.practicum.ewmmainservice.adminservice.event.impl.AdminEventServiceImpl
 import ru.practicum.ewmmainservice.adminservice.user.UserAdminRepository;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
@@ -33,12 +33,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.example.evmdtocontract.dto.event.EventState.PENDING;
+import static com.example.evmdtocontract.dto.event.EventState.PUBLISHED;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.practicum.ewmmainservice.models.event.EventState.PENDING;
-import static ru.practicum.ewmmainservice.models.event.EventState.PUBLISHED;
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)

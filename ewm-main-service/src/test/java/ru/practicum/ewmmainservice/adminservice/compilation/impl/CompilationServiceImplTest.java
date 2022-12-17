@@ -1,5 +1,8 @@
 package ru.practicum.ewmmainservice.adminservice.compilation.impl;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
+import com.example.evmdtocontract.dto.compilation.NewCompilationDto;
+import com.example.evmdtocontract.dto.event.EventState;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,12 +14,10 @@ import ru.practicum.ewmmainservice.exceptions.FiledParamNotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.exceptions.NotRequiredException;
 import ru.practicum.ewmmainservice.models.category.Category;
+import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
 import ru.practicum.ewmmainservice.models.compilation.Compilation;
-import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
 import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDtoMaper;
-import ru.practicum.ewmmainservice.models.compilation.dto.NewCompilationDto;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
@@ -37,7 +38,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CompilationServiceImplTest {
-    final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), new LocationDtoMaper());
+    final EventDtoMaper eventDtoMaper = new EventDtoMaper(new UserDtoMapper(), new LocationDtoMaper(), new CategoryDtoMaper());
     @InjectMocks
     CompilationServiceImpl service;
     @Mock

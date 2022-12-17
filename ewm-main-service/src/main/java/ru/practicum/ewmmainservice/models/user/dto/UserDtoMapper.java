@@ -1,5 +1,8 @@
 package ru.practicum.ewmmainservice.models.user.dto;
 
+import com.example.evmdtocontract.dto.user.NewUserDto;
+import com.example.evmdtocontract.dto.user.UserDto;
+import com.example.evmdtocontract.dto.user.UserShortDto;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewmmainservice.models.user.User;
 

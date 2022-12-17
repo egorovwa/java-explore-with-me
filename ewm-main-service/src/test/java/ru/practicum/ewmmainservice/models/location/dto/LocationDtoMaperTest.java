@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.models.location.dto;
 
+import com.example.evmdtocontract.dto.location.LocationDto;
 import org.junit.jupiter.api.Test;
 import ru.practicum.ewmmainservice.models.location.Location;
 

@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.adminservice.event;
 
+import com.example.evmdtocontract.dto.event.EventState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -10,7 +11,6 @@ import ru.practicum.ewmmainservice.adminservice.user.UserAdminRepository;
 import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.example.evmdtocontract.dto.event.EventState.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static ru.practicum.ewmmainservice.models.event.EventState.*;
 
 @DataJpaTest
 class AdminEwentRepositoryTest {

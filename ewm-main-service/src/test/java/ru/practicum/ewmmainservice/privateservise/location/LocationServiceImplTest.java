@@ -1,11 +1,11 @@
 package ru.practicum.ewmmainservice.privateservise.location;
 
+import com.example.evmdtocontract.dto.location.LocationDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 
 @ExtendWith(MockitoExtension.class)

@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.publicservice.category;
 
+import com.example.evmdtocontract.dto.category.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.Category;
-import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 
 import javax.validation.constraints.Positive;
 import java.util.Collection;

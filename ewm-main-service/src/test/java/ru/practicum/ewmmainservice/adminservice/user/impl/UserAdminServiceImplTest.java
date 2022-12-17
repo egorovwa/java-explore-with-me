@@ -1,5 +1,7 @@
 package ru.practicum.ewmmainservice.adminservice.user.impl;
 
+import com.example.evmdtocontract.dto.user.NewUserDto;
+import com.example.evmdtocontract.dto.user.UserDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -14,8 +16,6 @@ import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
-import ru.practicum.ewmmainservice.models.user.dto.UserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 import ru.practicum.ewmmainservice.utils.PageParam;
 

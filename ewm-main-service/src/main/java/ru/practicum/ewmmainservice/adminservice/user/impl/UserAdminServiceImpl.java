@@ -1,5 +1,7 @@
 package ru.practicum.ewmmainservice.adminservice.user.impl;
 
+import com.example.evmdtocontract.dto.user.NewUserDto;
+import com.example.evmdtocontract.dto.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,8 +14,6 @@ import ru.practicum.ewmmainservice.adminservice.user.UserAdminService;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.user.User;
-import ru.practicum.ewmmainservice.models.user.dto.NewUserDto;
-import ru.practicum.ewmmainservice.models.user.dto.UserDto;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
 
 import java.util.Arrays;

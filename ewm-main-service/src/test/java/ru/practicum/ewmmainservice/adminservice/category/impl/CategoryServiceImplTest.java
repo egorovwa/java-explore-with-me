@@ -1,5 +1,7 @@
 package ru.practicum.ewmmainservice.adminservice.category.impl;
 
+import com.example.evmdtocontract.dto.category.CategoryDto;
+import com.example.evmdtocontract.dto.category.NewCategoryDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -12,9 +14,7 @@ import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
 import ru.practicum.ewmmainservice.models.category.Category;
-import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
-import ru.practicum.ewmmainservice.models.category.dto.NewCategoryDto;
 import ru.practicum.ewmmainservice.models.event.Event;
 
 import java.util.List;

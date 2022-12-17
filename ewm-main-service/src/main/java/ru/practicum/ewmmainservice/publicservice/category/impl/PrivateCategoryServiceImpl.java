@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.publicservice.category.impl;
 
+import com.example.evmdtocontract.dto.category.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -7,7 +8,6 @@ import ru.practicum.ewmmainservice.adminservice.category.CategoryRepository;
 import ru.practicum.ewmmainservice.adminservice.category.CategoryService;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.models.category.Category;
-import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
 import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
 import ru.practicum.ewmmainservice.publicservice.category.PrivateCategoryService;
 

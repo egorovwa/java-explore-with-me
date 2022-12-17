@@ -1,10 +1,11 @@
 package ru.practicum.ewmmainservice.models.compilation.dto;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
+import com.example.evmdtocontract.dto.event.EventShortDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewmmainservice.models.compilation.Compilation;
 import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
-import ru.practicum.ewmmainservice.models.event.dto.EventShortDto;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

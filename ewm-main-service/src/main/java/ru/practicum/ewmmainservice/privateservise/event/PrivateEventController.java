@@ -1,13 +1,13 @@
 package ru.practicum.ewmmainservice.privateservise.event;
 
+import com.example.evmdtocontract.dto.event.EventFullDto;
+import com.example.evmdtocontract.dto.event.EventShortDto;
+import com.example.evmdtocontract.dto.event.NewEventDto;
+import com.example.evmdtocontract.dto.event.UpdateEventRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmainservice.exceptions.*;
-import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
-import ru.practicum.ewmmainservice.models.event.dto.EventShortDto;
-import ru.practicum.ewmmainservice.models.event.dto.NewEventDto;
-import ru.practicum.ewmmainservice.models.event.dto.UpdateEventRequest;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -28,7 +28,7 @@ public class PrivateEventController {
 
     @PatchMapping("/{userId}/events")
     public EventFullDto patchEvent(@Positive @PathVariable("userId") Long userId,
-                                   @Valid @RequestBody UpdateEventRequest requestEvent) throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException {
+                                   @Valid @RequestBody UpdateEventRequest requestEvent) throws NotFoundException, StatusException, IllegalTimeException, IlegalUserIdException, StatusException, IllegalTimeException, IlegalUserIdException {
         return eventService.patchEvent(userId, requestEvent);
     }
 

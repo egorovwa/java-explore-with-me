@@ -1,5 +1,7 @@
 package ru.practicum.ewmmainservice.adminservice.category;
 
+import com.example.evmdtocontract.dto.category.CategoryDto;
+import com.example.evmdtocontract.dto.category.NewCategoryDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +17,6 @@ import ru.practicum.ewmmainservice.exceptions.ForAllControllerErrorHendler;
 import ru.practicum.ewmmainservice.exceptions.ModelAlreadyExistsException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.exceptions.RelatedObjectsPresent;
-import ru.practicum.ewmmainservice.models.category.dto.CategoryDto;
-import ru.practicum.ewmmainservice.models.category.dto.NewCategoryDto;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

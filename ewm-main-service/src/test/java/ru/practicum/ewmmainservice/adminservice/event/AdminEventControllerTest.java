@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.adminservice.event;
 
+import com.example.evmdtocontract.dto.event.AdminUpdateEventRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
 import ru.practicum.ewmmainservice.exceptions.StatusException;
-import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 
 import java.nio.charset.StandardCharsets;

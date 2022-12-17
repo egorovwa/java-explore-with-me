@@ -1,8 +1,8 @@
 package ru.practicum.ewmmainservice.publicservice.compilations;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
 import org.springframework.data.domain.Pageable;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
-import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
 
 import java.util.List;
 

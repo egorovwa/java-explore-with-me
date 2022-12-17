@@ -1,12 +1,12 @@
 package ru.practicum.ewmmainservice.publicservice.compilations;
 
+import com.example.evmdtocontract.dto.compilation.CompilationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmainservice.exceptions.IncorrectPageValueException;
 import ru.practicum.ewmmainservice.exceptions.NotFoundException;
-import ru.practicum.ewmmainservice.models.compilation.dto.CompilationDto;
 import ru.practicum.ewmmainservice.utils.PageParam;
 
 import javax.validation.constraints.Positive;

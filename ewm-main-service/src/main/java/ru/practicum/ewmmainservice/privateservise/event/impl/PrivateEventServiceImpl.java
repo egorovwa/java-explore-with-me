@@ -1,5 +1,6 @@
 package ru.practicum.ewmmainservice.privateservise.event.impl;
 
+import com.example.evmdtocontract.dto.event.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,7 @@ import ru.practicum.ewmmainservice.adminservice.user.UserAdminService;
 import ru.practicum.ewmmainservice.exceptions.*;
 import ru.practicum.ewmmainservice.models.category.Category;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
-import ru.practicum.ewmmainservice.models.event.dto.*;
+import ru.practicum.ewmmainservice.models.event.dto.EventDtoMaper;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.privateservise.event.PrivateEventRepository;

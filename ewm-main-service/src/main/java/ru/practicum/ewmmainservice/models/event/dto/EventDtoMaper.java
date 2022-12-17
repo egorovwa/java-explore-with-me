@@ -1,10 +1,14 @@
 package ru.practicum.ewmmainservice.models.event.dto;
 
+import com.example.evmdtocontract.dto.event.EventFullDto;
+import com.example.evmdtocontract.dto.event.EventShortDto;
+import com.example.evmdtocontract.dto.event.EventState;
+import com.example.evmdtocontract.dto.event.NewEventDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewmmainservice.models.category.Category;
+import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.location.Location;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.user.User;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 public class EventDtoMaper {
     private final UserDtoMapper userDtoMapper;
     private final LocationDtoMaper locationDtoMaper;
+    private final CategoryDtoMaper categoryDtoMaper;
     private final DateTimeFormatter formatter = Utils.getDateTimeFormatter();
 
     public Event fromNewDto(NewEventDto newEventDto, Category category, User user, Location location) {
@@ -49,7 +54,7 @@ public class EventDtoMaper {
         }
         return new EventFullDto(event.getId(),
                 event.getAnnotation(),
-                event.getCategory(),
+                categoryDtoMaper.toDto(event.getCategory()),
                 event.getParticipants().size(),
                 formatter.format(LocalDateTime.ofEpochSecond(event.getCreatedOn(), 0, ZoneOffset.UTC)),
                 event.getDescription(),
@@ -68,7 +73,7 @@ public class EventDtoMaper {
     public EventShortDto toShortDto(Event event) {
         return new EventShortDto(event.getId(),
                 event.getAnnotation(),
-                event.getCategory(),
+                categoryDtoMaper.toDto(event.getCategory()),
                 formatter.format(LocalDateTime.ofEpochSecond(event.getEventDate(), 0, ZoneOffset.UTC)),
                 event.getParticipants().size(),
                 userDtoMapper.toShortDto(event.getInitiator()),

@@ -1,16 +1,20 @@
 package ru.practicum.ewmmainservice.models.event.dto;
 
+import com.example.evmdtocontract.dto.event.EventFullDto;
+import com.example.evmdtocontract.dto.event.EventShortDto;
+import com.example.evmdtocontract.dto.event.EventState;
+import com.example.evmdtocontract.dto.event.NewEventDto;
+import com.example.evmdtocontract.dto.location.LocationDto;
+import com.example.evmdtocontract.dto.user.UserShortDto;
 import org.junit.jupiter.api.Test;
 import ru.practicum.ewmmainservice.models.category.Category;
+import ru.practicum.ewmmainservice.models.category.dto.CategoryDtoMaper;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.EventState;
 import ru.practicum.ewmmainservice.models.location.Location;
-import ru.practicum.ewmmainservice.models.location.dto.LocationDto;
 import ru.practicum.ewmmainservice.models.location.dto.LocationDtoMaper;
 import ru.practicum.ewmmainservice.models.participationrequest.ParticipationRequest;
 import ru.practicum.ewmmainservice.models.user.User;
 import ru.practicum.ewmmainservice.models.user.dto.UserDtoMapper;
-import ru.practicum.ewmmainservice.models.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -22,7 +26,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 class EventDtoMaperTest {
     private final LocationDtoMaper locationDtoMaper = new LocationDtoMaper();
-    private final EventDtoMaper maper = new EventDtoMaper(new UserDtoMapper(), locationDtoMaper);
+    private final EventDtoMaper maper = new EventDtoMaper(new UserDtoMapper(), locationDtoMaper, new CategoryDtoMaper());
+    private final CategoryDtoMaper categoryDtoMaper = new CategoryDtoMaper();
 
     @Test
     void fromNewDto() {
@@ -86,7 +91,7 @@ class EventDtoMaperTest {
         EventFullDto dto = maper.toFulDto(event);
         assertThat(dto.getId(), is(1L));
         assertThat(dto.getAnnotation(), is("anatation"));
-        assertThat(dto.getCategory(), is(category));
+        assertThat(dto.getCategory(), is(categoryDtoMaper.toDto(category)));
         assertThat(dto.getCreatedOn(), is("2022-09-06 11:00:23"));
         assertThat(dto.getDescription(), is("Description"));
         assertThat(dto.getEventDate(), is("2022-09-07 11:00:23"));
@@ -132,7 +137,7 @@ class EventDtoMaperTest {
         EventShortDto dto = maper.toShortDto(event);
         assertThat(dto.getId(), is(1L));
         assertThat(dto.getAnnotation(), is("anatation"));
-        assertThat(dto.getCategory(), is(category));
+        assertThat(dto.getCategory(), is(categoryDtoMaper.toDto(category)));
         assertThat(dto.getEventDate(), is("2022-09-07 11:00:23"));
         assertThat(dto.getInitiator(), is(userShortDto));
         assertThat(dto.getPaid(), is(true));

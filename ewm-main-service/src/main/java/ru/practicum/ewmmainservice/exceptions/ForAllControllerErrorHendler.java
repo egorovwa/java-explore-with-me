@@ -1,11 +1,11 @@
 package ru.practicum.ewmmainservice.exceptions;
 
+import com.example.evmdtocontract.dto.apierror.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.ewmmainservice.models.apiError.ApiError;
 import ru.practicum.ewmstatscontract.utils.Utils;
 
 import java.time.LocalDateTime;

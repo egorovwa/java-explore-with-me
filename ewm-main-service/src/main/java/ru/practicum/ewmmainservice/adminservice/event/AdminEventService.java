@@ -1,9 +1,9 @@
 package ru.practicum.ewmmainservice.adminservice.event;
 
+import com.example.evmdtocontract.dto.event.AdminUpdateEventRequest;
+import com.example.evmdtocontract.dto.event.EventFullDto;
 import ru.practicum.ewmmainservice.exceptions.*;
 import ru.practicum.ewmmainservice.models.event.Event;
-import ru.practicum.ewmmainservice.models.event.dto.AdminUpdateEventRequest;
-import ru.practicum.ewmmainservice.models.event.dto.EventFullDto;
 import ru.practicum.ewmmainservice.models.parameters.ParametersAdminFindEvent;
 
 import java.util.Collection;
