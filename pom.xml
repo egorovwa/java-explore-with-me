@@ -25,6 +25,7 @@
         <module>ewm-main-service</module>
         <module>ewm-stats-service</module>
         <module>ewm-stats-contract</module>
+        <module>evm-dto-contract</module>
     </modules>
     <build>
         <pluginManagement>
